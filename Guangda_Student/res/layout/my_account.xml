@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
+        
+
+        <View
+        style="@style/common_line"
+        android:background="#cbcbcb" />
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll_yue">
+                    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:text="余额"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ico_yue" />
+            
+       <LinearLayout android:layout_width="wrap_content"
+           android:layout_height="match_parent"
+           android:paddingLeft="15dp"
+           android:paddingRight="15dp"
+           android:orientation="horizontal">  
+           <TextView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textColor="@color/text_yellow"
+               android:id="@+id/tv_yue"
+               android:text="0"/> 
+               <TextView
+                    android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:text="元"
+                   android:gravity="center_vertical"/>        
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/userinfo_next_img"
+            android:layout_marginLeft="3dp" />
+        </LinearLayout>  
+        </LinearLayout>
+                <View
+        style="@style/common_line"
+        android:background="#cbcbcb" 
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+    </LinearLayout>
+            <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll_xiaobaquan">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:text="小巴券"
+            android:drawableLeft="@drawable/ico_xiaobaquan" />
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+           	android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:orientation="horizontal">
+       
+             <TextView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textColor="@color/text_yellow"
+               android:id="@+id/tv_xiaobaquan"
+               android:text="0"/> 
+               
+               <TextView
+                    android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:text="张"
+                   android:gravity="center_vertical"/>       
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/userinfo_next_img"
+            android:layout_marginLeft="3dp" />
+        </LinearLayout>
+        </LinearLayout>
+        <View
+        style="@style/common_line"
+        android:background="#cbcbcb" 
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+            <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll_xiaobabi">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:text="小巴币"
+            android:drawableLeft="@drawable/ico_coin" />
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+           	android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:orientation="horizontal">
+       
+             <TextView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textColor="@color/text_yellow"
+               android:id="@+id/tv_xiaobabi"
+               android:text="0"/> 
+               
+               <TextView
+                    android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:text="枚"
+                   android:gravity="center_vertical"/>       
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/userinfo_next_img"
+            android:layout_marginLeft="3dp" />
+        </LinearLayout>
+        </LinearLayout>
+            
+        <View
+        style="@style/common_line"
+        android:background="#cbcbcb" />
+</LinearLayout>

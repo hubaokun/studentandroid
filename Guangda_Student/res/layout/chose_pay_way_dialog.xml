@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/white">
+    
+    <TextView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="支付方式"
+        android:textColor="@color/text"
+        android:textSize="15sp"
+        android:gravity="center_horizontal"
+        android:padding="10dp"/>
+   
+        <View
+        style="@style/common_line"
+        android:background="#cbcbcb" />
+    
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+        <RelativeLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/rl_xueshiquan">
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="学时券"
+                android:textColor="@color/text"
+                android:textSize="12sp"
+                android:layout_centerVertical="true"/>
+            
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical">
+            
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_rest_coupon_num"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_red"
+                    android:layout_marginRight="10dp"/>
+                
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/map_home_bottom_car_type_normal"
+                
+                android:id="@+id/img_chosed_xueshiquan"/>
+            </LinearLayout>
+        </RelativeLayout>
+                <View
+        style="@style/common_line"
+        android:background="#cbcbcb" />
+        <RelativeLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/rl_xiaobabi">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="小巴币"
+                android:textColor="@color/text"
+                android:textSize="12sp"
+                android:layout_centerVertical="true"/>
+            
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical">
+            
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_red"
+                    android:textSize="12sp"
+                    android:id="@+id/tv_rest_coin_num"
+                    android:layout_marginRight="10dp"/>
+            
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/map_home_bottom_car_type_normal"
+                android:id="@+id/img_chosed_xiaobabi"/>
+            </LinearLayout>
+        </RelativeLayout> 
+                <View
+        style="@style/common_line"
+        android:background="#cbcbcb" />
+      <RelativeLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/rl_yue">
+            
+<!--           <LinearLayout android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              > -->
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="账户余额"
+                android:textColor="@color/text"
+                android:textSize="12sp"
+                android:layout_centerVertical="true"/>
+            
+<!--             <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="余额不足"
+                android:textColor="@color/text_gray"
+                android:textSize="12sp"
+                android:layout_marginLeft="10dp"
+                android:visibility="gone"
+                android:id="@+id/tv_no_money"/>
+            
+            </LinearLayout> -->
+            
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical">
+            
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_red"
+                    android:textSize="12sp"
+                    android:id="@+id/tv_reset_money"
+                    android:layout_marginRight="10dp"/>
+           
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/map_home_bottom_car_type_normal"
+                
+                android:id="@+id/img_chosed_yue"/>
+            
+            </LinearLayout>
+        </RelativeLayout> 
+                <View
+        style="@style/common_line"
+        android:background="#cbcbcb" />                            
+    </LinearLayout>
+    
+
+</LinearLayout>

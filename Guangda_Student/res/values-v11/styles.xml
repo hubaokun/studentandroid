@@ -1,0 +1,21 @@
+<resources>
+
+    <!--
+        Base application theme for API 11+. This theme completely replaces
+        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+
+        <!-- API 11 theme customizations can go here. -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="activity_fade" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/activity_anim_fade</item>
+    </style>
+
+    <style name="activity_slide" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/activity_anim_slide_</item>
+    </style>
+</resources>

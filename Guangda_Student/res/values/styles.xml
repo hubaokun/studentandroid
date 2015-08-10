@@ -1,0 +1,64 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="activity_fade" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/activity_anim_fade</item>
+    </style>
+
+    <style name="activity_slide" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/activity_anim_slide_</item>
+    </style>
+
+    <style name="coach_ratingbar_star" parent="@android:style/Widget.RatingBar">
+
+        <!-- 指向star_rating_bar_full.xml文件 -->
+        <item name="android:progressDrawable">@drawable/layer_coach_listrating_bar_star</item>
+        <item name="android:minHeight">14dp</item>
+        <item name="android:maxHeight">14dp</item>
+    </style>
+
+    <style name="userinfo_ratingbar_star" parent="@android:style/Widget.RatingBar">
+
+        <!-- 指向star_rating_bar_full.xml文件 -->
+        <item name="android:progressDrawable">@drawable/layer_userinfo_rating_bar_star</item>
+        <item name="android:minHeight">17dp</item>
+        <item name="android:maxHeight">17dp</item>
+    </style>
+
+    <style name="comment_ratingbar_star" parent="@android:style/Widget.RatingBar">
+
+        <!-- 指向star_rating_bar_full.xml文件 -->
+        <item name="android:progressDrawable">@drawable/layer_comment_rating_bar_star</item>
+        <item name="android:minHeight">19dp</item>
+        <item name="android:maxHeight">19dp</item>
+    </style>
+    <!-- 可以自己调整阴影度 -->
+    <style name="no_dim_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 默认是有阴影背景的,加以下属性可以改变阴影度阴影 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0</item>
+        <item name="android:windowAnimationStyle">@style/dialog_anim_bottom_to_center</item>
+    </style>
+
+</resources>

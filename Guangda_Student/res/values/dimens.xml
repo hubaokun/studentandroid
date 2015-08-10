@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="coach_detail_text_size">15dp</dimen>
+    <dimen name="coach_filter_text_size">14dp</dimen>
+
+</resources>

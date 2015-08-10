@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res/hzyj.guangda.student"
+    android:id="@+id/li_contain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.common.library.llj.views.CommonTitlebar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:titlebar_line_background="#c7c7c7"
+        myapp:titlebar_centertext_color="#3d3d3d"
+        myapp:titlebar_centertext_size="18dp"
+        myapp:titlebar_lefttext_drawable_left="@drawable/regist_back_img"
+        myapp:titlebar_lefttext_drawable_padding="17dp"
+        myapp:titlebar_lefttext_padding_left="10dp"
+        myapp:titlebar_lefttext_weight="2"
+        myapp:titlebar_li_contain_height="44dp"
+        myapp:titlebar_righttext_color="#50cb8c"
+        myapp:titlebar_righttext_padding_right="15dp"
+        myapp:titlebar_righttext_size="15dp"
+        myapp:titlebar_righttext_weight="2" >
+    </com.common.library.llj.views.CommonTitlebar>
+
+</LinearLayout>

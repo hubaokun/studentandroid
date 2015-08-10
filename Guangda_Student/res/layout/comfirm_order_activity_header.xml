@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <View
+        style="@style/common_line"
+        android:background="#dbdcdf" />
+
+    <TextView
+        android:id="@+id/tv_order_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/comfirm_order_green"
+        android:gravity="center"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:textColor="@color/white"
+        android:textSize="14dp" />
+
+    <LinearLayout
+        android:id="@+id/li_add"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <View
+        style="@style/common_line"
+        android:background="#dbdcdf" />
+
+    <LinearLayout
+        android:id="@+id/li_coupon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:orientation="vertical" >
+
+        <View
+            style="@style/common_line"
+            android:background="#dbdcdf" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            android:paddingLeft="21dp"
+            android:paddingRight="23dp"
+            android:paddingTop="15dp" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="选择支付方式"
+                android:textColor="#3c3c3c" />
+
+            <TextView
+                android:id="@+id/tv_select_oupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="选择优惠券"
+                android:textColor="#3c3c3c"
+                android:textSize="14dp" />
+            
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/userinfo_next_img"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_coupon"
+            style="@style/common_line"
+            android:background="#dbdcdf" />
+    </LinearLayout>
+
+</LinearLayout>

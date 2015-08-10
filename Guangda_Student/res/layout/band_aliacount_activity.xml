@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/et_account"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_acount_item_back"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="申请提现必须设置,提现申请通过之后, 会打到您的支付宝账户"
+        android:textColor="#FF4817"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/tv_clear_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="80dp"
+        android:background="@color/login_red_back"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="onClearAccount"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="清除账号"
+        android:textColor="@color/white"
+        android:textSize="16dp" />
+
+</LinearLayout>

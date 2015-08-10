@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#ffffff</color>
+    <color name="common_back">#f6f6f6</color>
+    <color name="text_gray">#666666</color>
+
+    <!-- 登陆 -->
+    <color name="login_et_hint">#3d3d3d</color>
+    <color name="login_et_text">#3d3d3d</color>
+    <color name="login_red_back">#f6665d</color>
+    <color name="login_text">#ffffff</color>
+    <color name="regist_text">#fbbdba</color>
+    <!-- 教练课程预约 -->
+    <color name="subject_reserve_hint_text">#b8b8b8</color>
+    <!-- 个人信息 -->
+    <color name="userinfo_hint_text">#9d9d9d</color>
+    <color name="text_red">#ff0000</color>
+    <color name="text_orange">#ffc125</color>
+    <color name="red_line">#ee4000</color>
+    <color name="light_black">#383838</color>
+   	<color name="tab_devider_gray">#cccccc</color>
+   	<color name="light_blue">#3a95e6</color>
+   	<color name="text_yellow">#FF7F11</color>
+   	
+   	<color name="text_light_gray">#bcbcbc</color>
+   	<color name="text_green">#21b478</color>
+   	<color name="text_light_green">#50CB8C</color>
+   	<color name="text_deep_gray">#737780</color>
+   	<color name="text_black">#0e0e0f</color>
+   	<color name="text_gray_">#999999</color>
+   	<color name="text">#3d3d3d</color>
+   	<color name="btn_sure">#50cb8c</color>
+   	
+
+</resources>

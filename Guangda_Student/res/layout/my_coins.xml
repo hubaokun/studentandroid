@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+     
+     <com.daoshun.lib.listview.PullToRefreshScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/pull_re_scroll">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp">
+                
+             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前余额(枚)"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_my_coins_count"
+                android:textSize="25sp"
+                android:textColor="@color/text_red"
+                android:text=""/>
+            
+             <TextView
+                android:id="@+id/tv_freeze_bi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:gravity="center_vertical" />
+            </LinearLayout>
+       <View
+        style="@style/common_line"
+        android:background="#cbcbcb"/>
+         <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"            
+            android:padding="15dp"
+            android:background="@color/white">
+<!--            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp">
+                <LinearLayout android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="111"
+                        android:textColor="@color/text_red"
+                        android:textSize="14sp"
+                        android:id="@+id/tv_coins_school_count"/>
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="个"
+                        android:textColor="@color/text"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:id="@+id/tv_coins_school"
+                    android:text="限预约广大驾校教练的课程"/>
+            </LinearLayout>
+             <View
+        style="@style/common_line"
+        android:background="#cbcbcb" />-->
+             
+        <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp">
+<!--                 <LinearLayout android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="111"
+                        android:textColor="@color/text_red"
+                        android:textSize="14sp"
+                        android:id="@+id/tv_coins_coach_count"/>
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="个"
+                        android:textColor="@color/text"
+                        android:textSize="14sp"/>
+                </LinearLayout> -->
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="仅限预约"/>
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_coach_name"/>
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="的课程"/>
+            </LinearLayout>
+            <!--  <View
+        style="@style/common_line"
+        android:background="#cbcbcb" />
+		<LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
+                <LinearLayout android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="111"
+                        android:textColor="@color/text_red"
+                        android:textSize="14sp"
+                        android:id="@+id/tv_coins_tongyong_count"/>
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="个"
+                        android:textColor="@color/text"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:id="@+id/tv_coins_tongyong"
+                    android:text="通用"/>
+            </LinearLayout> -->
+
+        </LinearLayout>
+                     <View
+        style="@style/common_line"
+        android:background="#cbcbcb" />
+
+                     <View
+        style="@style/common_line"
+        android:background="#cbcbcb" 
+        android:layout_marginTop="10dp"/>                     
+ 		<LinearLayout android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@color/white">
+			<TextView android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:text="明细"
+			    android:textColor="@color/text"
+			    android:textSize="16sp"
+			    android:gravity="center_horizontal"/>
+			
+			<RelativeLayout android:layout_width="match_parent"
+			    android:layout_height="match_parent">
+			<LinearLayout android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:orientation="vertical"
+			    android:background="@color/white"
+			    android:layout_centerInParent="true"
+			    android:layout_margin="10dp"
+			    android:visibility="gone">
+                    <ImageView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/img_no_recoed"
+                        android:layout_gravity="center"/>
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="暂无记录"
+                        android:textColor="@color/text_gray"
+                        android:layout_gravity="center_horizontal"/>
+			</LinearLayout>
+           	<hzyj.guangda.student.util.NoScrollListView android:layout_width="match_parent"
+           	    android:layout_height="match_parent"
+           	    android:id="@+id/lv_coins_detail"
+           	    android:layout_margin="10dp"
+           	    android:scrollbars="none"
+       			android:cacheColorHint="@android:color/transparent"
+       			android:divider="#f6f6f6"
+       		 	android:dividerHeight="0.5dp"
+        		android:listSelector="@android:color/transparent"/>
+           	</RelativeLayout>
+        </LinearLayout>
+     </LinearLayout>
+          </com.daoshun.lib.listview.PullToRefreshScrollView>
+
+</LinearLayout>

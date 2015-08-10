@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ScrollView android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:scrollbars="none">
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"	>
+            
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/ll_suoxucailiao"
+                android:background="@drawable/selector_scroll">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="准备所需材料"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_yellow"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="点击查看所需材料"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_gray"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+              <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/ll_kemuyi"
+                android:background="@drawable/selector_scroll"
+                android:layout_marginTop="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="通过体检，科目一报名"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_yellow"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="点击查看流程"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_gray"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/ll_lilunpeixun"
+                android:background="@drawable/selector_scroll"
+                android:layout_marginTop="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="参加理论培训，通过科目一考试"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_yellow"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="点击查看流程"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_gray"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+            <Button android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_book_coach"
+                android:layout_marginTop="15dp"
+                android:text="约教练"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:id="@+id/btn_book_coach"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

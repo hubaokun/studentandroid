@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginTop="16dp">
+        
+        <View style="@style/common_line" />
+    
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:id="@+id/rl_baoming">
+        
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ico_baoming"/>
+            
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="25dp">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一键报名"
+                    android:textColor="@color/text"
+                    android:textSize="16sp"/>
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一站式学车报名服务  完全免费"
+                    android:textColor="@color/text_light_gray"
+                    android:textSize="13sp"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+        
+        <ImageView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/userinfo_next_img"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+        
+    </RelativeLayout>
+    
+    <View style="@style/common_line" />
+    
+    </LinearLayout>
+    
+        <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:id="@+id/rl_zaixianyukao"
+        android:visibility="visible">
+    
+            <RelativeLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                        >
+        
+        <View style="@style/common_line" />
+    
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+        
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ico_yuekao"/>
+            
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="25dp">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="在线约考"
+                    android:textColor="@color/text"
+                    android:textSize="16sp"/>
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="科目二、科目三考试  免费预约"
+                    android:textColor="@color/text_light_gray"
+                    android:textSize="13sp"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+        
+        <ImageView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/userinfo_next_img"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+        
+    </RelativeLayout>
+    <View style="@style/common_line" />
+    
+    </RelativeLayout>
+    
+    
+    
+    </LinearLayout>
+    
+        
+            <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:id="@+id/rl_monipeixun"
+         android:visibility="visible">
+    
+                <RelativeLayout android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   
+                  >
+        
+        <View style="@style/common_line" />
+    
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        
+        >
+        
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ico_monipeixun"/>
+            
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="25dp">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="模拟培训"
+                    android:textColor="@color/text"
+                    android:textSize="16sp"/>
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="模拟一、模拟二培训  免费预约"
+                    android:textColor="@color/text_light_gray"
+                    android:textSize="13sp"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+        
+        <ImageView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/userinfo_next_img"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+        
+    </RelativeLayout>
+    
+    
+    <View style="@style/common_line" />
+    
+    </RelativeLayout>
+    
+    
+    </LinearLayout>
+    
+            
+                <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginTop="10dp">
+        
+        <View style="@style/common_line" />
+    
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:id="@+id/rl_xiobakefu">
+        
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ico_kefu"/>
+            
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="25dp">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小巴客服"
+                    android:textColor="@color/text"
+                    android:textSize="16sp"/>
+                
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="  小巴学车"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_light_gray"
+                            android:drawableLeft="@drawable/ico_wx_service"
+                            />
+                        
+                        
+                        <TextView android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="  @小巴学车"
+                            android:textSize="12sp"
+                            android:layout_marginLeft="15dp"
+                            android:textColor="@color/text_light_gray"
+                            android:drawableLeft="@drawable/ico_sina_service"/>
+                    </LinearLayout>
+                    
+                    <TextView android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="  群号：470384808"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_light_gray"
+                            android:drawableLeft="@drawable/ico_qq_service"
+                            android:layout_marginTop="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        
+    </RelativeLayout>
+    
+    <View style="@style/common_line" />
+    
+    </LinearLayout>
+    
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
