@@ -28,7 +28,7 @@ public class UserInfoVo {
 	private String provinceid;
 	private String areaid;
 	private String locationname;
-
+	
 	public String getToken() {
 		return token;
 	}

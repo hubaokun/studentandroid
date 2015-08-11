@@ -1,5 +1,9 @@
 package hzyj.guangda.student.activity.login;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import hzyj.guangda.student.GuangdaApplication;
 import hzyj.guangda.student.R;
 import hzyj.guangda.student.activity.ActivityInputRecord;
@@ -14,6 +18,7 @@ import org.apache.http.Header;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -231,11 +236,25 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 					 //ArrayList<Province> provincelist = (ArrayList<Province>) mgr.queryProvince();
 						mgr.closeDB();
 						}
+						
+						GuangdaApplication.isInvited=baseReponse.getIsInvited();
+						((GuangdaApplication) mBaseApplication).uploadPushInfo();
+						if(GuangdaApplication.isInvited==1){
+							if(judgmentData(GuangdaApplication.mUserInfo.getAddtime())){
+								//跳转到邀请码
+								startMyActivity(ActivityInputRecord.class);
+							}
+						}
+						else{
+							
+							startMyActivity(MapHomeActivity.class);	
+						}
 					}
-					((GuangdaApplication) mBaseApplication).uploadPushInfo();
+					
 					//startMyActivity(MapHomeActivity.class);
 					finish();
-					startMyActivity(ActivityInputRecord.class);
+					
+					
 				}
 
 				@Override
@@ -281,5 +300,37 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 	@Override
 	public void requestOnCreate() {
 
+	}
+	
+	private static boolean judgmentData(String data1){
+		SimpleDateFormat simple=new SimpleDateFormat("yyyy-M-d HH:mm:ss");
+	    Date regist = null;
+		try {
+			regist = simple.parse(data1);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Date Today = new Date(); 
+	    long cha=Today.getTime()-regist.getTime();
+        if(cha<0){
+        	 
+            return false; 
+   
+          }
+   
+          double result = cha * 1.0 / (1000 * 60 * 60);
+   
+          if(result<=6){ 
+   
+               return true; 
+   
+          }else{ 
+   
+               return false; 
+   
+          } 
+   
+		
 	}
 }

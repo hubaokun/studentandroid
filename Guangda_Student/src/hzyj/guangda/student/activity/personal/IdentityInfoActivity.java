@@ -100,6 +100,10 @@ public class IdentityInfoActivity extends TitlebarActivity {
 					showToast("请输入真实姓名！");
 					return;
 				}
+				if(TextUtils.isEmpty(provinceId)||TextUtils.isEmpty(cityId)||TextUtils.isEmpty(zoneId)){
+					showToast("请选择城市！");
+					return;
+				}
 				AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
 					@Override
 					public void onStart() {

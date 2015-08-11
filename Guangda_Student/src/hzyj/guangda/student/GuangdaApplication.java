@@ -76,6 +76,8 @@ public class GuangdaApplication extends BaseApplication {
 	public List<City> cityArray = new ArrayList<City>();
 	public List<Zone> areaArray = new ArrayList<Zone>();
 	
+	public static int isInvited;
+	
 
 	@Override
 	public void onCreate() {

@@ -13,6 +13,7 @@
         android:inputType="number"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:hint="提现金额大于等于10元" />
 
 </LinearLayout>

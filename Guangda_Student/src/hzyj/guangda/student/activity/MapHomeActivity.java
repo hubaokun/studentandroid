@@ -26,7 +26,11 @@ import hzyj.guangda.student.util.MySubResponseHandler;
 import hzyj.guangda.student.view.MapBottomDialog;
 import hzyj.guangda.student.view.MySlidingPaneLayout;
 import hzyj.guangda.student.entity.Province;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.Header;
@@ -38,6 +42,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.provider.ContactsContract.Contacts.Data;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.text.TextUtils;
@@ -190,6 +195,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					if (baseReponse.getUserInfo() != null) {
 						if(baseReponse.getCode() == 1)
 						{
+
 							GuangdaApplication.mUserInfo.saveUserInfo(baseReponse.getUserInfo());
 							if (GuangdaApplication.mUserInfo.getProvinceid()!=null)
 							{
@@ -893,4 +899,6 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		super.onDestroy();
 		EventBus.getDefault().unregister(this);
 	}
+	
+	
 }

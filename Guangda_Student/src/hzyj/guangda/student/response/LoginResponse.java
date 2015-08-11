@@ -11,7 +11,18 @@ import com.common.library.llj.base.BaseReponse;
  */
 public class LoginResponse extends BaseReponse {
 	private int isbind;
+	private int isInvited;
 	private UserInfoVo UserInfo;
+	
+	
+
+	public int getIsInvited() {
+		return isInvited;
+	}
+
+	public void setIsInvited(int isInvited) {
+		this.isInvited = isInvited;
+	}
 
 	public int getIsbind() {
 		return isbind;

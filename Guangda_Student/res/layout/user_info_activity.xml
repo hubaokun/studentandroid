@@ -223,7 +223,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:singleLine="true"
-                        android:text="性别  出生年月  所在城市  联系地址  紧急联系人  紧急联系电话"
+                        android:text="性别  出生年月"
                         android:textColor="@color/userinfo_hint_text"
                         android:textSize="13dp" />
                 </LinearLayout>
