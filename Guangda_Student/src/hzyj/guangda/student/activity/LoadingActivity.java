@@ -170,19 +170,26 @@ public class LoadingActivity extends BaseFragmentActivity {
 		
 		
         DataBaseUtil util = new DataBaseUtil(LoadingActivity.this);
-        
-        if (GuangdaApplication.mUserInfo.getIsFirst())  //判断是否是第一次启动应用，如果是则将数据库清除
-        {
-        	try {
-				util.deleteDataBase(mContext);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
+
         // 判断数据库是否存在
-        boolean dbExist = util.checkDataBase();
-        if (dbExist) {
+        boolean dbExistfirst = util.checkDataBase();
+        
+        if (dbExistfirst)
+        {
+            if (GuangdaApplication.mUserInfo.getIsFirst())  //判断是否是第一次启动应用，如果是则将数据库清除
+            {
+            	try {
+    				util.deleteDataBase(mContext);
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+            }
+        }
+        
+        boolean dbExistsecond = util.checkDataBase();
+        
+        if (dbExistsecond) {
         } else {// 不存在就把raw里的数据库写入手机
             try {
                 util.copyDataBase();

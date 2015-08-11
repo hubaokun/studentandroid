@@ -112,6 +112,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private BaiduMap mBaiduMap;
 	private String mRadius;// 最大半径，单位米
 	private BitmapDescriptor bitmapDescriptor;
+	private BitmapDescriptor chosedBitmap;
 	private float mZoom = 12.0f;
 	private float mRotate = 0.0f;
 	private double mLatitude;
@@ -137,6 +138,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private String city;
 	private Context context;
 	private LinearLayout llHeader;
+	private Marker mark;
 //	private LinearLayout llPersonBook;
 	@Override
 	public int getLayoutId() {
@@ -235,6 +237,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	 */
 	private void initFirstLocation() {
 		bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.map_car_img);
+		chosedBitmap = BitmapDescriptorFactory.fromResource(R.drawable.ico_carok);
+		//bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.map_car_img);
 		// 开启定位图层
 		mBaiduMap = mMapView.getMap();
 		// 跟随模式
@@ -293,7 +297,11 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			@Override
 			public boolean onMarkerClick(Marker arg0) {
 				if (arg0 != null && arg0.getTitle() != null)
+				{
+					arg0.setIcon(chosedBitmap);
+					mark = arg0;
 					popBottomDialog(arg0.getTitle());
+				}
 				return false;
 			}
 		});
@@ -481,6 +489,18 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		}
 		mMapBottomDialog = new MapBottomDialog(this);
 		mMapBottomDialog.setCanceledOnTouchOutside(true); // dialog 点击外部消失
+		mMapBottomDialog.setOnDismissListener(new OnDismissListener() {
+			
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				// TODO Auto-generated method stub
+				if (mark!=null)
+				{
+					mark.setIcon(bitmapDescriptor);
+					mark = null;
+				}
+			}
+		});
 		mMenuGridAdapter = new MenuGridAdapter(mBaseFragmentActivity, R.layout.map_home_activity_menu_item);
 		mMenuGv.setAdapter(mMenuGridAdapter);
 		MenuItem item1 = new MenuItem(R.drawable.menu_order_img, "我的订单");

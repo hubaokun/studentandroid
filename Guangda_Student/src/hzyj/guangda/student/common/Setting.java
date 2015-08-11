@@ -1,7 +1,7 @@
 package hzyj.guangda.student.common;
 
 public class Setting {
-	//public static String BASE_URL = "http://192.168.1.143:8080/guangda/";// 测试
+	//public static String BASE_URL = "http://192.168.1.144:8080/guangda/";// 测试
 	public static String BASE_URL = "http://120.25.236.228:8080/dadmin/";// 正式
 	 //public static String BASE_URL = "http://192.168.1.117:8080/xb/";
 	//public static String BASE_URL = "http://192.168.1.114:8080/";

@@ -162,14 +162,14 @@ public class CoachDetailActivity extends BaseFragmentActivity implements OnClick
 			break;
 		case R.id.li_phone:
 			if (!TextUtils.isEmpty(mPhoneTv.getText().toString().trim())) {
-				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mPhoneTv.getText().toString().trim()));
+				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mPhoneTv.getTag().toString().trim()));
 				startActivity(intent);
 			}
 			break;
 		case R.id.li_mobile:
 			if (!TextUtils.isEmpty(mMobileTv.getText().toString().trim())) {
 				// 系统默认的action，用来打开默认的短信界面
-				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + mMobileTv.getText().toString().trim()));
+				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + mMobileTv.getTag().toString().trim()));
 				startActivity(intent);
 			}
 			break;

@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.http.Header;
 
 import com.common.library.llj.utils.AsyncHttpClientUtil;
+import com.daoshun.lib.listview.PullToRefreshBase;
+import com.daoshun.lib.listview.PullToRefreshBase.OnRefreshListener;
 import com.daoshun.lib.listview.PullToRefreshScrollView;
 import com.loopj.android.http.RequestParams;
 
@@ -73,6 +75,7 @@ public class ActivityMyCoins extends TitlebarActivity {
 				startMyActivity(ActivityMyCoinRule.class);
 			}
 		});
+		
 	}
 
 	@Override
