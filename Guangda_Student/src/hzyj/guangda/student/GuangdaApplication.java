@@ -75,6 +75,7 @@ public class GuangdaApplication extends BaseApplication {
 	public List<Province> provinceArray = new ArrayList<Province>();
 	public List<City> cityArray = new ArrayList<City>();
 	public List<Zone> areaArray = new ArrayList<Zone>();
+	public static String baiduId;
 	
 	public static int isInvited;
 	

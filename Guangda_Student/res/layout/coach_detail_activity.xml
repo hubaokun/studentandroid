@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical" >
+    
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +22,6 @@
             android:text="教练详情"
             android:textColor="@color/login_et_text"
             android:textSize="18dp" />
-
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
@@ -90,10 +90,10 @@
         android:layout_marginLeft="11dp"
         android:layout_marginRight="11dp" />
 
-    <ScrollView
+   <com.daoshun.lib.listview.PullToRefreshScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_height="match_parent"
+        android:id="@+id/pull_re_scroll"> 
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -295,23 +295,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="6dp"
-                android:paddingTop="6dp" >
+                android:paddingTop="6dp"
+                android:visibility="gone" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="所属驾校:"
                     android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
+                    android:textSize="@dimen/coach_detail_text_size"
+                     />
 
                 <TextView
                     android:id="@+id/tv_school"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    
                     android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
+                    android:textSize="@dimen/coach_detail_text_size" 
+                   />
             </LinearLayout>
 
             <LinearLayout
@@ -410,24 +412,32 @@
                     android:paddingTop="12dp"
                     android:visibility="invisible" >
 
-                    <LinearLayout
+                   <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical" >
-
+                        android:orientation="horizontal" >
                         <TextView
                             android:id="@+id/tv_comment_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp" />
-
+                            android:layout_marginTop="5dp"
+                            android:textSize="11dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="学员评论"
                             android:textSize="11dp" />
+                         <TextView
+                            android:id="@+id/tv_studnet_num"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="11dp"
+                             />
+                      
                     </LinearLayout>
 
                     <ImageView
@@ -451,12 +461,13 @@
                 android:showDividers="middle"
                 myapp:dividerThickness="1px" >
             </com.common.library.llj.views.LinearListView>
-        </LinearLayout>
-    </ScrollView>
+        </LinearLayout>          
+   </com.daoshun.lib.listview.PullToRefreshScrollView>
 
     <View
         style="@style/common_line"
         android:layout_marginLeft="10dp"
         android:paddingRight="10dp" />
+
 
 </LinearLayout>

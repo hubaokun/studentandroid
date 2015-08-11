@@ -2,9 +2,7 @@ package hzyj.guangda.student.view;
 
 import java.util.ArrayList;
 
-
-
-
+import hzyj.guangda.student.GuangdaApplication;
 import hzyj.guangda.student.R;
 import hzyj.guangda.student.entity.Area;
 import hzyj.guangda.student.entity.City;

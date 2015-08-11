@@ -37,7 +37,7 @@ public class IdentityInfoActivity extends TitlebarActivity {
 	private EditText mMobileEt, mRealNameEt;
 	private TextView mCityTv;
 	private WheelCityDialog mWheelCityDialog;
-	private String provinceId,cityId,zoneId;
+	private String provinceId,cityId,zoneId,baiduId;
 
 	@Override
 	public int getLayoutId() {
@@ -139,6 +139,7 @@ public class IdentityInfoActivity extends TitlebarActivity {
 						GuangdaApplication.mUserInfo.setCityid(cityId);
 						GuangdaApplication.mUserInfo.setProvinceid(provinceId);
 						GuangdaApplication.mUserInfo.setAreaid(zoneId);
+						GuangdaApplication.mUserInfo.setBaiduid(baiduId);
 						finish();
 					}
 
@@ -177,6 +178,7 @@ public class IdentityInfoActivity extends TitlebarActivity {
 				provinceId = provinceid;
 				cityId = cityid;
 				zoneId = zoneid;
+				baiduId = baiduid;
 			}
 		});
 	}

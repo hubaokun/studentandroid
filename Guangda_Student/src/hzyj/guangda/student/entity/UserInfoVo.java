@@ -28,6 +28,7 @@ public class UserInfoVo {
 	private String provinceid;
 	private String areaid;
 	private String locationname;
+	private String baiduid;
 	
 	public String getToken() {
 		return token;
@@ -243,6 +244,14 @@ public class UserInfoVo {
 
 	public void setLocationname(String locationname) {
 		this.locationname = locationname;
+	}
+
+	public String getBaiduid() {
+		return baiduid;
+	}
+
+	public void setBaiduid(String baiduid) {
+		this.baiduid = baiduid;
 	}
 
 }

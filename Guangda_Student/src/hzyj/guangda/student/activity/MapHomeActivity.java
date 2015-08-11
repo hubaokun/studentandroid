@@ -41,6 +41,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts.Data;
 import android.support.v4.app.ActivityCompat;
@@ -120,6 +121,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private int mDistanse;
 	private boolean mMapLoaded;
 	private MapBottomDialog mMapBottomDialog;
+	private String nowlocaionId;
 
 	private List<CoachInfoVo> mCoachInfoVos = new ArrayList<CoachInfoVo>();
 	private boolean mHasMoreMsg;
@@ -134,6 +136,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private CardTypeAdapter mCardTypeAdapter;
 	private ImageView imgService;
 	 private DBManager mgr;
+	 private LinearLayout nowLocation;
 	
 	private String city;
 	private Context context;
@@ -162,6 +165,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		mMapView = (MapView) findViewById(R.id.bmapsView);
 		imgService = (ImageView)findViewById(R.id.img_service);
 		llHeader = (LinearLayout)findViewById(R.id.li_menu_head);
+		nowLocation=(LinearLayout)findViewById(R.id.ll_now_location);
 //		llPersonBook = (LinearLayout)findViewById(R.id.ll_person_book_app);
 		initFirstLocation();
 		initLocationClient();
@@ -199,6 +203,9 @@ public class MapHomeActivity extends BaseFragmentActivity {
 						{
 
 							GuangdaApplication.mUserInfo.saveUserInfo(baseReponse.getUserInfo());
+							
+							GuangdaApplication.isInvited=baseReponse.getIsInvited();
+							
 							if (GuangdaApplication.mUserInfo.getProvinceid()!=null)
 							{
 							mgr = new DBManager(context);
@@ -209,6 +216,16 @@ public class MapHomeActivity extends BaseFragmentActivity {
 							GuangdaApplication.mUserInfo.setCity(locationname);
 						 //ArrayList<Province> provincelist = (ArrayList<Province>) mgr.queryProvince();
 							mgr.closeDB();
+						
+							
+							
+							}
+
+							if(GuangdaApplication.isInvited==1){
+//								if(judgmentData(GuangdaApplication.mUserInfo.getAddtime())){
+									//跳转到邀请码
+									startMyActivity(ActivityInputRecord.class);
+//								}
 							}
 //							System.out.println("success");
 //							Log.e("state","success");
@@ -221,6 +238,13 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					//uploadPushInfo();
 				}
 			});
+		
+//		if(!nowlocaionId.equals(GuangdaApplication.baiduId)&&GuangdaApplication.baiduId!=null){
+//		nowLocation.setVisibility(View.VISIBLE);
+//	}
+//	else{
+//		nowLocation.setVisibility(View.GONE);
+//	}
 	}
 
 	/**
@@ -238,7 +262,6 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private void initFirstLocation() {
 		bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.map_car_img);
 		chosedBitmap = BitmapDescriptorFactory.fromResource(R.drawable.ico_carok);
-		//bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.map_car_img);
 		// 开启定位图层
 		mBaiduMap = mMapView.getMap();
 		// 跟随模式
@@ -352,6 +375,20 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					LatLng next = new LatLng(arg0.getLatitude(), arg0.getLongitude());
 					mDistanse = (int) DistanceUtil.getDistance(pre, next);
 					city=arg0.getCity().replace("市","");
+					nowlocaionId=arg0.getCityCode();
+					if (GuangdaApplication.mUserInfo.getCity() !=null)
+					{
+					if(GuangdaApplication.mUserInfo.getCity().indexOf(city)!=-1){
+						//nowLocation.setVisibility(View.GONE);
+				}
+				else{
+						showToast("您设置的驾考城市不是当前城市，可前往基本信息页面修改。");
+					
+				}
+					}else{
+						showToast("您还未设置驾考城市，请前往基本信息页面设置。");
+					}
+
 					mLatitude = arg0.getLatitude();
 					mLongitude = arg0.getLongitude();
 					getCityId();
@@ -386,6 +423,15 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				} else {
 					startMyActivity(LoginActivity.class);
 				}
+			}
+		});
+		
+		nowLocation.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				nowLocation.setVisibility(View.GONE);
 			}
 		});
 		
@@ -629,6 +675,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				{
 					requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
 				}
+				requestParams.add("cityid", cityId+"");
 				return requestParams;
 			}
 
@@ -918,6 +965,38 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		EventBus.getDefault().unregister(this);
+	}
+	
+	public static boolean judgmentData(String data1){
+		SimpleDateFormat simple=new SimpleDateFormat("yyyy-M-d HH:mm:ss");
+	    Date regist = null;
+		try {
+			regist = simple.parse(data1);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Date Today = new Date(); 
+	    long cha=Today.getTime()-regist.getTime();
+        if(cha<0){
+        	 
+            return false; 
+   
+          }
+   
+          double result = cha * 1.0 / (1000 * 60 * 60);
+   
+          if(result<=6){ 
+   
+               return true; 
+   
+          }else{ 
+   
+               return false; 
+   
+          } 
+   
+		
 	}
 	
 	

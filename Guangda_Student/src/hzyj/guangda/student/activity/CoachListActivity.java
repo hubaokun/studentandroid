@@ -200,7 +200,7 @@ public class CoachListActivity extends BaseFragmentActivity {
 				}
 				requestParams.add("longitude",longitude);
 				requestParams.add("latitude",latitude);
-				requestParams.add("cityId",cityId);
+				requestParams.add("cityid",cityId);
 				requestParams.add("pagenum", mPage + "");
 				requestParams.add("version",Version);
 				return requestParams;

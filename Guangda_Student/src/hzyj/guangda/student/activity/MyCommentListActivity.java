@@ -40,11 +40,17 @@ public class MyCommentListActivity extends TitlebarActivity {
 	private CommentListAdapter mCommentListAdapter;
 	private int mPage;
 	private String mCoachid;
+	private String flag,studentId;
+	
 
 	@Override
 	public void getIntentData() {
 		super.getIntentData();
 		mCoachid = getIntent().getStringExtra("mCoachid");
+		flag=getIntent().getStringExtra("flag");
+		if(flag.equals("student_comment")){
+			studentId=getIntent().getStringExtra("studentId");
+		}
 	}
 
 	@Override
@@ -57,6 +63,7 @@ public class MyCommentListActivity extends TitlebarActivity {
 		mPtrFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.ptr_frame);
 		mPtrFrameLayout.setDurationToCloseHeader(800);
 		mListView = (ListView) findViewById(R.id.lv_coach);
+		
 	}
 
 	@Override
@@ -78,7 +85,7 @@ public class MyCommentListActivity extends TitlebarActivity {
 	@Override
 	public void initViews() {
 
-		mCommentListAdapter = new CommentListAdapter(this, R.layout.comment_list_activity_item);
+		mCommentListAdapter = new CommentListAdapter(this, R.layout.comment_list_item);
 		onLoadMoreData(mListView, mCommentListAdapter);
 		mListView.setAdapter(mCommentListAdapter);
 	}
@@ -94,27 +101,57 @@ public class MyCommentListActivity extends TitlebarActivity {
 	}
 
 	public void doLoadMoreData() {
-		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, CommentListResponse.class, new MySubResponseHandler<CommentListResponse>() {
+		
+		if(flag.equals("student_comment")){
+			
+			AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, CommentListResponse.class, new MySubResponseHandler<CommentListResponse>() {
 
-			@Override
-			public RequestParams setParams(RequestParams requestParams) {
-				requestParams.add("action", "getCoachComments");
-				requestParams.add("coachid", mCoachid);
-				requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
-				requestParams.add("pagenum", mPage + "");
-				return requestParams;
-			}
+				@Override
+				public RequestParams setParams(RequestParams requestParams) {
+					requestParams.add("action", "GETCOMMENTSFORSTUDENT");
+					requestParams.add("coachid", mCoachid);
+					requestParams.add("studentid",studentId);
+					requestParams.add("pagenum", mPage + "");
+					
+					return requestParams;
+				}
 
-			@Override
-			public void onFinish() {
-				mPtrFrameLayout.refreshComplete();
-			}
+				@Override
+				public void onFinish() {
+					mPtrFrameLayout.refreshComplete();
+				}
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, CommentListResponse baseReponse) {
-				initAllData(baseReponse);
-			}
-		});
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, CommentListResponse baseReponse) {
+					initAllData(baseReponse);
+				}
+			});
+			
+		}
+		else{
+			AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, CommentListResponse.class, new MySubResponseHandler<CommentListResponse>() {
+
+				@Override
+				public RequestParams setParams(RequestParams requestParams) {
+					requestParams.add("action", "GETCOACHCOMMENTS");
+					requestParams.add("coachid", mCoachid);
+					//requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+					requestParams.add("pagenum", mPage + "");
+					requestParams.add("type","2");
+					return requestParams;
+				}
+
+				@Override
+				public void onFinish() {
+					mPtrFrameLayout.refreshComplete();
+				}
+
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, CommentListResponse baseReponse) {
+					initAllData(baseReponse);
+				}
+			});
+		}
 	}
 
 	private void initAllData(CommentListResponse baseReponse) {

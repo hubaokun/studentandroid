@@ -90,7 +90,25 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/map_mine_img" />
-
+       
+       <LinearLayout
+            android:id="@+id/ll_now_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:background="#ffffff"
+            android:layout_toLeftOf="@+id/iv_filter"
+            android:visibility="gone"
+            >
+              <TextView  
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            	android:id="@+id/tv_book_app"
+            	android:text="所在地和设置地点不相符"
+                android:textColor="@color/text"
+                android:layout_marginTop="6dp"
+                />          
+       </LinearLayout>
         <ImageView
             android:id="@+id/iv_all"
             android:layout_width="wrap_content"
@@ -99,7 +117,7 @@
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/iv_filter"
             android:src="@drawable/map_home_all_img"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@id/iv_filter"

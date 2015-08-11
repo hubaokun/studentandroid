@@ -240,10 +240,10 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 						GuangdaApplication.isInvited=baseReponse.getIsInvited();
 						((GuangdaApplication) mBaseApplication).uploadPushInfo();
 						if(GuangdaApplication.isInvited==1){
-							if(judgmentData(GuangdaApplication.mUserInfo.getAddtime())){
+//							if(judgmentData(GuangdaApplication.mUserInfo.getAddtime())){
 								//跳转到邀请码
 								startMyActivity(ActivityInputRecord.class);
-							}
+//							}
 						}
 						else{
 							

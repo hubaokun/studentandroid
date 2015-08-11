@@ -12,6 +12,17 @@ import com.common.library.llj.base.BaseReponse;
 public class CommentListResponse extends BaseReponse {
 	private List<Comment> evalist;
 	private int count;
+	private int studentnum;
+	
+	
+
+	public int getStudentnum() {
+		return studentnum;
+	}
+
+	public void setStudentnum(int studentnum) {
+		this.studentnum = studentnum;
+	}
 
 	public int getCount() {
 		return count;

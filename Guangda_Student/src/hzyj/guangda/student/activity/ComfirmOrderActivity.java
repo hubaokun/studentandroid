@@ -177,6 +177,8 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 										ReserveNotSuccessDialog notsuccess = new ReserveNotSuccessDialog(mBaseFragmentActivity);
 										notsuccess.setMessage("您预约的时间已被其他的学员抢走了","重新选择时间");
 										notsuccess.show();
+									}else if(baseReponse.getCode()==4){
+										showToast("版本太旧！请更新版本！");
 									}else{
 										if (baseReponse.getMessage()!=null)
 										{

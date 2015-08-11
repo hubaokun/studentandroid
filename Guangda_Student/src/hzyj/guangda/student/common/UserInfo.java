@@ -39,7 +39,9 @@ public class UserInfo {
 	private String longitude;// 经度
 	private String latitude;// 纬度
 	private String locationname;
+	private String baiduid;
 	
+
 	public UserInfo(Context context) {
 		this.mContext = context;
 		mSharedPreferences = mContext.getSharedPreferences(Constants.PREFS_USER_INFO, Context.MODE_PRIVATE);
@@ -73,6 +75,8 @@ public class UserInfo {
 
 		longitude = mSharedPreferences.getString("longitude", null);
 		latitude = mSharedPreferences.getString("latitude", null);
+		baiduid=mSharedPreferences.getString("locationid", null);
+		
 	}
 
 	public void saveUserInfo(UserInfoVo userInfoVo) {
@@ -102,6 +106,7 @@ public class UserInfo {
 		mEditor.putString("cityid", userInfoVo.getCityid());
 		mEditor.putString("provinceid",userInfoVo.getProvinceid());
 		mEditor.putString("areaid",userInfoVo.getAreaid());
+		mEditor.putString("locationid",userInfoVo.getBaiduid());
 		mEditor.commit();
 
 		studentid = userInfoVo.getStudentid();
@@ -453,6 +458,15 @@ public class UserInfo {
 	public void setProvinceid(String provinceid) {
 		this.provinceid = provinceid;
 	}
+	
+	public String getBaiduid() {
+		return baiduid;
+	}
+
+	public void setBaiduid(String baiduid) {
+		this.baiduid = baiduid;
+	}
+
 
 	public String getAreaid() {
 		return areaid;

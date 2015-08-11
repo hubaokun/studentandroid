@@ -2,23 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="14dp"
     android:paddingLeft="11dp"
     android:paddingRight="11dp"
     android:paddingTop="15dp" >
-
+    
+    <RelativeLayout 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/comment_list"
+        >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:id="@+id/user_">
 
         <ImageView
             android:id="@+id/iv_head"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/login_head_img" />
+            android:src="@drawable/login_head_img"
+            />
 
         <TextView
             android:id="@+id/tv_name"
@@ -37,16 +43,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="一分钟前"
+            android:layout_weight="1"
             android:textColor="#b8b8b8"
             android:textSize="12dp" />
     </LinearLayout>
-<TextView 
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_"
+        >
+   <TextView      
     android:id="@+id/tv_comment"
-    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="27dp"
-    android:text="李教练教的超级认真~"
-    
-    />
+    android:text="李教练教的超级认真~"/>    
+    </LinearLayout>
+           <RelativeLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            >
+         <ImageView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:src="@drawable/coach_detail_next_img" 
+             android:visibility="visible"/>
+        </RelativeLayout>
+
+</RelativeLayout>
+
+ 
 </LinearLayout>
