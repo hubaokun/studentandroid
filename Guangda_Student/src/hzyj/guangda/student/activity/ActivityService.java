@@ -31,6 +31,7 @@ import hzyj.guangda.student.GuangdaApplication;
 import hzyj.guangda.student.R;
 import hzyj.guangda.student.TitlebarActivity;
 import hzyj.guangda.student.activity.login.LoginActivity;
+import hzyj.guangda.student.activity.personal.IdentityInfoActivity;
 import hzyj.guangda.student.activity.personal.PersonalInfoActivity;
 import hzyj.guangda.student.common.Setting;
 import hzyj.guangda.student.response.GetXiaoBaService;
@@ -141,7 +142,7 @@ public class ActivityService extends TitlebarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent (mBaseFragmentActivity,PersonalInfoActivity.class);
+				Intent intent = new Intent (mBaseFragmentActivity,IdentityInfoActivity.class);
 				mBaseFragmentActivity.startActivity(intent);
 			}
 		});

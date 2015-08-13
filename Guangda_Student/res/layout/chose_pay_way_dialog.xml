@@ -5,14 +5,27 @@
     android:orientation="vertical" 
     android:background="@color/white">
     
-    <TextView android:layout_width="match_parent"
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:padding="10dp">
+    
+    <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="支付方式"
         android:textColor="@color/text"
         android:textSize="15sp"
-        android:gravity="center_horizontal"
-        android:padding="10dp"/>
-   
+        android:layout_centerInParent="true"
+        />
+    
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确认"
+        android:textColor="@color/text_green"
+        android:textSize="15sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:id="@+id/tv_sure"/>
+   </RelativeLayout>
         <View
         style="@style/common_line"
         android:background="#cbcbcb" />

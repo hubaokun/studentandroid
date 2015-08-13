@@ -29,6 +29,8 @@ import org.apache.http.Header;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -193,18 +195,70 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 			}
 		});
 		
+		chosePayWay.tvSure.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				chosePayWay.dismiss();
+			}
+		});
+		
+		chosePayWay.setOnDismissListener(new OnDismissListener() {
+			
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				// TODO Auto-generated method stub
+				switch (chosePayWay.Type) {
+				case 1:  //余额
+					hasChosedOrderPrice.get(chosedIndex).setType(1);
+					if (hasChosedOrderPrice.get(chosedIndex).getCoupon() != null)
+					{
+						hasChosedOrderPrice.get(chosedIndex).setCoupon(null);
+					}
+					chosePayWay.dismiss();
+					initData();
+					break;
+				case 2:  //学时券
+					hasChosedOrderPrice.get(chosedIndex).setType(2);
+					chosePayWay.dismiss();			
+					if (hasChosedOrderPrice.get(chosedIndex).getCoupon() != null)
+					{
+						hasChosedOrderPrice.get(chosedIndex).setCoupon(null);
+					}
+					initData();
+					break;
+				case 3:  //小巴币
+					hasChosedOrderPrice.get(chosedIndex).setType(3);
+					if (hasChosedOrderPrice.get(chosedIndex).getCoupon() != null)
+					{
+						hasChosedOrderPrice.get(chosedIndex).setCoupon(null);
+					}
+					chosePayWay.dismiss();
+					initData();
+					break;
+				default:
+					break;
+				}
+			}
+		});
+		
 		chosePayWay.rlXueshiquan.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				hasChosedOrderPrice.get(chosedIndex).setType(2);
-				chosePayWay.dismiss();			
-				if (hasChosedOrderPrice.get(chosedIndex).getCoupon() != null)
+				chosePayWay.imgChosedXueShiQuan.setImageResource(R.drawable.coupon_select);
+				if (chosePayWay.Type==3)
 				{
-					hasChosedOrderPrice.get(chosedIndex).setCoupon(null);
+					chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_normal);
+				}else if (chosePayWay.Type == 1)
+				{
+					chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_normal);
 				}
-				initData();
+				chosePayWay.Type = 2;
+
+				
 			}
 		});
 		
@@ -213,23 +267,16 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				hasChosedOrderPrice.get(chosedIndex).setType(3);
-//				switch (hasChosedOrderPrice.get(chosedIndex).getType()) {
-//				case 1:
-//					mHasUseResetMoney = mHasUseResetMoney - hasChosedOrderPrice.get(chosedIndex).getPrice();
-//					break;
-//				case 2:
-//					
-//					break;
-//				default:
-//					break;
-//				}
-				if (hasChosedOrderPrice.get(chosedIndex).getCoupon() != null)
+				chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_select);
+				if (chosePayWay.Type == 2)
 				{
-					hasChosedOrderPrice.get(chosedIndex).setCoupon(null);
+					chosePayWay.imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
+				}else if (chosePayWay.Type == 1)
+				{
+					chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_normal);
 				}
-				chosePayWay.dismiss();
-				initData();
+				chosePayWay.Type = 3;
+
 			}
 		});
 		
@@ -238,24 +285,16 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				// TODO Auto-generated method stub
-				hasChosedOrderPrice.get(chosedIndex).setType(1);
-//				switch (hasChosedOrderPrice.get(chosedIndex).getType()) {
-//				case 1:
-//					mHasUseResetMoney = mHasUseResetMoney - hasChosedOrderPrice.get(chosedIndex).getPrice();
-//					break;
-//				case 2:
-//					
-//					break;
-//				default:
-//					break;
-//				}
-				if (hasChosedOrderPrice.get(chosedIndex).getCoupon() != null)
+				if (chosePayWay.Type == 3)
 				{
-					hasChosedOrderPrice.get(chosedIndex).setCoupon(null);
+					chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_normal);
+				}else if (chosePayWay.Type == 2)
+				{
+					chosePayWay.imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
 				}
-				chosePayWay.dismiss();
-				initData();
+				chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_select);
+				chosePayWay.Type = 1;
+
 			}
 		});
 	}
@@ -380,8 +419,9 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 //							float hasRest = canUseResetMoney - mHasUseResetMoney;
 							float price = hasChosedOrderPrice.get(chosedIndex).getPrice();
 							int type = hasChosedOrderPrice.get(chosedIndex).getType();
+							chosePayWay.Type = type;
 							chosePayWay.setChosedItem(type);
-							chosePayWay.setItemVisible(tickets,hasCoin,hasMoney,price);
+							chosePayWay.setItemVisible(tickets,hasCoin,hasMoney,price,type);
 //							String chosedWay = tv_select_oupon.getText().toString();
 //							if (chosedWay.equals("学时券"))
 //							{

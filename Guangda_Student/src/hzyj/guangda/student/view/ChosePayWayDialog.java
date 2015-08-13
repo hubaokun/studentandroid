@@ -23,6 +23,8 @@ public class ChosePayWayDialog extends BaseDialog {
 	private TextView tvRestCouponNum;
 	private TextView tvRestCoinNum;
 	private TextView tvRestMoney;
+	public TextView tvSure;
+	public int Type = 0;
 
 	public ChosePayWayDialog(Context context) {
 		super(context,R.style.dim_dialog);
@@ -55,6 +57,7 @@ public class ChosePayWayDialog extends BaseDialog {
 		tvRestCouponNum = (TextView)findViewById(R.id.tv_rest_coupon_num);
 		tvRestCoinNum = (TextView)findViewById(R.id.tv_rest_coin_num);
 		tvRestMoney = (TextView)findViewById(R.id.tv_reset_money);
+		tvSure = (TextView)findViewById(R.id.tv_sure);
 		}
 
 	@Override
@@ -88,8 +91,49 @@ public class ChosePayWayDialog extends BaseDialog {
 		}
 	}
 	
-	public void setItemVisible(int Tickets,float Coins,float YuE,float Price)
+	public void setItemVisible(int Tickets,float Coins,float YuE,float Price,int type)
 	{
+		switch (type) {
+		case 1:  //选择余额
+			YuE = YuE+Price;
+//			tvRestMoney.setVisibility(View.GONE);
+//			if (YuE<0)
+//			{
+//				tvRestMoney.setText("余额不足");
+//			}else{
+//				tvRestMoney.setText(YuE+"元可用");
+//			}
+			break;
+		case 2: //选择学时券
+			Tickets = Tickets+1;
+//			if (Tickets==0)
+//			{
+//				rlXueshiquan.setClickable(false);
+//				tvRestCouponNum.setVisibility(View.GONE);
+//				imgChosedXueShiQuan.setImageResource(R.drawable.coupon_invalid);
+//			}else{
+//				tvRestCouponNum.setVisibility(View.VISIBLE);
+//				rlXueshiquan.setClickable(true);
+//				tvRestCouponNum.setText(Tickets+"张学时券可用");
+//			}
+			break;
+		case 3: //选择小巴币
+			Coins = Coins+Price;
+//			if (Price>Coins)
+//			{
+//				rlXiaobabi.setClickable(false);
+//				tvRestCoinNum.setVisibility(View.GONE);
+//				imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_invalid);
+//			}else{
+//				tvRestCoinNum.setVisibility(View.VISIBLE);
+//				tvRestCoinNum.setText(Coins+"个可用 ");
+//				rlXiaobabi.setClickable(true);
+//			}
+			break;
+		default:
+			break;
+		}
+		
 		if (Price>Coins)
 		{
 			rlXiaobabi.setClickable(false);
@@ -97,7 +141,7 @@ public class ChosePayWayDialog extends BaseDialog {
 			imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_invalid);
 		}else{
 			tvRestCoinNum.setVisibility(View.VISIBLE);
-			tvRestCoinNum.setText("还剩"+Coins+"个");
+			tvRestCoinNum.setText(Coins+"个可用");
 			rlXiaobabi.setClickable(true);
 		}
 		
@@ -110,7 +154,7 @@ public class ChosePayWayDialog extends BaseDialog {
 			{
 				tvRestMoney.setText("余额不足");
 			}else{
-				tvRestMoney.setText("还剩"+YuE+"元");
+				tvRestMoney.setText(YuE+"元可用");
 			}
 //		}
 		
@@ -122,7 +166,7 @@ public class ChosePayWayDialog extends BaseDialog {
 		}else{
 			tvRestCouponNum.setVisibility(View.VISIBLE);
 			rlXueshiquan.setClickable(true);
-			tvRestCouponNum.setText("还剩"+Tickets+"张学时券可用");
+			tvRestCouponNum.setText(Tickets+"张可用");
 		}
 	}
 }
