@@ -49,6 +49,7 @@ public class WaitCommentFragment extends BaseFragment {
 	private int mPage;
 	private OrderListAdapter mOrderListAdapter;
 	private RelativeLayout mNoDataRl;
+	private boolean state=true;
 
 	@Override
 	protected View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +81,8 @@ public class WaitCommentFragment extends BaseFragment {
 
 	public void doLoadMoreData() {
 		if (isVisible())
+			if(state){
+				state=false;
 			AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, GetUnCompleteOrderResponse.class, new MySubResponseHandler<GetUnCompleteOrderResponse>() {
 
 				@Override
@@ -100,6 +103,7 @@ public class WaitCommentFragment extends BaseFragment {
 					initAllData(baseReponse);
 				}
 			});
+		}
 	}
 
 	@Override
@@ -122,6 +126,7 @@ public class WaitCommentFragment extends BaseFragment {
 				mPage++;
 			}
 			mOrderListAdapter.addAll(baseReponse.getOrderlist());
+			state=true;
 		} else {
 			mNoDataRl.setVisibility(View.VISIBLE);
 			mListView.setVisibility(View.INVISIBLE);
@@ -162,39 +167,40 @@ public class WaitCommentFragment extends BaseFragment {
 		protected void convert(BaseAdapterHelper helper, View convertView, final Order item, int position) {
 			if (item != null) {
 				helper.setText(R.id.tv_address, item.getDetail());
-				final TextView name = helper.getView(R.id.tv_name);
+				final TextView name = helper.getView(R.id.tv_coach_name);
 				if (item.getCuserinfo() != null) {
 					name.setText(item.getCuserinfo().getRealname());
 				}
 				TextView status = helper.getView(R.id.tv_status);
-				final TextView date = helper.getView(R.id.tv_date);
-				final TextView time = helper.getView(R.id.tv_time);
+				final TextView date = helper.getView(R.id.tv_Y_M_R);
+				final TextView time = helper.getView(R.id.tv_course_time);
 				final TextView all_money = helper.getView(R.id.tv_all_money);
-
-//				TextView tv_complaint = helper.getView(R.id.tv_complaint);
+				final TextView carlicense=helper.getView(R.id.tv_carlicense);
+				TextView tv_complaint = helper.getView(R.id.tv_complaint);
 //				TextView tv_complaint_more = helper.getView(R.id.tv_complaint_more);
-				TextView tv_cancel_complaint = helper.getView(R.id.tv_cancel_complaint);
+				 TextView tv_cancel_complaint = helper.getView(R.id.tv_cancel_complaint);
 				TextView tv_get_on = helper.getView(R.id.tv_get_on);
 				TextView tv_get_off = helper.getView(R.id.tv_get_off);
 				TextView tv_cancel_order = helper.getView(R.id.tv_cancel_order);
 				TextView tv_comment = helper.getView(R.id.tv_comment);
-				TextView tv_continue = helper.getView(R.id.tv_continue);
+				TextView tv_course=helper.getView(R.id.tv_course);
+				//TextView tv_continue = helper.getView(R.id.tv_continue);
 				//
-				tv_continue.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(mBaseFragmentActivity, R.anim.bottom_to_center, R.anim.no_fade);
-						Intent intent = new Intent(mBaseFragmentActivity, SubjectReserveActivity.class);
-						intent.putExtra("mCoachId", item.getCoachid());
-						intent.putExtra("mAddress", item.getDetail());
-						if (item.getCuserinfo() != null) {
-							intent.putExtra("mScore", item.getCuserinfo().getScore());
-							intent.putExtra("mName", item.getCuserinfo().getRealname());
-						}
-						ActivityCompat.startActivity((Activity) mBaseFragmentActivity, intent, options.toBundle());
-					}
-				});
+//				tv_continue.setOnClickListener(new OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(mBaseFragmentActivity, R.anim.bottom_to_center, R.anim.no_fade);
+//						Intent intent = new Intent(mBaseFragmentActivity, SubjectReserveActivity.class);
+//						intent.putExtra("mCoachId", item.getCoachid());
+//						intent.putExtra("mAddress", item.getDetail());
+//						if (item.getCuserinfo() != null) {
+//							intent.putExtra("mScore", item.getCuserinfo().getScore());
+//							intent.putExtra("mName", item.getCuserinfo().getRealname());
+//						}
+//						ActivityCompat.startActivity((Activity) mBaseFragmentActivity, intent, options.toBundle());
+//					}
+//				});
 				// 状态
 				switch (item.getHours()) {
 				case 0:
@@ -217,11 +223,15 @@ public class WaitCommentFragment extends BaseFragment {
 					status.setText("待确认下车");
 					status.setTextColor(Color.parseColor("#f7645c"));
 					break;
+					
 				default:
 					status.setText("离学车还有" + TimeUitlLj.awayFromFuture(item.getHours() * 60 * 1000));
 					status.setTextColor(Color.parseColor("#b8b8b8"));
 					break;
 				}
+				
+				carlicense.setText("("+item.getCarlicense()+")");
+				tv_course.setText(item.getSubjectname());
 				// date
 				long dateStartLong = TimeUitlLj.stringToMilliseconds(2, item.getStart_time());
 
@@ -232,119 +242,90 @@ public class WaitCommentFragment extends BaseFragment {
 				// 合计
 				all_money.setText(item.getTotal() + "元");
 				// 是否可以投诉
-//				if (item.getCan_complaint() == 0) {
-//					tv_complaint.setVisibility(View.GONE);
-//				} else if (item.getCan_complaint() == 1) {
-//					tv_complaint.setVisibility(View.VISIBLE);
-//					tv_complaint.setOnClickListener(new OnClickListener() {
-//						@Override
-//						public void onClick(View v) {
-//							Intent intent = new Intent(mBaseFragmentActivity, ComplaintActivity.class);
-//							intent.putExtra("mOrderid", item.getOrderid());
-//							intent.putExtra("mCreatTime", item.getCreat_time());
-//							intent.putExtra("mOrderCoach", name.getText().toString().trim());
-//							intent.putExtra("mOrderTime", date.getText().toString().trim() + " " + time.getText().toString().trim());
-//							intent.putExtra("mOrderAddress", item.getDetail());
-//							intent.putExtra("mAllMoney", all_money.getText().toString().trim());
-//							startActivity(intent);
-//						}
-//					});
-//				}
-				// 是否需要取消投诉
-				if (item.getNeed_uncomplaint() == 0) {
-//					tv_complaint_more.setVisibility(View.GONE);
-					tv_cancel_complaint.setVisibility(View.GONE);
-				} else if (item.getNeed_uncomplaint() == 1) {
-//					tv_complaint_more.setVisibility(View.VISIBLE);
-					tv_cancel_complaint.setVisibility(View.VISIBLE);
-//					tv_complaint.setVisibility(View.GONE);
-//					tv_complaint_more.setOnClickListener(new OnClickListener() {
-//
-//						@Override
-//						public void onClick(View v) {
-//							Intent intent = new Intent(mBaseFragmentActivity, ComplaintActivity.class);
-//							intent.putExtra("mOrderid", item.getOrderid());
-//							intent.putExtra("mCreatTime", item.getCreat_time());
-//							intent.putExtra("mOrderCoach", name.getText().toString().trim());
-//							intent.putExtra("mOrderTime", date.getText().toString().trim() + " " + time.getText().toString().trim());
-//							intent.putExtra("mOrderAddress", item.getDetail());
-//							intent.putExtra("mAllMoney", all_money.getText().toString().trim());
-//							startActivity(intent);
-//						}
-//					});
-					tv_cancel_complaint.setOnClickListener(new OnClickListener() {
-
+				if (item.getCan_complaint() == 0) {
+					tv_complaint.setVisibility(View.GONE);
+				} else if (item.getCan_complaint() == 1) {
+					tv_complaint.setVisibility(View.VISIBLE);
+					tv_complaint.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
-								@Override
-								public void onStart() {
-									super.onStart();
-									mBaseFragmentActivity.mLoadingDialog.show();
-									mBaseFragmentActivity.mLoadingDialog.setOnDismissListener(new OnDismissListener() {
-
-										@Override
-										public void onDismiss(DialogInterface dialog) {
-										}
-									});
-								}
-
-								@Override
-								public RequestParams setParams(RequestParams requestParams) {
-									requestParams.add("action", "CancelComplaint");
-									requestParams.add("orderid", item.getOrderid());
-									requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
-									return requestParams;
-								}
-
-								@Override
-								public void onFinish() {
-									mBaseFragmentActivity.mLoadingDialog.dismiss();
-								}
-
-								@Override
-								public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
-									mPtrClassicFrameLayout.autoRefresh();
-								}
-							});
+							Intent intent = new Intent(mBaseFragmentActivity, ComplaintActivity.class);
+							intent.putExtra("mOrderid", item.getOrderid());
+							intent.putExtra("mCreatTime", item.getCreat_time());
+							intent.putExtra("mOrderCoach", name.getText().toString().trim());
+							intent.putExtra("mOrderTime", date.getText().toString().trim() + " " + time.getText().toString().trim());
+							intent.putExtra("mOrderAddress", item.getDetail());
+							intent.putExtra("mAllMoney", all_money.getText().toString().trim());
+							startActivity(intent);
 						}
 					});
 				}
+				// 是否需要取消投诉
+//				if (item.getNeed_uncomplaint() == 0) {
+////					tv_complaint_more.setVisibility(View.GONE);
+//					tv_cancel_complaint.setVisibility(View.GONE);
+//				} else if (item.getNeed_uncomplaint() == 1) {
+////					tv_complaint_more.setVisibility(View.VISIBLE);
+//					tv_cancel_complaint.setVisibility(View.VISIBLE);
+////					tv_complaint.setVisibility(View.GONE);
+////					tv_complaint_more.setOnClickListener(new OnClickListener() {
+////
+////						@Override
+////						public void onClick(View v) {
+////							Intent intent = new Intent(mBaseFragmentActivity, ComplaintActivity.class);
+////							intent.putExtra("mOrderid", item.getOrderid());
+////							intent.putExtra("mCreatTime", item.getCreat_time());
+////							intent.putExtra("mOrderCoach", name.getText().toString().trim());
+////							intent.putExtra("mOrderTime", date.getText().toString().trim() + " " + time.getText().toString().trim());
+////							intent.putExtra("mOrderAddress", item.getDetail());
+////							intent.putExtra("mAllMoney", all_money.getText().toString().trim());
+////							startActivity(intent);
+////						}
+////					});
+//					tv_cancel_complaint.setOnClickListener(new OnClickListener() {
+//
+//						@Override
+//						public void onClick(View v) {
+//							AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
+//								@Override
+//								public void onStart() {
+//									super.onStart();
+//									mBaseFragmentActivity.mLoadingDialog.show();
+//									mBaseFragmentActivity.mLoadingDialog.setOnDismissListener(new OnDismissListener() {
+//
+//										@Override
+//										public void onDismiss(DialogInterface dialog) {
+//										}
+//									});
+//								}
+//
+//								@Override
+//								public RequestParams setParams(RequestParams requestParams) {
+//									requestParams.add("action", "CancelComplaint");
+//									requestParams.add("orderid", item.getOrderid());
+//									requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+//									return requestParams;
+//								}
+//
+//								@Override
+//								public void onFinish() {
+//									mBaseFragmentActivity.mLoadingDialog.dismiss();
+//								}
+//
+//								@Override
+//								public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
+//									mPtrClassicFrameLayout.autoRefresh();
+//								}
+//							});
+//						}
+//					});
+//				}
 				// 订单是否可以取消
 				if (item.getCan_cancel() == 0) {
 					tv_cancel_order.setVisibility(View.GONE);
 				} else if (item.getCan_cancel() == 1) {
 					tv_cancel_order.setVisibility(View.VISIBLE);
-					tv_cancel_order.setOnClickListener(new OnClickListener() {
 
-						@Override
-						public void onClick(View v) {
-							AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
-								@Override
-								public void onStart() {
-									super.onStart();
-									mBaseFragmentActivity.mLoadingDialog.show();
-								}
-
-								@Override
-								public RequestParams setParams(RequestParams requestParams) {
-									requestParams.add("action", "CancelOrder");
-									requestParams.add("orderid", item.getOrderid());
-									return requestParams;
-								}
-
-								@Override
-								public void onFinish() {
-									mBaseFragmentActivity.mLoadingDialog.dismiss();
-								}
-
-								@Override
-								public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
-									mPtrClassicFrameLayout.autoRefresh();
-								}
-							});
-						}
-					});
 				}
 				// 订单是否可以确认上车
 				if (item.getCan_up() == 0) {

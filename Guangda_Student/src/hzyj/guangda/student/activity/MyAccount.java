@@ -26,7 +26,7 @@ public class MyAccount extends TitlebarActivity{
 	private LinearLayout llYue;
 	private LinearLayout llXiaoBaQuan;
 	private TextView tvYue;
-	private TextView tvXiaoBaQuan;
+	private TextView tvXiaoBaQuan,tv_money;
 	private LinearLayout llCoin;
 	private TextView tvCoin;
 	@Override
@@ -44,6 +44,10 @@ public class MyAccount extends TitlebarActivity{
 		tvXiaoBaQuan = (TextView)findViewById(R.id.tv_xiaobaquan);
 		llCoin = (LinearLayout)findViewById(R.id.ll_xiaobabi);
 		tvCoin = (TextView)findViewById(R.id.tv_xiaobabi);
+		tv_money=(TextView)findViewById(R.id.tv_money);
+		
+		
+		
 	}
 
 	@Override
@@ -124,10 +128,13 @@ public class MyAccount extends TitlebarActivity{
 				tvCoin.setText(""+baseReponse.getCoinsum());
 				tvYue.setText(""+baseReponse.getMoney());
 				GuangdaApplication.mUserInfo.setMoney(""+baseReponse.getMoney());
+				tv_money.setText("余额"+baseReponse.getConsumeMoney()+"元"+" "+"小巴币"+baseReponse.getConsumeCoin()+"枚"+" "+"小巴券"+baseReponse.getConsumeCoupon()+"张");
 				
 			}
 			
 		});
+		
+	
 		
 	}
 

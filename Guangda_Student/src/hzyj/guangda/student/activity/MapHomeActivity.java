@@ -136,9 +136,9 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private CardTypeAdapter mCardTypeAdapter;
 	private ImageView imgService;
 	 private DBManager mgr;
-	 private LinearLayout nowLocation;
+	 private LinearLayout nowLocation,ll_selector;
 	
-	private String city;
+	private String city="";
 	private Context context;
 	private LinearLayout llHeader;
 	private Marker mark;
@@ -166,6 +166,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		imgService = (ImageView)findViewById(R.id.img_service);
 		llHeader = (LinearLayout)findViewById(R.id.li_menu_head);
 		nowLocation=(LinearLayout)findViewById(R.id.ll_now_location);
+		ll_selector=(LinearLayout)findViewById(R.id.ll_selector);
 //		llPersonBook = (LinearLayout)findViewById(R.id.ll_person_book_app);
 		initFirstLocation();
 		initLocationClient();
@@ -193,6 +194,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					requestParams.add("action", "Login");
 					requestParams.add("phone", GuangdaApplication.mUserInfo.getPhone());
 					requestParams.add("password", GuangdaApplication.mUserInfo.getPassword());
+					requestParams.add("version",((GuangdaApplication)mBaseApplication).getVersion());
+					requestParams.add("devicetype","1");
 					return requestParams;
 				}
 
@@ -755,6 +758,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			public void onSuccess(int statusCode, Header[] headers, GetCarModelResponse baseReponse) {
 
 				if (baseReponse.getModellist() != null && baseReponse.getModellist().size() != 0) {
+					//ll_selector.setVisibility(View.VISIBLE);
 					mCardTypeLi.setVisibility(View.VISIBLE);
 					if (GuangdaApplication.DISPLAY_WIDTH % DensityUtils.dp2px(mBaseFragmentActivity, 60) == 0) {
 						count = GuangdaApplication.DISPLAY_WIDTH / DensityUtils.dp2px(mBaseFragmentActivity, 60);
@@ -772,6 +776,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					mCardTypeAdapter.notifyDataSetChanged();
 				} else {
 					mCardTypeLi.setVisibility(View.GONE);
+					//ll_selector.setVisibility(View.GONE);
 				}
 			}
 		});

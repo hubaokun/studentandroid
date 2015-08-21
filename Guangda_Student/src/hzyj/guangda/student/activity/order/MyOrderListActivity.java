@@ -19,7 +19,7 @@ import com.common.library.llj.base.BaseFragmentActivity;
  * 
  */
 public class MyOrderListActivity extends BaseFragmentActivity {
-	private TextView mTitleLeftTv, mTitleCenterTv, mTitleRightTv;
+	private TextView mTitleLeftTv, mTitleCenterTv, mTitleRightTv,tv_complaint;
 	private ImageView mBackIv;
 	private ViewPager mViewPager;
 	private TabAdapter mTabAdapter;
@@ -36,6 +36,7 @@ public class MyOrderListActivity extends BaseFragmentActivity {
 		mTitleLeftTv = (TextView) findViewById(R.id.tv_title_left);
 		mTitleCenterTv = (TextView) findViewById(R.id.tv_title_center);
 		mTitleRightTv = (TextView) findViewById(R.id.tv_title_right);
+		tv_complaint=(TextView)findViewById(R.id.tv_complaint);
 		mViewPager = (ViewPager) findViewById(R.id.viewPager_tab);
 	}
 
@@ -56,6 +57,7 @@ public class MyOrderListActivity extends BaseFragmentActivity {
 				mTitleLeftTv.setSelected(true);
 				mTitleCenterTv.setSelected(false);
 				mTitleRightTv.setSelected(false);
+				tv_complaint.setSelected(false);
 				mViewPager.setCurrentItem(0);
 
 			}
@@ -67,6 +69,7 @@ public class MyOrderListActivity extends BaseFragmentActivity {
 				mTitleLeftTv.setSelected(false);
 				mTitleCenterTv.setSelected(true);
 				mTitleRightTv.setSelected(false);
+				tv_complaint.setSelected(false);
 				mViewPager.setCurrentItem(1);
 
 			}
@@ -78,7 +81,21 @@ public class MyOrderListActivity extends BaseFragmentActivity {
 				mTitleLeftTv.setSelected(false);
 				mTitleCenterTv.setSelected(false);
 				mTitleRightTv.setSelected(true);
+				tv_complaint.setSelected(false);
 				mViewPager.setCurrentItem(2);
+			}
+		});
+		
+		tv_complaint.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				mTitleLeftTv.setSelected(false);
+				mTitleCenterTv.setSelected(false);
+				mTitleRightTv.setSelected(false);
+				tv_complaint.setSelected(true);
+				mViewPager.setCurrentItem(3);
+				
 			}
 		});
 		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -94,6 +111,8 @@ public class MyOrderListActivity extends BaseFragmentActivity {
 				case 2:
 					mTitleRightTv.performClick();
 					break;
+				case 3:
+					tv_complaint.performClick();
 				}
 			}
 
@@ -128,6 +147,8 @@ public class MyOrderListActivity extends BaseFragmentActivity {
 				return new WaitCommentFragment();
 			case 2:
 				return new FinishedFragment();
+			case 3:
+				return new ComplaintFragment();
 
 			default:
 				break;
@@ -137,7 +158,7 @@ public class MyOrderListActivity extends BaseFragmentActivity {
 
 		@Override
 		public int getCount() {
-			return 3;
+			return 4;
 		}
 
 	}

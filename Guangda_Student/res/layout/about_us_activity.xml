@@ -50,7 +50,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="杭州小巴科技  版权所有\nCopyright @ 2015-2018 杭州小巴科技"
+        android:text="Copyright @ 2015-2018 杭州小巴科技"
         android:textColor="#4e4e4e" />
 
 </RelativeLayout>

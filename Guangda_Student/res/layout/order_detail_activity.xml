@@ -126,7 +126,7 @@
                         android:textColor="@color/text"
                         android:textSize="13dp" />
 
-                    <TextView
+<!--                     <TextView
                         android:id="@+id/tv_continue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                         android:paddingTop="5dp"
                         android:text="继续预约"
                         android:textColor="#f7645c"
-                        android:textSize="13dp" />
+                        android:textSize="13dp" /> -->
                 </LinearLayout>
 
                <!--  <LinearLayout
@@ -292,25 +292,7 @@
                 <RelativeLayout 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingBottom="12dp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingTop="12dp" > 
-                    <TextView
-                            android:id="@+id/tv_cancle_order"
-                           android:layout_width="72dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="7dp"
-                            android:background="@drawable/shape_cancle_button"
-                            android:gravity="center"
-                            android:text="取消订单"
-                            android:textColor="@color/white"
-                            android:visibility="visible"/>
-                   </LinearLayout>
+                   
                  <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -343,7 +325,7 @@
                             android:text="追加投诉"
                             android:visibility="gone" /> -->
 
-                        <TextView
+                         <TextView
                             android:id="@+id/tv_cancel_complaint"
                             android:layout_width="72dp"
                             android:layout_height="30dp"
@@ -352,6 +334,16 @@
                             android:gravity="center"
                             android:text="取消投诉"
                             android:textColor="@color/white"
+                            android:visibility="gone" />
+                       <TextView
+                            android:id="@+id/tv_cancle_order"
+                            android:layout_width="72dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="7dp"
+                            android:background="@drawable/selector_cancle_order"
+                            android:gravity="center"
+                            android:text="取消订单"
+                            android:textColor="@color/tv_black"
                             android:visibility="gone" />
 
                         <TextView
@@ -376,7 +368,7 @@
                             android:textColor="@color/white"
                             android:visibility="gone" />
 
-                        <TextView
+<!--                         <TextView
                             android:id="@+id/tv_cancel_order"
                             android:layout_width="72dp"
                             android:layout_height="30dp"
@@ -385,7 +377,7 @@
                             android:gravity="center"
                             android:text="取消订单"
                             android:textColor="#f7645c"
-                            android:visibility="gone" />
+                            android:visibility="gone" /> -->
 
                         <TextView
                             android:id="@+id/tv_order_comment"
@@ -394,7 +386,18 @@
                             android:layout_marginLeft="7dp"
                             android:background="@drawable/shape_order_list_comment_order"
                             android:gravity="center"
-                            android:text="评论"
+                            android:text="立即评论"
+                            android:textColor="@color/white"
+                            android:visibility="gone" />
+                        
+                       <TextView
+                            android:id="@+id/tv_continue"
+                            android:layout_width="72dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="7dp"
+                            android:background="@drawable/selector_continue_shape"
+                            android:gravity="center"
+                            android:text="继续预约"
                             android:textColor="#50cb8c"
                             android:visibility="gone" />
                     </LinearLayout>

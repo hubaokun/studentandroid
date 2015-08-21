@@ -50,7 +50,29 @@ public class GetUnCompleteOrderResponse extends BaseReponse {
 		private int can_comment;
 		private MyEvaluation myevaluation;
 		private Evaluation evaluation;
+		private String modelid;
+		private String subjectname;
 		
+		
+		
+		
+		
+		public String getSubjectname() {
+			return subjectname;
+		}
+
+		public void setSubjectname(String subjectname) {
+			this.subjectname = subjectname;
+		}
+
+		public String getModelid() {
+			return modelid;
+		}
+
+		public void setModelid(String modelid) {
+			this.modelid = modelid;
+		}
+
 		public int getcoachstate() {
 			return coachstate;
 		}

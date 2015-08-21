@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.common.library.llj.adapterhelp.BaseAdapterHelper;
 import com.common.library.llj.adapterhelp.QuickAdapter;
@@ -60,6 +61,7 @@ public class CoachListActivity extends BaseFragmentActivity {
 	private String condition11;// 车型
 	private List<CoachInfoVo> coachList = new ArrayList<CoachInfoVo>();
 	private String Version,longitude,latitude,cityId;
+	private boolean state=true;
 
 	@Override
 	public void getIntentData() {
@@ -95,6 +97,7 @@ public class CoachListActivity extends BaseFragmentActivity {
 			@Override
 			public void onRefreshBegin(PtrFrameLayout frame) {
 				mPage = 0;
+				
 				doLoadMoreData();
 			}
 
@@ -183,40 +186,46 @@ public class CoachListActivity extends BaseFragmentActivity {
 	}
 
 	public void doLoadMoreData() {
-		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, CoachListResponse.class, new MySubResponseHandler<CoachListResponse>() {
+		if(state){
+			//Toast.makeText(mBaseFragmentActivity,mPage+"",0).show();
+			state=false;
+			AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, CoachListResponse.class, new MySubResponseHandler<CoachListResponse>() {
 
-			@Override
-			public RequestParams setParams(RequestParams requestParams) {
-				requestParams.add("action", "GetCoachList");
-				if (condition1 != null)
-					requestParams.add("condition1", condition1);
-				if (condition3 != null)
-					requestParams.add("condition3", condition3 + " 05:00:00");
-				if (condition6 != null)
-					requestParams.add("condition6", condition6);
-				if (!TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid()))
-				{
-					requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+				@Override
+				public RequestParams setParams(RequestParams requestParams) {
+					requestParams.add("action", "GetCoachList");
+					if (condition1 != null)
+						requestParams.add("condition1", condition1);
+					if (condition3 != null)
+						requestParams.add("condition3", condition3 + " 05:00:00");
+					if (condition6 != null)
+						requestParams.add("condition6", condition6);
+					if (!TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid()))
+					{
+						requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+					}
+					requestParams.add("longitude",longitude);
+					requestParams.add("latitude",latitude);
+					requestParams.add("cityid",cityId);
+					requestParams.add("pagenum", mPage + "");
+					requestParams.add("version",Version);
+					return requestParams;
 				}
-				requestParams.add("longitude",longitude);
-				requestParams.add("latitude",latitude);
-				requestParams.add("cityid",cityId);
-				requestParams.add("pagenum", mPage + "");
-				requestParams.add("version",Version);
-				return requestParams;
-			}
 
-			@Override
-			public void onFinish() {
-				mPtrFrameLayout.refreshComplete();
-			}
+				@Override
+				public void onFinish() {
+					mPtrFrameLayout.refreshComplete();
+				}
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, CoachListResponse baseReponse) {
-				
-				initAllData(baseReponse);
-			}
-		});
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, CoachListResponse baseReponse) {
+					
+					initAllData(baseReponse);
+					mPtrFrameLayout.refreshComplete();
+				}
+			});
+		}
+		
 	}
 	
 //	public void getCityId() {
@@ -268,8 +277,7 @@ public class CoachListActivity extends BaseFragmentActivity {
 //		        iter.remove();  
 //		    }
 //		}
-		
-		
+		state=true;
 		mCoachListAdapter.addAll(baseReponse.getCoachlist());
 	}
 
@@ -285,7 +293,7 @@ public class CoachListActivity extends BaseFragmentActivity {
 				
 				
 				//
-				loadHeadImage(item.getAvatarurl(), 120, 120, ((ImageView) helper.getView(R.id.iv_header)));
+				loadHeadImage(item.getAvatarurl(), 110, 110, ((ImageView) helper.getView(R.id.iv_header)));
 				//
 				helper.setText(R.id.tv_coach, item.getRealname()).setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
 				

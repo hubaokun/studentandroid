@@ -7,7 +7,30 @@ public class GetWalletInfo extends BaseReponse {
 	private int couponsum;
 	private int coinsum;
 	private int money;
+	private int consumeMoney;
+	private int consumeCoin;
+	private int consumeCoupon;
 	
+	
+	
+	public int getConsumeMoney() {
+		return consumeMoney;
+	}
+	public void setConsumeMoney(int consumeMoney) {
+		this.consumeMoney = consumeMoney;
+	}
+	public int getConsumeCoin() {
+		return consumeCoin;
+	}
+	public void setConsumeCoin(int consumeCoin) {
+		this.consumeCoin = consumeCoin;
+	}
+	public int getConsumeCoupon() {
+		return consumeCoupon;
+	}
+	public void setConsumeCoupon(int consumeCoupon) {
+		this.consumeCoupon = consumeCoupon;
+	}
 	public int getMoney() {
 		return money;
 	}

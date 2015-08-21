@@ -8,6 +8,8 @@ import hzyj.guangda.student.response.GetUnCompleteOrderResponse;
 import hzyj.guangda.student.response.GetUnCompleteOrderResponse.Order;
 import hzyj.guangda.student.util.DialogUtil;
 import hzyj.guangda.student.util.MySubResponseHandler;
+import hzyj.guangda.student.view.CoachSrueDialog;
+import hzyj.guangda.student.view.CoachSrueDialog.onButtonClickListener;
 import hzyj.guangda.student.util.DialogConfirmListener;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -55,7 +57,7 @@ import com.loopj.android.http.RequestParams;
  * @author liulj
  * 
  */
-public class NotFinishedFragment extends BaseFragment {
+public class NotFinishedFragment extends BaseFragment{
 	private PtrClassicFrameLayout mPtrClassicFrameLayout;
 	private ListView mListView;
 	private int mPage;
@@ -65,7 +67,8 @@ public class NotFinishedFragment extends BaseFragment {
 	private LocationClient mLocClient;
 	private Dialog mDialog = null;
 	private MyOrderListActivity mActivity;
-	
+	private CoachSrueDialog coachsure;
+	private boolean state=true;
 
 	@Override
 	protected View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +77,6 @@ public class NotFinishedFragment extends BaseFragment {
 		mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_frame);
 		mPtrClassicFrameLayout.setDurationToCloseHeader(800);
 		mListView = (ListView) view.findViewById(R.id.lv_order);
-
 		mNoDataRl = (RelativeLayout) view.findViewById(R.id.rl_no_date);
 		getLocation();
 		return view;
@@ -128,6 +130,9 @@ public class NotFinishedFragment extends BaseFragment {
 
 	public void doLoadMoreData() {
 		if (isVisible())
+			
+			if(state){
+				state=false;
 			AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, GetUnCompleteOrderResponse.class, new MySubResponseHandler<GetUnCompleteOrderResponse>() {
 
 				@Override
@@ -145,10 +150,11 @@ public class NotFinishedFragment extends BaseFragment {
 
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, GetUnCompleteOrderResponse baseReponse) {
-					mPtrClassicFrameLayout.refreshComplete();
+					
 					initAllData(baseReponse);
 				}
 			});
+		}
 	}
 
 	private void initAllData(GetUnCompleteOrderResponse baseReponse) {
@@ -165,6 +171,8 @@ public class NotFinishedFragment extends BaseFragment {
 				mPage++;
 			}
 			mOrderListAdapter.addAll(baseReponse.getOrderlist());
+			mPtrClassicFrameLayout.refreshComplete();
+			state=true;
 		} else {
 			mNoDataRl.setVisibility(View.VISIBLE);
 			mListView.setVisibility(View.INVISIBLE);
@@ -209,51 +217,55 @@ public class NotFinishedFragment extends BaseFragment {
 		protected void convert(BaseAdapterHelper helper, View convertView, final Order item, int position) {
 			if (item != null) {
 				helper.setText(R.id.tv_address, item.getDetail());
-				final TextView name = helper.getView(R.id.tv_name);
+				final TextView name = helper.getView(R.id.tv_coach_name);
 				if (item.getCuserinfo() != null) {
 					name.setText(item.getCuserinfo().getRealname());
 				}
 				TextView status = helper.getView(R.id.tv_status);
-				final TextView date = helper.getView(R.id.tv_date);
-				final TextView time = helper.getView(R.id.tv_time);
+				final TextView date = helper.getView(R.id.tv_Y_M_R);
+				final TextView time = helper.getView(R.id.tv_course_time);
+				final TextView carlicense=helper.getView(R.id.tv_carlicense);
 				final TextView all_money = helper.getView(R.id.tv_all_money);
+				//final TextView tv_modelid=helper.getView(R.id.tv_model);
 //				TextView tv_complaint = helper.getView(R.id.tv_complaint);
 //				TextView tv_complaint_more = helper.getView(R.id.tv_complaint_more);
-				TextView tv_cancel_complaint = helper.getView(R.id.tv_cancel_complaint);
+//				TextView tv_cancel_complaint = helper.getView(R.id.tv_cancel_complaint);
 				TextView tv_get_on = helper.getView(R.id.tv_get_on);
 				TextView tv_get_off = helper.getView(R.id.tv_get_off);
 				TextView tv_cancel_order = helper.getView(R.id.tv_cancel_order);
 				TextView tv_comment = helper.getView(R.id.tv_comment);
-				TextView tv_continue = helper.getView(R.id.tv_continue);
+//				TextView tv_continue = helper.getView(R.id.tv_continue);
+				TextView tv_course=helper.getView(R.id.tv_course);
+				
 				TextView tv_confirm_on = helper.getView(R.id.tv_confirm_on);
-				LinearLayout ll_coach_sure=helper.getView(R.id.ll_coach_sure);
+				final LinearLayout ll_coach_sure=helper.getView(R.id.ll_coach_sure);
 				if(String.valueOf(item.getstudentstate()).equals("4")&&!String.valueOf(item.getcoachstate()).equals("4")){
 					ll_coach_sure.setVisibility(View.VISIBLE);
 				}else {
 					ll_coach_sure.setVisibility(View.GONE);
 				}
 				//
-				tv_continue.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(mBaseFragmentActivity, R.anim.bottom_to_center, R.anim.no_fade);
-						Intent intent = new Intent(mBaseFragmentActivity, SubjectReserveActivity.class);
-						intent.putExtra("mCoachId", item.getCoachid());
-						intent.putExtra("mAddress", item.getDetail());
-						if (item.getCuserinfo() != null) {
-							intent.putExtra("mScore", item.getCuserinfo().getScore());
-							intent.putExtra("mName", item.getCuserinfo().getRealname());
-							if (item.getCuserinfo().getGender() == 1) {
-								intent.putExtra("mGender", "(" + "男" + ")");
-							} else if (item.getCuserinfo().getGender() == 2) {
-								intent.putExtra("mGender", "(" + "女" + ")");
-							}
-							intent.putExtra("mPhone", item.getCuserinfo().getPhone());
-						}
-						ActivityCompat.startActivity((Activity) mBaseFragmentActivity, intent, options.toBundle());
-					}
-				});
+//				tv_continue.setOnClickListener(new OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(mBaseFragmentActivity, R.anim.bottom_to_center, R.anim.no_fade);
+//						Intent intent = new Intent(mBaseFragmentActivity, SubjectReserveActivity.class);
+//						intent.putExtra("mCoachId", item.getCoachid());
+//						intent.putExtra("mAddress", item.getDetail());
+//						if (item.getCuserinfo() != null) {
+//							intent.putExtra("mScore", item.getCuserinfo().getScore());
+//							intent.putExtra("mName", item.getCuserinfo().getRealname());
+//							if (item.getCuserinfo().getGender() == 1) {
+//								intent.putExtra("mGender", "(" + "男" + ")");
+//							} else if (item.getCuserinfo().getGender() == 2) {
+//								intent.putExtra("mGender", "(" + "女" + ")");
+//							}
+//							intent.putExtra("mPhone", item.getCuserinfo().getPhone());
+//						}
+//						ActivityCompat.startActivity((Activity) mBaseFragmentActivity, intent, options.toBundle());
+//					}
+//				});
 				// 状态
 				switch (item.getHours()) {
 				case 0:
@@ -281,6 +293,10 @@ public class NotFinishedFragment extends BaseFragment {
 					status.setTextColor(Color.parseColor("#b8b8b8"));
 					break;
 				}
+				
+				carlicense.setText("("+item.getCarlicense()+")");
+				//tv_address.setText(item.getDetail());
+				tv_course.setText(item.getSubjectname());
 				// date
 				long dateStartLong = TimeUitlLj.stringToMilliseconds(2, item.getStart_time());
 				date.setText(TimeUitlLj.millisecondsToString(9, dateStartLong));
@@ -309,12 +325,12 @@ public class NotFinishedFragment extends BaseFragment {
 //					});
 //				}
 				// 是否需要取消投诉
-				if (item.getNeed_uncomplaint() == 0) {
-					//tv_complaint_more.setVisibility(View.GONE);
-					tv_cancel_complaint.setVisibility(View.GONE);
-				} else if (item.getNeed_uncomplaint() == 1) {
-					//tv_complaint_more.setVisibility(View.VISIBLE);
-					tv_cancel_complaint.setVisibility(View.VISIBLE);
+//				if (item.getNeed_uncomplaint() == 0) {
+//					//tv_complaint_more.setVisibility(View.GONE);
+//					tv_cancel_complaint.setVisibility(View.GONE);
+//				} else if (item.getNeed_uncomplaint() == 1) {
+//					//tv_complaint_more.setVisibility(View.VISIBLE);
+//					tv_cancel_complaint.setVisibility(View.VISIBLE);
 //					tv_complaint.setVisibility(View.GONE);
 //					tv_complaint_more.setOnClickListener(new OnClickListener() {
 //						@Override
@@ -329,89 +345,94 @@ public class NotFinishedFragment extends BaseFragment {
 //							startActivity(intent);
 //						}
 //					});
-					tv_cancel_complaint.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
-								@Override
-								public void onStart() {
-									super.onStart();
-									mBaseFragmentActivity.mLoadingDialog.show();
-									mBaseFragmentActivity.mLoadingDialog.setOnDismissListener(new OnDismissListener() {
-
-										@Override
-										public void onDismiss(DialogInterface dialog) {
-										}
-									});
-								}
-
-								@Override
-								public RequestParams setParams(RequestParams requestParams) {
-									requestParams.add("action", "CancelComplaint");
-									requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
-									requestParams.add("orderid", item.getOrderid());
-									return requestParams;
-								}
-
-								@Override
-								public void onFinish() {
-									if (mBaseFragmentActivity.mLoadingDialog != null) {
-										mBaseFragmentActivity.mLoadingDialog.dismiss();
-									}
-								}
-
-								@Override
-								public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
-									mPtrClassicFrameLayout.autoRefresh(true);
-								}
-							});
-						}
-					});
-				}
+//					tv_cancel_complaint.setOnClickListener(new OnClickListener() {
+//						@Override
+//						public void onClick(View v) {
+//							AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
+//								@Override
+//								public void onStart() {
+//									super.onStart();
+//									mBaseFragmentActivity.mLoadingDialog.show();
+//									mBaseFragmentActivity.mLoadingDialog.setOnDismissListener(new OnDismissListener() {
+//
+//										@Override
+//										public void onDismiss(DialogInterface dialog) {
+//										}
+//									});
+//								}
+//
+//								@Override
+//								public RequestParams setParams(RequestParams requestParams) {
+//									requestParams.add("action", "CancelComplaint");
+//									requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+//									requestParams.add("orderid", item.getOrderid());
+//									return requestParams;
+//								}
+//
+//								@Override
+//								public void onFinish() {
+//									if (mBaseFragmentActivity.mLoadingDialog != null) {
+//										mBaseFragmentActivity.mLoadingDialog.dismiss();
+//									}
+//								}
+//
+//								@Override
+//								public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
+//									mPtrClassicFrameLayout.autoRefresh(true);
+//								}
+//							});
+//						}
+//					});
+//				}
 				// 订单是否可以取消
 				if (item.getCan_cancel() == 0) {
 					tv_cancel_order.setVisibility(View.GONE);
 				} else if (item.getCan_cancel() == 1) {
 					tv_cancel_order.setVisibility(View.VISIBLE);
+					coachsure=new CoachSrueDialog(mActivity);
 					tv_cancel_order.setOnClickListener(new OnClickListener() {
-
 						@Override
 						public void onClick(View v) {
-							AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
-								@Override
-								public void onStart() {
-									super.onStart();
-									mBaseFragmentActivity.mLoadingDialog.show();
-									mBaseFragmentActivity.mLoadingDialog.setOnDismissListener(new OnDismissListener() {
-
-										@Override
-										public void onDismiss(DialogInterface dialog) {
-										}
-									});
-								}
-
-								@Override
-								public RequestParams setParams(RequestParams requestParams) {
-									requestParams.add("action", "CancelOrder");
-									requestParams.add("orderid", item.getOrderid());
-									return requestParams;
-								}
-
-								@Override
-								public void onFinish() {
-									if (mBaseFragmentActivity.mLoadingDialog != null) {
-										mBaseFragmentActivity.mLoadingDialog.dismiss();
-									}
-								}
-
-								@Override
-								public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
-									mPtrClassicFrameLayout.autoRefresh(true);
-								}
-							});
+							coachsure.sendata(item.getOrderid(),GuangdaApplication.mUserInfo.getStudentid(),ll_coach_sure,1);
+							coachsure.show();
+							//取消订单弹出框
+//							AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
+//								@Override
+//								public void onStart() {
+//									super.onStart();
+//									mBaseFragmentActivity.mLoadingDialog.show();
+//									mBaseFragmentActivity.mLoadingDialog.setOnDismissListener(new OnDismissListener() {
+//
+//										@Override
+//										public void onDismiss(DialogInterface dialog) {
+//										}
+//									});
+//								}
+//
+//								@Override
+//								public RequestParams setParams(RequestParams requestParams) {
+//									requestParams.add("action", "CancelOrder");
+//									requestParams.add("orderid", item.getOrderid());
+//									return requestParams;
+//								}
+//
+//								@Override
+//								public void onFinish() {
+//									if (mBaseFragmentActivity.mLoadingDialog != null) {
+//										mBaseFragmentActivity.mLoadingDialog.dismiss();
+//									}
+//								}
+//
+//								@Override
+//								public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
+//									mPtrClassicFrameLayout.autoRefresh(true);
+//								}
+//							});
 						}
 					});
 				}
+				
+
 				// 订单是否可以确认上车
 				if (item.getCan_up() == 0) {
 					tv_get_on.setVisibility(View.GONE);
@@ -593,4 +614,6 @@ public class NotFinishedFragment extends BaseFragment {
 //		});
 //		mLocClient.start();
 	}
+
+
 }

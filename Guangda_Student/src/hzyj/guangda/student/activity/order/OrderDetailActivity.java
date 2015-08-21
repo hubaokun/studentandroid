@@ -55,7 +55,7 @@ import de.greenrobot.event.EventBus;
 public class OrderDetailActivity extends BaseFragmentActivity implements onButtonClickListener{
 	private static final int GONE = 0;
 	private TextView mNameTv, mDateTv, mTimeTv, mPhoneTv, mMobileTv, mAddressTv, mAllMoneyTv;
-	private TextView tv_complaint/*, tv_complaint_more*/, tv_cancel_complaint, tv_get_on, tv_get_off, tv_cancel_order, tv_comment;
+	private TextView tv_complaint/*, tv_complaint_more*/, tv_cancel_complaint, tv_get_on, tv_get_off, tv_continue,tv_cancel_order, tv_comment;
 
 	private RatingBar mStarRb;
 	private LinearLayout mPerPriceLi;
@@ -94,7 +94,7 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 
 	@Override
 	public void findViews(Bundle savedInstanceState) {
-		mContinueTv = (TextView) findViewById(R.id.tv_continue);
+		//mContinueTv = (TextView) findViewById(R.id.tv_continue);
 
 		mNameTv = (TextView) findViewById(R.id.tv_name);
 		mDateTv = (TextView) findViewById(R.id.tv_date);
@@ -110,7 +110,7 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 		tv_cancel_complaint = (TextView) findViewById(R.id.tv_cancel_complaint);
 		tv_get_on = (TextView) findViewById(R.id.tv_get_on);
 		tv_get_off = (TextView) findViewById(R.id.tv_get_off);
-		tv_cancel_order = (TextView) findViewById(R.id.tv_cancel_order);
+		//tv_cancel_order = (TextView) findViewById(R.id.tv_cancel_order);
 		tv_comment = (TextView) findViewById(R.id.tv_order_comment);
 
 		mStanderTv = (TextView) findViewById(R.id.tv_stander);
@@ -126,6 +126,8 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 		mMyScoreTv = (TextView) findViewById(R.id.tv_my_score);
 		mMyCommentTv = (TextView) findViewById(R.id.tv_my_comment);
 		mMyRb = (RatingBar) findViewById(R.id.rb_my_score);
+		tv_continue=(TextView)findViewById(R.id.tv_continue);
+		
 		
 		ll_coach_sure=(LinearLayout)findViewById(R.id.ll_coach_sure);
 		
@@ -134,8 +136,8 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 		
 		iv_cancle=(TextView)findViewById(R.id.tv_cancle_order);
 		
-		if(FragmentName.equals("WaitCommentFragment")||FragmentName.equals("FinishedFragment")){
-			iv_cancle.setVisibility(View.GONE);
+		if(FragmentName.equals("FinishedFragment")){
+			tv_continue.setVisibility(View.VISIBLE);
 		}
 		if (coachstate!=null&&studentstate!=null)
 		{
@@ -160,16 +162,18 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 		
 		coachsure=new CoachSrueDialog(this,mOrderid,studentid);
 		
-		iv_cancle.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				coachsure.show();
-			}
-			
-		});
-		mContinueTv.setOnClickListener(new OnClickListener() {
+//		iv_cancle.setOnClickListener(new OnClickListener(){
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				coachsure.show();
+//			}
+//			
+//		});
+		
+		//继续预约操作
+		tv_continue.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -186,6 +190,8 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 			}
 		});
 	}
+	
+	
 	
 	@Override
 	public void onBackPressed() {
@@ -283,15 +289,11 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 			// 合计
 			mAllMoneyTv.setText(orderDetailResponse.getOrderinfo().getTotal() + "元");
 			
-	//判断哪个fragment跳转过来的
-			
-			if(FragmentName.equals("NotFinishedFragment")){
-				tv_complaint.setVisibility(View.GONE);
-			}else{
+
 				if (orderDetailResponse.getOrderinfo().getCan_complaint() == 0) {
 					tv_complaint.setVisibility(View.GONE);
 				} else if (orderDetailResponse.getOrderinfo().getCan_complaint() == 1) {
-					tv_complaint.setVisibility(View.GONE);
+					tv_complaint.setVisibility(View.VISIBLE);
 					tv_complaint.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -348,27 +350,27 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 						}
 					});
 				}
-			}
+			
 			// 是否可以投诉
-//			if (orderDetailResponse.getOrderinfo().getCan_complaint() == 0) {
-//				tv_complaint.setVisibility(View.GONE);
-//			} else if (orderDetailResponse.getOrderinfo().getCan_complaint() == 1) {
-//				tv_complaint.setVisibility(View.VISIBLE);
-//				tv_complaint.setOnClickListener(new OnClickListener() {
-//					@Override
-//					public void onClick(View v) {
-//						Intent intent = new Intent(mBaseFragmentActivity, ComplaintActivity.class);
-//						Order item = orderDetailResponse.getOrderinfo();
-//						intent.putExtra("mOrderid", item.getOrderid());
-//						intent.putExtra("mCreatTime", item.getCreat_time());
-//						intent.putExtra("mOrderCoach",item.getCuserinfo().getRealname());
-//						intent.putExtra("mOrderTime", mOrderTime);
-//						intent.putExtra("mOrderAddress", item.getDetail());
-//						intent.putExtra("mAllMoney", mAllMoney);
-//						startActivity(intent);
-//					}
-//				});
-//			}
+			if (orderDetailResponse.getOrderinfo().getCan_complaint() == 0) {
+				tv_complaint.setVisibility(View.GONE);
+			} else if (orderDetailResponse.getOrderinfo().getCan_complaint() == 1) {
+				tv_complaint.setVisibility(View.VISIBLE);
+				tv_complaint.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(mBaseFragmentActivity, ComplaintActivity.class);
+						Order item = orderDetailResponse.getOrderinfo();
+						intent.putExtra("mOrderid", item.getOrderid());
+						intent.putExtra("mCreatTime", item.getCreat_time());
+						intent.putExtra("mOrderCoach",item.getCuserinfo().getRealname());
+						intent.putExtra("mOrderTime", mOrderTime);
+						intent.putExtra("mOrderAddress", item.getDetail());
+						intent.putExtra("mAllMoney", mAllMoney);
+						startActivity(intent);
+					}
+				});
+			}
 			// 是否需要追加投诉
 //			if (orderDetailResponse.getOrderinfo().getNeed_uncomplaint() == 0) {
 //				//tv_complaint_more.setVisibility(View.GONE);
@@ -495,7 +497,7 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 						intent.putExtra("mOrderid", item.getOrderid());
 						intent.putExtra("mCreatTime", item.getCreat_time());
 						if (item.getCuserinfo() != null)
-							intent.putExtra("mOrderCoach", item.getCuserinfo().getRealname());
+						intent.putExtra("mOrderCoach", item.getCuserinfo().getRealname());
 						intent.putExtra("mOrderTime", mOrderTime);
 						intent.putExtra("mOrderAddress", item.getDetail());
 						intent.putExtra("mAllMoney", mAllMoney);
@@ -505,39 +507,19 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 			}
 			// 订单是否可以取消
 			if (orderDetailResponse.getOrderinfo().getCan_cancel() == 0) {
-				tv_cancel_order.setVisibility(View.GONE);
+				int a=orderDetailResponse.getOrderinfo().getCan_cancel();
+				iv_cancle.setVisibility(View.GONE);
 			} else if (orderDetailResponse.getOrderinfo().getCan_cancel() == 1) {
-				tv_cancel_order.setVisibility(View.VISIBLE);
-				tv_cancel_order.setOnClickListener(new OnClickListener() {
+				iv_cancle.setVisibility(View.VISIBLE);
+				iv_cancle.setOnClickListener(new OnClickListener(){
 
 					@Override
-					public void onClick(View v) {
-						AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
-							@Override
-							public void onStart() {
-								super.onStart();
-								mBaseFragmentActivity.mLoadingDialog.show();
-							}
-
-							@Override
-							public RequestParams setParams(RequestParams requestParams) {
-								requestParams.add("action", "CancelOrder");
-								requestParams.add("orderid", orderDetailResponse.getOrderinfo().getOrderid());
-								return requestParams;
-							}
-
-							@Override
-							public void onFinish() {
-								mBaseFragmentActivity.mLoadingDialog.dismiss();
-							}
-
-							@Override
-							public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
-								finish();
-							}
-						});
+					public void onClick(View arg0) {
+						// TODO Auto-generated method stub
+						coachsure.show();
 					}
 				});
+			
 			}
 			// 我给教练的评价
 			if (orderDetailResponse.getOrderinfo().getEvaluation() != null) {

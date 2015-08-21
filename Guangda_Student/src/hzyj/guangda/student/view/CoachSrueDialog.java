@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.common.library.llj.base.BaseDialog;
 import com.common.library.llj.base.BaseReponse;
@@ -25,11 +26,12 @@ public class CoachSrueDialog  extends BaseDialog{
 	private Activity mcontext;
 	private String mOrderid,studentid;
 	private onButtonClickListener mclick;
+	private LinearLayout ll_coach_sure;
+	private int state;
 
 	public CoachSrueDialog(Activity context) {
 		// TODO Auto-generated constructor stub
 		super(context, R.style.dim_dialog);
-		mcontext=context;
 	}
 	public CoachSrueDialog(Activity context,String mOrderid,String studentid) {
 		// TODO Auto-generated constructor stub
@@ -88,6 +90,13 @@ public class CoachSrueDialog  extends BaseDialog{
 	 public interface onButtonClickListener{
 	        public void onregion(String message);
 	    }
+	 
+	public void sendata(String mOrderid,String studentid,LinearLayout ll_coach_sure,int a){
+		this.studentid=studentid;
+		this.mOrderid=mOrderid;
+		this.ll_coach_sure=ll_coach_sure;
+		this.state=a;
+	}
 	
 	public void sendCoachSure(){
 	AsyncHttpClientUtil.get().post(mcontext, Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
@@ -108,8 +117,12 @@ public class CoachSrueDialog  extends BaseDialog{
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
 			if(String.valueOf(baseReponse.getCode()).equals("1")){
-				mclick=(onButtonClickListener)mcontext;
-				mclick.onregion("正在确认");
+				if(state==1){
+					ll_coach_sure.setVisibility(View.VISIBLE);
+				}else{
+					mclick=(onButtonClickListener)mcontext;
+					mclick.onregion("正在确认");
+				}
 				dismiss();
 			}
 			if(String.valueOf(baseReponse.getCode()).equals("2")){

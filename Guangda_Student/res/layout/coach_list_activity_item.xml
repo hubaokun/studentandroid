@@ -20,7 +20,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginRight="5dp"
-            android:src="@drawable/login_head_img" />
+            android:src="@drawable/im_user" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -63,8 +63,6 @@
                            android:text="0"
                            android:textColor="#50cb8c"
                            android:textSize="12dp" />
-                
-                    
                 </LinearLayout>
                 
                

@@ -195,7 +195,7 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 		String dateStr = TimeUitlLj.dateToString(9, new Date());
 		Long dateLong = TimeUitlLj.stringToMilliseconds(9, dateStr);
 		// 计算当前时间延后30天内的日期
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 10; i++) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date(dateLong + i * 24 * 3600 * 1000l));
 			mYears.add(calendar.get(Calendar.YEAR) + "");

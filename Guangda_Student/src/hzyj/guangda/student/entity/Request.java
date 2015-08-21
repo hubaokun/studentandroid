@@ -10,6 +10,7 @@ public class Request {
 	private int delmoney;
 	private int paytype;
 
+
 	public List<String> getTime() {
 		return time;
 	}
