@@ -6,6 +6,15 @@ public class OrderList {
 	private float price;
 	private int type;
 	private Coupon coupon;
+	private int demoney;
+	
+	
+	public int getDemoney() {
+		return demoney;
+	}
+	public void setDemoney(int demoney) {
+		this.demoney = demoney;
+	}
 	public int getType() {
 		return type;
 	}

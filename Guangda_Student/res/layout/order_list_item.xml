@@ -201,15 +201,15 @@
                 android:text="投诉"
                 android:visibility="gone" /> 
 
-<!--             <TextView
-                android:id="@+id/tv_complaint_more"
+             <TextView
+                android:id="@+id/tv_cancle_complaint"
                 android:layout_width="72dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="7dp"
                 android:background="@drawable/shape_order_list_complaint"
                 android:gravity="center"
-                android:text="追加投诉"
-                android:visibility="gone" /> -->
+                android:text="取消投诉"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_cancel_order"
@@ -281,20 +281,21 @@
          <LinearLayout
              android:id="@+id/ll_coach_sure"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_alignParentLeft="true"
-             android:layout_alignParentRight="true"
+             android:layout_height="34dp"
              android:visibility="gone"
-             android:background="@drawable/selector_book_drive" >
+             android:layout_centerVertical="true"
+             android:layout_marginLeft="3dp"
+             android:layout_marginRight="3dp"
+             android:gravity="center"
+             android:background="@drawable/shape_cancle_order" >
                  <Button
-                      android:layout_marginLeft="5dp"
-                      android:layout_weight="1"
                       android:id="@+id/btn_c_oach_result"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:text="已提交取消订单申请，等待教练确认中。"
+                      android:text="已提交取消订单申请，等待教练确认中!"
                       android:textColor="@color/white"
-                      android:background="@drawable/selector_book_drive"/>
+                      android:background="@drawable/shape_cancle_order"
+                      />
          </LinearLayout>
     </RelativeLayout>
 

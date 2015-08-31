@@ -17,14 +17,15 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal" 
+        android:paddingLeft="7dp"
         android:id="@+id/user_">
 
-        <ImageView
+        <!-- <ImageView
             android:id="@+id/iv_head"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/login_head_img"
-            />
+            /> -->
 
         <TextView
             android:id="@+id/tv_name"
@@ -37,15 +38,15 @@
             android:text="猥琐的"
             android:textColor="#7ecfe0"
             android:textSize="12dp" />
-
-        <TextView
+            <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="一分钟前"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:textColor="#b8b8b8"
             android:textSize="12dp" />
+
     </LinearLayout>
 
     <LinearLayout 
@@ -57,7 +58,7 @@
     android:id="@+id/tv_comment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="27dp"
+    android:paddingLeft="7dp"
     android:text="李教练教的超级认真~"/>    
     </LinearLayout>
            <RelativeLayout 

@@ -47,7 +47,12 @@ public class ActivityInputRecord extends TitlebarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				finish();
+				if(GuangdaApplication.isToBaoMing){
+					startMyActivity(BookDriveActivity.class);
+					finish();
+				}else{
+					finish();
+				}
 			}
 		});
 		
@@ -102,7 +107,14 @@ public class ActivityInputRecord extends TitlebarActivity {
 					if (baseReponse.getIsRecommended()==1)
 					{
 						GuangdaApplication.isInvited=1;
-						finish();
+						if(GuangdaApplication.isToBaoMing){
+							startMyActivity(BookDriveActivity.class);
+							finish();
+						}
+						else{
+							finish();	
+						}
+						
 					}else{
 						showToast("您输入的推荐码有误，请重新输入");
 					}

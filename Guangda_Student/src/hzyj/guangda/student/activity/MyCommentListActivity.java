@@ -20,11 +20,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.common.library.llj.adapterhelp.BaseAdapterHelper;
 import com.common.library.llj.adapterhelp.QuickAdapter;
 import com.common.library.llj.utils.AsyncHttpClientUtil;
+import com.common.library.llj.utils.ParseUtilLj;
 import com.common.library.llj.utils.TimeUitlLj;
 import com.loopj.android.http.RequestParams;
 
@@ -40,9 +42,8 @@ public class MyCommentListActivity extends TitlebarActivity {
 	private CommentListAdapter mCommentListAdapter;
 	private int mPage;
 	private String mCoachid;
-	private String flag,studentId;
+	private String flag,studentId,student_name;
 	
-
 	@Override
 	public void getIntentData() {
 		super.getIntentData();
@@ -50,6 +51,7 @@ public class MyCommentListActivity extends TitlebarActivity {
 		flag=getIntent().getStringExtra("flag");
 		if(flag.equals("student_comment")){
 			studentId=getIntent().getStringExtra("studentId");
+			student_name=getIntent().getStringExtra("student_name");
 		}
 	}
 
@@ -155,7 +157,13 @@ public class MyCommentListActivity extends TitlebarActivity {
 	}
 
 	private void initAllData(CommentListResponse baseReponse) {
-		setCenterText("评论(" + baseReponse.getCount() + ")");
+		if(flag.equals("student_comment")){
+			setCenterText(student_name+" "+"评论(" + baseReponse.getCount() + ")");
+		}
+		else{
+			setCenterText("评论(" + baseReponse.getCount() + ")");
+		}
+
 		if (mPage == 0) {
 			mCommentListAdapter.clear();
 		}
@@ -179,10 +187,21 @@ public class MyCommentListActivity extends TitlebarActivity {
 		protected void convert(BaseAdapterHelper helper, View convertView, final Comment item, int position) {
 			if (item != null) {
 				// 头像
-				loadHeadImage(item.getAvatarUrl(), 120, 120, ((ImageView) helper.getView(R.id.iv_head)));
+				//loadHeadImage(item.getAvatarUrl(), 120, 120, ((ImageView) helper.getView(R.id.iv_head)));
 				// 昵称和评论
-				helper.setText(R.id.tv_name, item.getNickname()).setText(R.id.tv_comment, item.getContent());
+				if(!flag.equals("student_comment")){
+					TextView tv_name=helper.getView(R.id.tv_name);
+					tv_name.setVisibility(View.VISIBLE);
+					helper.setText(R.id.tv_name, item.getNickname()).setText(R.id.tv_comment, item.getContent());
+				}
+				else{
+					TextView tv_name=helper.getView(R.id.tv_name);
+					tv_name.setVisibility(View.INVISIBLE);
+				}
 				// 时间
+				
+				RatingBar mrating=helper.getView(R.id.rb_star);
+				mrating.setRating(ParseUtilLj.parseFloat(item.getScore(), 0F));
 				TextView textView = helper.getView(R.id.tv_time);
 
 				if (!TextUtils.isEmpty(item.getAddtime())) {

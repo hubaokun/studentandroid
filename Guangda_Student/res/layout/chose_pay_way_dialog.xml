@@ -35,7 +35,9 @@
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
-        <RelativeLayout android:layout_width="match_parent"
+    
+        <RelativeLayout 
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:paddingTop="15dp"
@@ -51,7 +53,8 @@
                 android:textSize="12sp"
                 android:layout_centerVertical="true"/>
             
-            <LinearLayout android:layout_width="wrap_content"
+            <LinearLayout 
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_alignParentRight="true"
@@ -65,16 +68,18 @@
                     android:textColor="@color/text_red"
                     android:layout_marginRight="10dp"/>
                 
-            <ImageView android:layout_width="wrap_content"
+            <ImageView 
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/map_home_bottom_car_type_normal"
-                
                 android:id="@+id/img_chosed_xueshiquan"/>
             </LinearLayout>
         </RelativeLayout>
                 <View
         style="@style/common_line"
         android:background="#cbcbcb" />
+                
+                
         <RelativeLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

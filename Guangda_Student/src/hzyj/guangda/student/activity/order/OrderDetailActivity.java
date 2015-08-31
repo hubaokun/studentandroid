@@ -13,6 +13,7 @@ import hzyj.guangda.student.response.OrderDetailResponse.Order.Evaluation;
 import hzyj.guangda.student.response.OrderDetailResponse.Order.Hour;
 import hzyj.guangda.student.response.OrderDetailResponse.Order.MyEvaluation;
 import hzyj.guangda.student.util.MySubResponseHandler;
+import hzyj.guangda.student.view.CancelComplaint;
 import hzyj.guangda.student.view.CancleOrderDialog;
 import hzyj.guangda.student.view.CoachSrueDialog;
 import hzyj.guangda.student.view.CoachSrueDialog.onButtonClickListener;
@@ -21,15 +22,18 @@ import org.apache.http.Header;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -54,7 +58,7 @@ import de.greenrobot.event.EventBus;
  */
 public class OrderDetailActivity extends BaseFragmentActivity implements onButtonClickListener{
 	private static final int GONE = 0;
-	private TextView mNameTv, mDateTv, mTimeTv, mPhoneTv, mMobileTv, mAddressTv, mAllMoneyTv;
+	private TextView mNameTv, mDateTv, mTimeTv, mPhoneTv, mMobileTv, mAddressTv, mAllMoneyTv,mOrderId,mcourse;
 	private TextView tv_complaint/*, tv_complaint_more*/, tv_cancel_complaint, tv_get_on, tv_get_off, tv_continue,tv_cancel_order, tv_comment;
 
 	private RatingBar mStarRb;
@@ -70,10 +74,14 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 	private TextView mContinueTv,iv_cancle;
 	private OrderDetailResponse mOrderDetailResponse;
 	
-	private ImageView iv_back;
+	private ImageView iv_back,iv_explant,iv_cancle_explant;
 	private CancleOrderDialog cancleorderdialog;
-	private LinearLayout ll_coach_sure;
+	private LinearLayout ll_coach_sure,ll_complaintcontent,ll_tiao;
 	private CoachSrueDialog coachsure;
+	private TextView status,tv_complaintcontent;
+	private String complaintcontent;
+	private RelativeLayout rl_explant,rl_cancle_explant;
+	private CancelComplaint cancelDialog;
 	
 	@Override
 	public void getIntentData() {
@@ -97,27 +105,29 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 		//mContinueTv = (TextView) findViewById(R.id.tv_continue);
 
 		mNameTv = (TextView) findViewById(R.id.tv_name);
+		mOrderId=(TextView)findViewById(R.id.tv_orderid);
 		mDateTv = (TextView) findViewById(R.id.tv_date);
 		mTimeTv = (TextView) findViewById(R.id.tv_time);
 		//mPhoneTv = (TextView) findViewById(R.id.tv_phone);
 		mMobileTv = (TextView) findViewById(R.id.tv_mobile);
 		mAddressTv = (TextView) findViewById(R.id.tv_address);
-		mPerPriceLi = (LinearLayout) findViewById(R.id.li_per_price);
+		//mPerPriceLi = (LinearLayout) findViewById(R.id.li_per_price);
 		mAllMoneyTv = (TextView) findViewById(R.id.tv_all_price);
 		mStarRb = (RatingBar) findViewById(R.id.rb_star);
 		tv_complaint = (TextView) findViewById(R.id.tv_complaint);
 //		tv_complaint_more = (TextView) findViewById(R.id.tv_complaint_more);
 		tv_cancel_complaint = (TextView) findViewById(R.id.tv_cancel_complaint);
-		tv_get_on = (TextView) findViewById(R.id.tv_get_on);
+		//tv_get_on = (TextView) findViewById(R.id.tv_get_on);
 		tv_get_off = (TextView) findViewById(R.id.tv_get_off);
 		//tv_cancel_order = (TextView) findViewById(R.id.tv_cancel_order);
 		tv_comment = (TextView) findViewById(R.id.tv_order_comment);
 
 		mStanderTv = (TextView) findViewById(R.id.tv_stander);
-		mPerPriceTagTv = (TextView) findViewById(R.id.tv_price_tag);
-		mPriceTagTv = (TextView) findViewById(R.id.tv_all_price_tag);
-		mPerPriceTagTv.getLayoutParams().width = (int) TextUtilLj.getTextViewLength(mStanderTv, "下单时间：");
-		mPriceTagTv.getLayoutParams().width = (int) TextUtilLj.getTextViewLength(mStanderTv, "下单时间：");
+		mcourse=(TextView)findViewById(R.id.tv_course);
+		//mPerPriceTagTv = (TextView) findViewById(R.id.tv_price_tag);
+		//mPriceTagTv = (TextView) findViewById(R.id.tv_all_price_tag);
+		//mPerPriceTagTv.getLayoutParams().width = (int) TextUtilLj.getTextViewLength(mStanderTv, "下单时间：");
+		//mPriceTagTv.getLayoutParams().width = (int) TextUtilLj.getTextViewLength(mStanderTv, "下单时间：");
 
 		mCoachScoreTv = (TextView) findViewById(R.id.tv_score);
 		mCoachCommentTv = (TextView) findViewById(R.id.tv_comment);
@@ -130,7 +140,12 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 		
 		
 		ll_coach_sure=(LinearLayout)findViewById(R.id.ll_coach_sure);
-		
+		status=(TextView)findViewById(R.id.tv_state);
+		ll_complaintcontent=(LinearLayout)findViewById(R.id.ll_complaintcontent);
+		tv_complaintcontent=(TextView)findViewById(R.id.tv_complaintcontent);
+		rl_explant=(RelativeLayout)findViewById(R.id.rl_explant);
+		rl_cancle_explant=(RelativeLayout)findViewById(R.id.rl_cancle_explant);
+		ll_tiao=(LinearLayout)findViewById(R.id.ll_tiao);
 		//导航栏
 		iv_back=(ImageView)findViewById(R.id.iv_back);
 		
@@ -160,7 +175,33 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 			
 		});
 		
+		rl_explant.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				//tv_complaintcontent.setText("#"+mOrderDetailResponse.getOrderinfo().getReason()+"#"+complaintcontent);
+				tv_complaintcontent.setText(Html.fromHtml("<font color=#50cb8 size=30dp>#</font>"+"<font color=#50cb8>"+mOrderDetailResponse.getOrderinfo().getReason()+"</font>"+"<font color=#50cb8>#</font>"+complaintcontent));
+				rl_explant.setVisibility(View.GONE);
+				ll_tiao.setVisibility(View.VISIBLE);
+				rl_cancle_explant.setVisibility(View.VISIBLE);
+				
+			}
+		});
+		rl_cancle_explant.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				tv_complaintcontent.setText("您的投诉小巴正在加急处理,请耐性等待!");
+				rl_explant.setVisibility(View.VISIBLE);
+				ll_tiao.setVisibility(View.GONE);
+				rl_cancle_explant.setVisibility(View.GONE);
+				
+			}
+		});
+		
 		coachsure=new CoachSrueDialog(this,mOrderid,studentid);
+		cancelDialog=new CancelComplaint(this,mOrderid,GuangdaApplication.mUserInfo.getStudentid());
 		
 //		iv_cancle.setOnClickListener(new OnClickListener(){
 //
@@ -219,7 +260,7 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 
 			@Override
 			public RequestParams setParams(RequestParams requestParams) {
-				requestParams.add("action", "GetOrderDetail");
+				requestParams.add("action", "GETORDERDETAIL");
 				requestParams.add("orderid", mOrderid);
 				requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
 				return requestParams;
@@ -245,47 +286,100 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 	private void initData(final OrderDetailResponse orderDetailResponse) {
 		mOrderDetailResponse = orderDetailResponse;
 		if (orderDetailResponse.getOrderinfo() != null) {
+			
+			switch (mOrderDetailResponse.getOrderinfo().getHours()) {
+			case 0:
+				status.setText("此车单即将开始");
+				status.setTextColor(Color.parseColor("#f7645c"));
+				break;
+			case -1:
+				status.setText("正在学车");
+				status.setTextColor(Color.parseColor("#50cb8c"));
+				break;
+			case -2:
+				status.setText("学车已经结束");
+				status.setTextColor(Color.parseColor("#50cb8c"));
+				break;
+			case -3:
+				status.setText("待确认上车");
+				status.setTextColor(Color.parseColor("#f7645c"));
+				break;
+			case -4:
+				status.setText("待确认下车");
+				status.setTextColor(Color.parseColor("#f7645c"));
+				break;
+			case -5:
+				status.setText("投诉处理中");
+				status.setTextColor(Color.parseColor("#FF4500"));
+				break;
+			case -6:
+				status.setText("客服协调中");
+				status.setTextColor(Color.parseColor("#FF4500"));
+				break;
+			default:
+				status.setText("离学车还有" + TimeUitlLj.awayFromFuture(mOrderDetailResponse.getOrderinfo().getHours() * 60 * 1000));
+				status.setTextColor(Color.parseColor("#b8b8b8"));
+				break;
+			}
+			
 			if (orderDetailResponse.getOrderinfo().getCuserinfo() != null) {
 				// 姓名
 				setText(mNameTv, orderDetailResponse.getOrderinfo().getCuserinfo().getRealname() + " " + "教练");
 				// 星级
-				mStarRb.setRating(orderDetailResponse.getOrderinfo().getCuserinfo().getScore());
+				//mStarRb.setRating(orderDetailResponse.getOrderinfo().getCuserinfo().getScore());
 				// 教练电话
 				//setText(mPhoneTv, orderDetailResponse.getOrderinfo().getCuserinfo().getTelphone());
 				// 教练手机
 				setText(mMobileTv, orderDetailResponse.getOrderinfo().getCuserinfo().getPhone());
+				
+				//订单编号
+				setText(mOrderId, orderDetailResponse.getOrderinfo().getOrderid());
+				
 
 			}
+			
+			if(mOrderDetailResponse.getOrderinfo().getHours()==-5){
+				ll_complaintcontent.setVisibility(View.VISIBLE);
+				rl_explant.setVisibility(View.VISIBLE);
+			}else{
+				ll_complaintcontent.setVisibility(View.GONE);
+				rl_explant.setVisibility(View.GONE);
+			}
+			complaintcontent=orderDetailResponse.getOrderinfo().getComplaintcontent();
 			// 下单时间
 			if (orderDetailResponse.getOrderinfo().getCreat_time() != null) {
 				// long mill = TimeUitlLj.stringToMilliseconds(2, orderDetailResponse.getOrderinfo().getCreat_time());
 				// String dateStr = TimeUitlLj.millisecondsToString(9, mill);
 				// mDateTv.setText(dateStr);
-				mDateTv.setText(orderDetailResponse.getOrderinfo().getCreat_time());
+				mDateTv.setText(orderDetailResponse.getOrderinfo().getCreat_time()+" ");
 			}
 			// 预约时间
 			// date
 			long dateStartLong = TimeUitlLj.stringToMilliseconds(2, orderDetailResponse.getOrderinfo().getStart_time());
-			mTimeTv.setText(TimeUitlLj.millisecondsToString(9, dateStartLong));
+			//mTimeTv.setText(TimeUitlLj.millisecondsToString(9, dateStartLong));
 			// time
 			long dateEndLong = TimeUitlLj.stringToMilliseconds(2, orderDetailResponse.getOrderinfo().getEnd_time());
+			mTimeTv.setText(TimeUitlLj.millisecondsToString(9, dateStartLong)+" "+TimeUitlLj.millisecondsToString(10, dateStartLong) + "-" + TimeUitlLj.millisecondsToString(10, dateEndLong));
+			
 			//mTimeTv.append(" " + TimeUitlLj.millisecondsToString(10, dateStartLong) + "-" + TimeUitlLj.millisecondsToString(10, dateEndLong));
-
+           
 			// 预约地址
 			setText(mAddressTv, orderDetailResponse.getOrderinfo().getDetail());
+			//科目
+			setText(mcourse, orderDetailResponse.getOrderinfo().getOrderprice().get(0).getSubject());
 			// 单价
-			mPerPriceLi.removeAllViews();
-			for (Hour hour : orderDetailResponse.getOrderinfo().getOrderprice()) {
-				if (hour != null) {
-					TextView textView = new TextView(this);
-					String time = hour.getHour() + ":00-" + (hour.getHour() + 1) + ":00";
-					//String money = hour.getPrice() + "元";
-					textView.setText(time);
-					textView.setTextColor(getResources().getColor(R.color.text));
-					textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
-					mPerPriceLi.addView(textView);
-				}
-			}
+//			mPerPriceLi.removeAllViews();
+//			for (Hour hour : orderDetailResponse.getOrderinfo().getOrderprice()) {
+//				if (hour != null) {
+//					TextView textView = new TextView(this);
+//					String time = hour.getHour() + ":00-" + (hour.getHour() + 1) + ":00";
+//					//String money = hour.getPrice() + "元";
+//					textView.setText(time);
+//					textView.setTextColor(getResources().getColor(R.color.text));
+//					textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
+//					mPerPriceLi.addView(textView);
+//				}
+//			}
 			// 合计
 			mAllMoneyTv.setText(orderDetailResponse.getOrderinfo().getTotal() + "元");
 			
@@ -312,41 +406,44 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 				
 				if (orderDetailResponse.getOrderinfo().getNeed_uncomplaint() == 0) {
 					tv_cancel_complaint.setVisibility(View.GONE);
-					tv_complaint.setVisibility(View.GONE);
+					//tv_complaint.setVisibility(View.GONE);
 				} else if (orderDetailResponse.getOrderinfo().getNeed_uncomplaint() == 1) {
 					tv_cancel_complaint.setVisibility(View.VISIBLE);
-					tv_complaint.setVisibility(View.GONE);
+					//tv_complaint.setVisibility(View.GONE);
 					tv_cancel_complaint.setOnClickListener(new OnClickListener() {
 
 						@Override
 						public void onClick(View v) {
-							AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
-								@Override
-								public void onStart() {
-									super.onStart();
-									mBaseFragmentActivity.mLoadingDialog.show();
-								}
-
-								@Override
-								public RequestParams setParams(RequestParams requestParams) {
-									Order item = orderDetailResponse.getOrderinfo();
-									requestParams.add("action", "CancelComplaint");
-									requestParams.add("orderid", item.getOrderid());
-									requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
-									return requestParams;
-								}
-
-								@Override
-								public void onFinish() {
-									mBaseFragmentActivity.mLoadingDialog.dismiss();
-								}
-
-								@Override
-								public void onSuccess(int statusCode, Header[] headers, BaseReponse reponse) {
-									EventBus.getDefault().post(new OrderDetailEvent(orderDetailResponse.getOrderinfo().getOrderid()));
-									finish();
-								}
-							});
+							Order item = orderDetailResponse.getOrderinfo();
+							//cancelDialog=new CancelComplaint(this,item.getOrderid(),GuangdaApplication.mUserInfo.getStudentid());
+							cancelDialog.show();
+//							AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SORDER_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
+//								@Override
+//								public void onStart() {
+//									super.onStart();
+//									mBaseFragmentActivity.mLoadingDialog.show();
+//								}
+//
+//								@Override
+//								public RequestParams setParams(RequestParams requestParams) {
+//									Order item = orderDetailResponse.getOrderinfo();
+//									requestParams.add("action", "CancelComplaint");
+//									requestParams.add("orderid", item.getOrderid());
+//									requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+//									return requestParams;
+//								}
+//
+//								@Override
+//								public void onFinish() {
+//									mBaseFragmentActivity.mLoadingDialog.dismiss();
+//								}
+//
+//								@Override
+//								public void onSuccess(int statusCode, Header[] headers, BaseReponse reponse) {
+//									EventBus.getDefault().post(new OrderDetailEvent(orderDetailResponse.getOrderinfo().getOrderid()));
+//									finish();
+//								}
+//							});
 						}
 					});
 				}
@@ -450,23 +547,24 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 //				});
 //			}
 			// 订单是否可以确认上车
-			if (orderDetailResponse.getOrderinfo().getCan_up() == 0) {
-				tv_get_on.setVisibility(View.GONE);
-			} else if (orderDetailResponse.getOrderinfo().getCan_up() == 1) {
-				tv_get_on.setVisibility(View.VISIBLE);
-				tv_get_on.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						initLocationClient(orderDetailResponse.getOrderinfo(), "ConfirmOn");
-					}
-				});
-			}
+//			if (orderDetailResponse.getOrderinfo().getCan_up() == 0) {
+//				tv_get_on.setVisibility(View.GONE);
+//			} else if (orderDetailResponse.getOrderinfo().getCan_up() == 1) {
+//				tv_get_on.setVisibility(View.VISIBLE);
+//				tv_get_on.setOnClickListener(new OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						initLocationClient(orderDetailResponse.getOrderinfo(), "ConfirmOn");
+//					}
+//				});
+//			}
 			// 订单是否可以确认下车
 			if (orderDetailResponse.getOrderinfo().getCan_down() == 0) {
 				tv_get_off.setVisibility(View.GONE);
 			} else if (orderDetailResponse.getOrderinfo().getCan_down() == 1) {
 				tv_get_off.setVisibility(View.VISIBLE);
+				tv_complaint.setVisibility(View.VISIBLE);
 				tv_get_off.setOnClickListener(new OnClickListener() {
 
 					@Override

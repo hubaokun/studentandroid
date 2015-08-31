@@ -69,6 +69,70 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+            
+            <LinearLayout 
+                android:id="@+id/ll_complaintcontent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_yellow"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:visibility="gone">
+                <TextView 
+                    android:id="@+id/tv_complaintcontent"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="12dp"
+                    android:textColor="#CDAA7D"
+                    android:text="您的投诉小巴正在加急处理,请耐性等待!"
+                    android:layout_marginLeft="10dp"
+                    />
+                <RelativeLayout 
+                    android:id="@+id/rl_explant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:visibility="gone"
+                      >
+                <ImageView
+                      android:id="@+id/iv_explant"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:src="@drawable/cancle_explant"
+                      android:visibility="visible" />
+                </RelativeLayout>
+                <RelativeLayout 
+                    android:id="@+id/rl_cancle_explant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:visibility="gone"
+                      >
+                <ImageView
+                      android:id="@+id/iv_cancle_explant"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:src="@drawable/explant"
+                      android:visibility="visible" />
+                </RelativeLayout>
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/ll_tiao" 
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/light_yellow"
+                android:visibility="gone">
+                <TextView android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"/>
+                
+            </LinearLayout>
+            
+            <View style="@style/common_line" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -89,8 +153,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/tv_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:layout_marginRight="5dp"
+                        android:text=""/>
 
-                    <RatingBar
+<!--                     <RatingBar
                         android:id="@+id/rb_star"
                         style="@style/coach_ratingbar_star"
                         android:layout_width="wrap_content"
@@ -98,8 +169,32 @@
                         android:layout_marginLeft="5dp"
                         android:isIndicator="true"
                         android:numStars="5"
-                        android:stepSize="0.5" />
+                        android:stepSize="0.5" /> --> 
                 </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="订单编号："
+                        android:textColor="#737880"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/tv_orderid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="暂无"
+                        android:textColor="@color/text"
+                        android:textSize="13dp" />
+                </LinearLayout> 
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -163,6 +258,82 @@
                         android:textColor="@color/text"
                         android:textSize="13dp" />
                 </LinearLayout> -->
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="学车地点："
+                        android:textColor="#737880"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="暂无"
+                        android:textColor="@color/text"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="学车时间："
+                        android:textColor="#737880"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="暂无"
+                        android:textColor="@color/text"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_price_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:singleLine="true"
+                        android:text="科目车型："
+                        android:textColor="#737880"
+                        android:textSize="13dp" />
+
+                   <TextView
+                        android:id="@+id/tv_course"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="暂无"
+                        android:textColor="@color/text"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                
 
                <LinearLayout
                     android:layout_width="match_parent"
@@ -188,83 +359,22 @@
                         android:textSize="13dp" />
                 </LinearLayout> 
 
+                
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:text="学车日期："
-                        android:textColor="#737880"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/tv_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:text="暂无"
-                        android:textColor="@color/text"
-                        android:textSize="13dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:text="学车地点："
-                        android:textColor="#737880"
-                        android:textSize="13dp" />
-
-                    <TextView
-                        android:id="@+id/tv_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:text="暂无"
-                        android:textColor="@color/text"
-                        android:textSize="13dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        android:id="@+id/tv_price_tag"
+                <TextView
+                        
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:singleLine="true"
-                        android:text="预约学时："
+                        android:text="阿阿"
                         android:textColor="#737880"
-                        android:textSize="13dp" />
-
-                    <LinearLayout
-                        android:id="@+id/li_per_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" >
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal" >
+                        android:textSize="13dp"
+                        android:visibility="invisible" />
 
                     <TextView
                         android:id="@+id/tv_all_price_tag"
@@ -272,7 +382,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:singleLine="true"
-                        android:text="合计："
+                        android:text="金额："
                         android:textColor="#737880"
                         android:textSize="13dp" />
 
@@ -325,16 +435,15 @@
                             android:text="追加投诉"
                             android:visibility="gone" /> -->
 
-                         <TextView
-                            android:id="@+id/tv_cancel_complaint"
-                            android:layout_width="72dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="7dp"
-                            android:background="@drawable/shape_order_list_cancel_complaint"
-                            android:gravity="center"
-                            android:text="取消投诉"
-                            android:textColor="@color/white"
-                            android:visibility="gone" />
+                                      <TextView
+                         android:id="@+id/tv_cancel_complaint"
+                         android:layout_width="72dp"
+                         android:layout_height="30dp"
+                         android:layout_marginLeft="7dp"
+                         android:background="@drawable/shape_order_list_complaint"
+                         android:gravity="center"
+                         android:text="取消投诉"
+                         android:visibility="gone" />
                        <TextView
                             android:id="@+id/tv_cancle_order"
                             android:layout_width="72dp"
@@ -402,23 +511,25 @@
                             android:visibility="gone" />
                     </LinearLayout>
                     
-                     <LinearLayout
-                        android:id="@+id/ll_coach_sure"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentRight="true"
-                        android:visibility="gone"
-                        android:background="@drawable/selector_book_drive" >
-                         <Button
-                              android:layout_marginLeft="5dp"
-                              android:id="@+id/btn_c_oach_result"
-                              android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:text="已提交取消订单申请，请教练确认。"
-                              android:textColor="@color/white"
-                              android:background="@drawable/selector_book_drive"/>
-                    </LinearLayout>
+                      <LinearLayout
+                           android:id="@+id/ll_coach_sure"
+                           android:layout_width="match_parent"
+                           android:layout_height="34dp"
+                           android:visibility="gone"
+                           android:layout_centerVertical="true"
+                           android:layout_marginLeft="3dp"
+                           android:layout_marginRight="3dp"
+                           android:gravity="center"
+                           android:background="@drawable/shape_cancle_order" >
+		                 <Button
+		                      android:id="@+id/btn_c_oach_result"
+		                      android:layout_width="match_parent"
+		                      android:layout_height="wrap_content"
+		                      android:text="已提交取消订单申请，等待教练确认中!"
+		                      android:textColor="@color/white"
+		                      android:background="@drawable/shape_cancle_order"
+		                      />
+         </LinearLayout>
                 </RelativeLayout>
                     
                 </RelativeLayout>

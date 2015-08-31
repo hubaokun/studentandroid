@@ -67,6 +67,8 @@ public class ChosePayWayDialog extends BaseDialog {
 		setCanceledOnTouchOutside(true);
 	}
 	
+
+	
 	public void setChosedItem(int index)
 	{
 		
@@ -86,12 +88,29 @@ public class ChosePayWayDialog extends BaseDialog {
 			imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
 			imgChosedYuE.setImageResource(R.drawable.coupon_select);
 			break;
+			
+	     //选择小巴币和余额
+		case 4: 
+			imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_select);
+			imgChosedYuE.setImageResource(R.drawable.coupon_select);
+			imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
+			break;
+		
 		default:
 			break;
 		}
 	}
 	
-	public void setItemVisible(int Tickets,float Coins,float YuE,float Price,int type)
+	 //混个支付
+	
+	 public void mixPrice(int Tickets,float Coins,float YuE,float Price,int type,float mixCoins){
+		 
+	 }
+	
+	
+	//判断每单的状态  修改判断小巴比是否有余额
+	
+	public void setItemVisible(int Tickets,float Coins,float YuE,float Price,int type,float mixCoins)
 	{
 		switch (type) {
 		case 1:  //选择余额
@@ -118,7 +137,7 @@ public class ChosePayWayDialog extends BaseDialog {
 //			}
 			break;
 		case 3: //选择小巴币
-			Coins = Coins+Price;
+			Coins = Coins+Price; // 小巴币＋订单价格 就是 
 //			if (Price>Coins)
 //			{
 //				rlXiaobabi.setClickable(false);
@@ -130,15 +149,30 @@ public class ChosePayWayDialog extends BaseDialog {
 //				rlXiaobabi.setClickable(true);
 //			}
 			break;
+		case 4://混合支付
+			Coins=Coins+mixCoins;
+			YuE=YuE+Price-mixCoins;
+			break;	
 		default:
 			break;
 		}
 		
-		if (Price>Coins)
+		if (Coins<=0)
 		{
+
 			rlXiaobabi.setClickable(false);
 			tvRestCoinNum.setVisibility(View.GONE);
 			imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_invalid);
+		}else if(0<Coins&&Coins<Price){
+			tvRestCoinNum.setVisibility(View.VISIBLE);
+			tvRestCoinNum.setText(Coins+"个可用");
+			rlXiaobabi.setClickable(true);
+			if (YuE<0)
+			{
+				tvRestMoney.setText("余额不足");
+			}else{
+				tvRestMoney.setText(YuE+"元可用");
+			}
 		}else{
 			tvRestCoinNum.setVisibility(View.VISIBLE);
 			tvRestCoinNum.setText(Coins+"个可用");

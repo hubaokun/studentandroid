@@ -7,6 +7,7 @@ import java.util.Date;
 import hzyj.guangda.student.GuangdaApplication;
 import hzyj.guangda.student.R;
 import hzyj.guangda.student.activity.ActivityInputRecord;
+import hzyj.guangda.student.activity.BookDriveActivity;
 import hzyj.guangda.student.activity.MapHomeActivity;
 import hzyj.guangda.student.common.Setting;
 import hzyj.guangda.student.event.Update;
@@ -248,8 +249,12 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 //							}
 						}
 						else{
+							if(GuangdaApplication.isToBaoMing){
+								startMyActivity(BookDriveActivity.class);	
+							}else{
+								startMyActivity(MapHomeActivity.class);	
+							}
 							
-							startMyActivity(MapHomeActivity.class);	
 						}
 					}
 					

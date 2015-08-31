@@ -13,6 +13,7 @@ import com.loopj.android.http.RequestParams;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +28,11 @@ import hzyj.guangda.student.GuangdaApplication;
 import hzyj.guangda.student.R;
 import hzyj.guangda.student.TitlebarActivity;
 import hzyj.guangda.student.common.Setting;
+import hzyj.guangda.student.response.GetCoinsLimitResponse;
 import hzyj.guangda.student.response.GetStudentCoinList;
 import hzyj.guangda.student.response.GetStudentCoinList.RecordList;
 import hzyj.guangda.student.response.GetWalletInfo;
+import hzyj.guangda.student.response.GetCoinsLimitResponse.coinAffiliation;
 import hzyj.guangda.student.util.MySubResponseHandler;
 import hzyj.guangda.student.util.NoScrollListView;
 
@@ -40,11 +43,14 @@ public class ActivityMyCoins extends TitlebarActivity {
 	private TextView tvCoinCoachCount;
 	private TextView tvCoinXiaoBaCount;
 	private TextView tvFreeCoins;
-	private NoScrollListView lvCoins;
+	private NoScrollListView lvCoins,lvCoinsLimit;
 	private myCoinsAdapter myCoinsAda;
+	private coinAffiliationAdapter coinAffiliationadaper;
 	private List<RecordList> studentRecordArray = new ArrayList<RecordList>();
+	private ArrayList<GetCoinsLimitResponse.coinAffiliation> coinafffiliation=new ArrayList<>();
 	private TextView tvCoachName;
 	private int studentId;
+	private View vwnum1,vwnum2;
 	private PullToRefreshScrollView pullToRefreshSl;
 	@Override
 	public int getLayoutId() {
@@ -59,9 +65,13 @@ public class ActivityMyCoins extends TitlebarActivity {
 //		tvCoinCoachCount = (TextView)findViewById(R.id.tv_coins_coach_count);
 //		tvCoinXiaoBaCount = (TextView)findViewById(R.id.tv_coins_coach_count);
 		lvCoins = (NoScrollListView)findViewById(R.id.lv_coins_detail);
-		tvCoachName = (TextView)findViewById(R.id.tv_coach_name);
+		lvCoinsLimit=(NoScrollListView)findViewById(R.id.lv_coins_limit);
+		//tvCoachName = (TextView)findViewById(R.id.tv_coach_name);
 		tvFreeCoins=(TextView)findViewById(R.id.tv_freeze_bi);
 		pullToRefreshSl = (PullToRefreshScrollView)findViewById(R.id.pull_re_scroll);
+		
+		vwnum1=(View)findViewById(R.id.vw_num1);
+		vwnum2=(View)findViewById(R.id.vw_num2);
 	}
 
 	@Override
@@ -86,7 +96,9 @@ public class ActivityMyCoins extends TitlebarActivity {
 		tvFreeCoins.setText("");
 		tvFreeCoins.append("(小巴币冻结：");
 		myCoinsAda = new myCoinsAdapter(mBaseApplication);
+		coinAffiliationadaper=new coinAffiliationAdapter(mBaseApplication);
 		lvCoins.setAdapter(myCoinsAda);
+		lvCoinsLimit.setAdapter(coinAffiliationadaper);
 	}
 
 	@Override
@@ -97,7 +109,7 @@ public class ActivityMyCoins extends TitlebarActivity {
 		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, GetStudentCoinList.class, new MySubResponseHandler<GetStudentCoinList>() {
 			@Override
 			public RequestParams setParams(RequestParams requestParams) {
-				requestParams.add("action", "GETSTUDENTCOINRECORDLIST");
+				requestParams.add("action", "GETSTUDENTWALLETINFO");
 				requestParams.add("studentid",studentId+"");
 				return requestParams;
 			}
@@ -111,9 +123,9 @@ public class ActivityMyCoins extends TitlebarActivity {
 					tvFreeCoins.append("枚)");
 					if (!TextUtils.isEmpty(baseReponse.getCoachname()))
 					{
-						tvCoachName.setText(baseReponse.getCoachname());
+						//tvCoachName.setText(baseReponse.getCoachname());
 					}else{
-						tvCoachName.setText("所属驾校");
+						//tvCoachName.setText("所属驾校");
 					}
 					if (baseReponse.getRecordlist()!=null&&baseReponse.getRecordlist().size()!=0)
 					{
@@ -129,6 +141,91 @@ public class ActivityMyCoins extends TitlebarActivity {
 				// TODO Auto-generated method stub
 			}
 		});
+		
+		
+		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, GetCoinsLimitResponse.class, new MySubResponseHandler<GetCoinsLimitResponse>() {
+			@Override
+			public RequestParams setParams(RequestParams requestParams) {
+				requestParams.add("action", "GETCOINAFFILIATION");
+				requestParams.add("studentid",studentId+"");
+				return requestParams;
+			}
+			@Override
+			public void onSuccess(int statusCode, Header[] headers,
+					GetCoinsLimitResponse baseReponse) {
+				if (baseReponse.getCode() == 1)
+				{
+					if(baseReponse.getCoinaffiliationlist().size()>0){
+						vwnum1.setVisibility(View.VISIBLE);
+						vwnum2.setVisibility(View.VISIBLE);
+						coinafffiliation.addAll(baseReponse.getCoinaffiliationlist());
+						coinAffiliationadaper.notifyDataSetChanged();
+					}else{
+						vwnum1.setVisibility(View.GONE);
+						vwnum2.setVisibility(View.GONE);
+					}
+
+				}
+				else{
+					if (TextUtils.isEmpty(baseReponse.getMessage()))
+					{
+						showToast(baseReponse.getMessage());
+						vwnum1.setVisibility(View.GONE);
+						vwnum2.setVisibility(View.GONE);
+					}
+				}
+				
+			}
+		});
+	}
+	
+	public class coinAffiliationAdapter extends BaseAdapter{
+		private LayoutInflater inflater;
+		 public coinAffiliationAdapter(Context context) {
+			// TODO Auto-generated constructor stub
+			this.inflater = LayoutInflater.from(context);
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return coinafffiliation.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return coinafffiliation.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			
+			HolderView holderView=null;
+			 if (convertView == null){
+				 holderView = new HolderView();
+	                convertView = inflater.inflate(R.layout.coin_limit_msg,null);
+	                holderView.tvCoinsNum = (TextView)convertView.findViewById(R.id.tv_coins_num);
+	                holderView.tvAffiliation=(TextView)convertView.findViewById(R.id.tv_affiliation);
+//	                holder.tvOrderId = (TextView)convertView.findViewById(R.id.tv_order_id);
+	               
+	                convertView.setTag(holderView);
+	            }else {
+	            	holderView = (HolderView)convertView.getTag();
+	            }
+			 holderView.tvCoinsNum.setText(Html.fromHtml("<font color=red>"+coinafffiliation.get(position).getCoin()+"</font>"+"<font color=#4E4E4E>个</font>"));
+			 holderView.tvAffiliation.setText(coinafffiliation.get(position).getMsg());
+			
+			// TODO Auto-generated method stub
+			return convertView;
+		}
+		
 	}
 	
 	public class myCoinsAdapter extends BaseAdapter
@@ -200,6 +297,8 @@ public class ActivityMyCoins extends TitlebarActivity {
 		private TextView tvOrderTime;
 		private TextView tvTitle;
 		private TextView tvMoney;
+		private TextView tvCoinsNum;
+		private TextView tvAffiliation;
 	}
 	
 	

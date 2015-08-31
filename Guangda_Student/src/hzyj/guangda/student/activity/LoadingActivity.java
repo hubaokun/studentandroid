@@ -12,6 +12,7 @@ import hzyj.guangda.student.common.Setting;
 import hzyj.guangda.student.common.UserInfo;
 import hzyj.guangda.student.event.Update;
 import hzyj.guangda.student.response.LoginResponse;
+import hzyj.guangda.student.response.getAdvertiseResponse;
 import hzyj.guangda.student.response.getStudentAdvertisement;
 import hzyj.guangda.student.util.DataBaseUtil;
 import hzyj.guangda.student.util.MySubResponseHandler;
@@ -20,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -38,7 +40,8 @@ import com.igexin.sdk.PushManager;
 import com.loopj.android.http.RequestParams;
 
 import de.greenrobot.event.EventBus;
-import hzyj.guangda.student.util.ImageLoadSaveTask;;
+import hzyj.guangda.student.util.ImageLoadSaveTask;
+import hzyj.guangda.student.util.ImageLoader;;
 /**
  * 加载界面
  * 
@@ -51,6 +54,8 @@ public class LoadingActivity extends BaseFragmentActivity {
 //	private TextView mVersionNameTv;
 	public static UserInfo mUserInfo;
 	private Context mContext;
+	private String type="2",model="2",height,width,url;
+	private ImageLoader imgloader;
 
 	@Override
 	public int getLayoutId() {
@@ -59,6 +64,7 @@ public class LoadingActivity extends BaseFragmentActivity {
 
 	@Override
 	public void findViews(Bundle savedInstanceState) {
+		
 		//初始化个推
 		PushManager.getInstance().initialize(this.getApplicationContext());
 		mLoadingIv = (ImageView) findViewById(R.id.iv_loading);
@@ -69,6 +75,15 @@ public class LoadingActivity extends BaseFragmentActivity {
 	@Override
 	public void addListeners() {
 
+	}
+	
+	private void WindowMetric(){
+		 DisplayMetrics metric = new DisplayMetrics();
+	        getWindowManager().getDefaultDisplay().getMetrics(metric);
+	         int a = metric.widthPixels;  // 屏幕宽度（像素）
+	         int b = metric.heightPixels;  // 屏幕高度（像素）
+	         width=String.valueOf(a);
+	         height=String.valueOf(b);
 	}
 
 	/**
@@ -108,22 +123,29 @@ public class LoadingActivity extends BaseFragmentActivity {
 	
 	
 	private void getAdvertisement(){
-		AsyncHttpClientUtil.get().post(this, Setting.SYSTEM_URL, getStudentAdvertisement.class, new MySubResponseHandler<getStudentAdvertisement>() {
+		
+		WindowMetric();
+		AsyncHttpClientUtil.get().post(this, Setting.ADVERTISE, getAdvertiseResponse.class, new MySubResponseHandler<getAdvertiseResponse>() {
 
 			@Override
 			public RequestParams setParams(RequestParams requestParams) {
-				requestParams.add("action", "CHECKCONFIG");
+				requestParams.add("action", "GETADVERTISEMENT");
+				requestParams.add("height",height);
+				requestParams.add("width",width);
+				requestParams.add("model",type);
+				requestParams.add("type",type);
 				return requestParams;
 			}
 
 			@Override
-			public void onSuccess(int statusCode, Header[] headers, getStudentAdvertisement baseReponse) {
+			public void onSuccess(int statusCode, Header[] headers, getAdvertiseResponse baseReponse) {
 				if (baseReponse.getCode() == 1)
 				{
-					if (baseReponse.getConfig().getStudent_advertisement_flag() == 1)
+					if (baseReponse.getS_flash_flag().equals("1")&&baseReponse.getS_img_android()!=null)
 					{
 						try {
-				               new ImageLoadSaveTask(LoadingActivity.this, mLoadingIv).execute(baseReponse.getConfig().getStudent_advertisement_url());
+							//imgloader.DisplayImage(baseReponse.getS_img_android_flash(), mLoadingIv);
+				               new ImageLoadSaveTask(LoadingActivity.this, mLoadingIv).execute(baseReponse.getS_img_android_flash());
 				           } catch (Exception e) {
 				               e.printStackTrace();
 				           }

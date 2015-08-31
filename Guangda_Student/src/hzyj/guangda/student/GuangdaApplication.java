@@ -34,6 +34,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -76,8 +77,13 @@ public class GuangdaApplication extends BaseApplication {
 	public List<City> cityArray = new ArrayList<City>();
 	public List<Zone> areaArray = new ArrayList<Zone>();
 	public static String baiduId;
+	public static boolean isToBaoMing;
+	
+	
 	
 	public static int isInvited;
+	
+     
 	
 
 	@Override

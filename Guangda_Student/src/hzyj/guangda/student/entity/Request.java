@@ -9,7 +9,16 @@ public class Request {
 	private String recordid ;
 	private int delmoney;
 	private int paytype;
+	private int total;
+	
 
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
 
 	public List<String> getTime() {
 		return time;

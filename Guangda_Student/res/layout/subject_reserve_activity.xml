@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical" >
+    
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,9 +16,8 @@
         android:orientation="horizontal" >
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:paddingLeft="11dp"
             android:paddingRight="11dp" >
@@ -41,7 +45,6 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:singleLine="true"
                 android:textColor="@color/text"
                 android:textSize="14dp" />
@@ -62,16 +65,17 @@
            	    android:textColor="@color/text"/>
              </LinearLayout>
             </LinearLayout>
-            <TextView 
+           <!--  <TextView 
                 android:id="@+id/tv_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:singleLine="true"
                 android:textColor="@color/text"
-                android:textSize="14dp"/>
+                android:textSize="14dp"/> -->
             
             </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_address"
@@ -83,15 +87,83 @@
                 android:textColor="@color/subject_reserve_hint_text"
                 android:textSize="12dp" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_back"
+        
+        <LinearLayout 
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="10dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/back_img" />
+            android:orientation="vertical">
+            <RelativeLayout 
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                >
+                 <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:scaleType="centerInside"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/back_img"
+                 />
+                 <RelativeLayout
+                     android:id="@+id/rl_remind" 
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@+id/iv_back"
+                     android:visibility="invisible"
+                     >
+                 <Button  
+                       
+                      android:layout_centerVertical="true"
+                      android:layout_alignParentRight="true" 
+                      android:id="@+id/iv_remind_coach"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:scaleType="centerInside"
+                      android:background="@drawable/remind_coach" 
+                      android:gravity="center"
+                      />
+                 <ImageView
+                     android:id="@+id/iv_alarm"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:src="@drawable/alarm"
+                     android:layout_centerVertical="true"
+                     android:layout_marginLeft="10dp"
+                     android:layout_alignLeft="@+id/iv_remind_coach"
+                 />
+                 <TextView 
+                     android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="10dp"
+                      android:layout_marginLeft="2dp"
+                      android:text="提醒教练开课"
+                      android:textColor="@color/white"
+                      android:layout_centerVertical="true"
+                      android:layout_toRightOf="@+id/iv_alarm"/>
+                 </RelativeLayout>
+            </RelativeLayout>
+                  
+        </LinearLayout>
+        
+                 
+      </LinearLayout>
+     <!--  <RelativeLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+             <TextView    
+                      android:layout_alignParentRight="true"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:scaleType="centerInside"
+                      android:background="@drawable/remind_coach" 
+                      android:visibility="visible"
+                      android:text="提醒教练开课"
+                      android:gravity="center"
+                      />
+            
+        </RelativeLayout> -->
     </LinearLayout>
 
     <View style="@style/common_line" />

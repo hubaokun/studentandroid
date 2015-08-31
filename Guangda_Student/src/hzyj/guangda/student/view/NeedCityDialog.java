@@ -42,7 +42,7 @@ public class NeedCityDialog extends BaseDialog {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent (mContext,PersonalInfoActivity.class);
+				Intent intent = new Intent (mContext,IdentityInfoActivity.class);
 				mContext.startActivity(intent);
 				dismiss();
 			}

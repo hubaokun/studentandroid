@@ -68,7 +68,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_order_title_center_back"
                 android:gravity="center"
-                android:text="已完成"
+                android:text="已评价"
                 android:textColor="@color/selector_order_title_text" />
              <View
                 android:layout_width="1px"
@@ -84,7 +84,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_order_title_right_back"
                 android:gravity="center"
-                android:text="投诉中"
+                android:text="待处理"
                 android:textColor="@color/selector_order_title_text" />
         </LinearLayout>
     </RelativeLayout>

@@ -8,6 +8,7 @@ import hzyj.guangda.student.common.Setting;
 import hzyj.guangda.student.event.Update;
 import hzyj.guangda.student.response.CoachScheduleResponse;
 import hzyj.guangda.student.response.CoachScheduleResponse.Data;
+import hzyj.guangda.student.response.RemindCoachResponse;
 import hzyj.guangda.student.response.UserMoneyResponse;
 import hzyj.guangda.student.util.MySubResponseHandler;
 import hzyj.guangda.student.view.NeedRealNameDialog;
@@ -36,9 +37,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +50,7 @@ import com.common.library.llj.adapterhelp.BaseAdapterHelper;
 import com.common.library.llj.adapterhelp.QuickAdapter;
 import com.common.library.llj.base.BaseFragment;
 import com.common.library.llj.base.BaseFragmentActivity;
+import com.common.library.llj.base.BaseReponse;
 import com.common.library.llj.utils.AsyncHttpClientUtil;
 import com.common.library.llj.utils.TimeUitlLj;
 import com.common.library.llj.views.PagerSlidingTabStrip;
@@ -84,6 +89,9 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 	private LinearLayout llPhone;
 	private String mPhone;
 	private List<Data> dataArraylist = new ArrayList<CoachScheduleResponse.Data>();
+	private Button rl_remind_coach;
+	private RelativeLayout rl_remind;
+	private long send_Remind_time;
 //	private int SelectCount = 0;
 	//private boolean isResume = false;
 	@Override
@@ -107,7 +115,7 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 		mNameTv = (TextView) findViewById(R.id.tv_name);
 		mAddressTv = (TextView) findViewById(R.id.tv_address);
 		mBackIv = (ImageView) findViewById(R.id.iv_back);
-		mTvGender = (TextView) findViewById(R.id.tv_gender);
+		//mTvGender = (TextView) findViewById(R.id.tv_gender);
 		mTab = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		mTab.setUnderlineHeight(0);
 		mTab.setIndicatorHeight(0);
@@ -120,6 +128,9 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 //		mReChargeTv = (TextView) findViewById(R.id.tv_recharge);
 		tvPhone = (TextView)findViewById(R.id.tv_phone);
 		llPhone = (LinearLayout)findViewById(R.id.ll_phone);
+		rl_remind_coach=(Button)findViewById(R.id.iv_remind_coach);
+		rl_remind=(RelativeLayout)findViewById(R.id.rl_remind);
+		
 	}
 
 	@Override
@@ -131,6 +142,17 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 				finish();
 			}
 		});
+		
+		rl_remind_coach.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				remindCoach();
+			}
+		});
+		
+		
 		mSureTv.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -161,6 +183,44 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 			}
 		});
 		
+
+		
+	}
+	
+	//提醒教练开课
+	
+	private void remindCoach(){
+		
+		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, BaseReponse.class, new MySubResponseHandler<BaseReponse>() {
+			@Override
+			public void onStart() {
+			
+			}
+
+			@Override
+			public RequestParams setParams(RequestParams requestParams) {
+				requestParams.add("action", "REMINDCOACH");
+				requestParams.add("coachid", mCoachId);
+				requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+				requestParams.add("date", TimeUitlLj.millisecondsToString(9, send_Remind_time));
+				return requestParams;
+			}
+
+			@Override
+			public void onFinish() {
+				
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, BaseReponse baseReponse) {
+				if(baseReponse.getCode()==1){
+					rl_remind.setVisibility(View.INVISIBLE);
+				}
+				
+			}
+
+		});
+		
 	}
 
 	@Override
@@ -168,7 +228,7 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 		mStarRb.setRating(mScore);
 		mNameTv.setText(mName);
 		mAddressTv.setText(mAddress);
-		mTvGender.setText(mGender);
+		//mTvGender.setText(mGender);
 		mSelectNumTv.setText("您还未选择任何时间");
 		initDates();
 		EventBus.getDefault().register(this);
@@ -239,7 +299,7 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, UserMoneyResponse baseReponse) {
-				mOverage = baseReponse.getMoney();
+				mOverage = baseReponse.getMoney();  //账户余额
 //				mRemainMoneyTv.setText("账户余额：" + baseReponse.getMoney() + "元");
 			}
 		});
@@ -312,6 +372,14 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 
 		@Override
 		protected void addListeners(View view, Bundle savedInstanceState) {
+//			rl_remind_coach.setOnClickListener(new View.OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View arg0) {
+//					remindCoach();
+//					
+//				}
+//			});
 
 		}
 		@Override
@@ -334,6 +402,8 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 			super.onLasyLoad();
 			doRequest();
 		}
+		
+
 
 		private void doRequest() {
 			AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, CoachScheduleResponse.class, new MySubResponseHandler<CoachScheduleResponse>() {
@@ -360,9 +430,18 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, CoachScheduleResponse baseReponse) {
 					if (baseReponse.getDatelist() != null && baseReponse.getDatelist().size() == 19) {
-
+						send_Remind_time=dateLong;
 						dataArraylist = baseReponse.getDatelist();
 						System.out.println(baseReponse);
+						if(baseReponse.getCoachstate()==0&&baseReponse.getRemindstate()==0){
+							//rl_remind_coach.setVisibility(View.VISIBLE);
+							rl_remind.setVisibility(View.VISIBLE);
+						}
+						else{
+							//rl_remind_coach.setVisibility(View.INVISIBLE);
+							rl_remind.setVisibility(View.INVISIBLE);
+						}
+						
 						mMorningAdapter.replaceAll(baseReponse.getDatelist().subList(0, 7));
 						mAfternoonAdapter.replaceAll(baseReponse.getDatelist().subList(7, 14));
 						mNightAdapter.replaceAll(baseReponse.getDatelist().subList(14, 19));

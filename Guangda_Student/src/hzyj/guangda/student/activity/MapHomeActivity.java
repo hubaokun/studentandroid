@@ -22,6 +22,7 @@ import hzyj.guangda.student.response.GetCityId;
 import hzyj.guangda.student.response.GetCarModelResponse.CarModel;
 import hzyj.guangda.student.response.GetMessageCountResponse;
 import hzyj.guangda.student.response.LoginResponse;
+import hzyj.guangda.student.response.getAdvertiseResponse;
 import hzyj.guangda.student.util.MySubResponseHandler;
 import hzyj.guangda.student.view.MapBottomDialog;
 import hzyj.guangda.student.view.MySlidingPaneLayout;
@@ -41,12 +42,14 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.Uri;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts.Data;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -92,6 +95,7 @@ import com.common.library.llj.utils.LogUtilLj;
 import com.common.library.llj.utils.MyResponseHandler;
 import com.common.library.llj.utils.ViewHolderUtilLj;
 import com.common.library.llj.views.LinearListView;
+import com.common.library.llj.views.LoadingDialog;
 import com.common.library.llj.views.UnscrollableGridView;
 import com.loopj.android.http.RequestParams;
 import com.pgyersdk.update.PgyUpdateManager;
@@ -134,7 +138,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private List<CarModel> mCarModels = new ArrayList<CarModel>();
 	private int count = 0,cityId;
 	private CardTypeAdapter mCardTypeAdapter;
-	private ImageView imgService;
+	private ImageView imgService,imgGps;
 	 private DBManager mgr;
 	 private LinearLayout nowLocation,ll_selector;
 	
@@ -142,6 +146,10 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private Context context;
 	private LinearLayout llHeader;
 	private Marker mark;
+	private LoadingDialog loadingdialog;
+	private boolean reGps=false;
+	private String type="2",model="2",height,width,url;
+	private hzyj.guangda.student.view.ShowAdvertisementDialog showAdvDialog;
 //	private LinearLayout llPersonBook;
 	@Override
 	public int getLayoutId() {
@@ -150,6 +158,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 
 	@Override
 	public void findViews(Bundle savedInstanceState) {
+		
 		context = this;
 		mCardTypeLi = (LinearListView) findViewById(R.id.li_bottom_card_type);
 		mSlidingPaneLayout = (MySlidingPaneLayout) findViewById(R.id.sliding_layout);
@@ -165,14 +174,60 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		mMapView = (MapView) findViewById(R.id.bmapsView);
 		imgService = (ImageView)findViewById(R.id.img_service);
 		llHeader = (LinearLayout)findViewById(R.id.li_menu_head);
-		nowLocation=(LinearLayout)findViewById(R.id.ll_now_location);
-		ll_selector=(LinearLayout)findViewById(R.id.ll_selector);
-//		llPersonBook = (LinearLayout)findViewById(R.id.ll_person_book_app);
+		imgGps=(ImageView)findViewById(R.id.img_gps);
 		initFirstLocation();
 		initLocationClient();
 		autoLogin();
 		((GuangdaApplication) mBaseApplication).setLocation();
+		showAdvDialog = new hzyj.guangda.student.view.ShowAdvertisementDialog(mBaseFragmentActivity);
+		getAdvertiseme();
 
+	}
+	
+	private void getAdvertiseme(){
+		
+		WindowMetric();
+		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.ADVERTISE, getAdvertiseResponse.class, new MySubResponseHandler<getAdvertiseResponse>() {
+
+			@Override
+			public RequestParams setParams(RequestParams requestParams) {
+				requestParams.add("action", "GETADVERTISEMENT");
+				requestParams.add("height",height);
+				requestParams.add("width",width);
+				requestParams.add("model",type);
+				requestParams.add("type",type);
+				return requestParams;
+			}
+
+			@Override
+			public void onFinish() {
+				
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, getAdvertiseResponse baseReponse) {
+				if(baseReponse.getCode()==1){
+					if(baseReponse.getS_flag().equals("2")){
+						//showAdvDialog.setImageAdvertisement(baseReponse.getS_img_android());
+						loadImageDefault(baseReponse.getS_img_android(),580,620,showAdvDialog.imgAdvertisement);
+						showAdvDialog.show();
+						url = baseReponse.getS_url();
+					}
+					
+				}
+			}
+		});
+		
+	}
+	
+	
+	private void WindowMetric(){
+		 DisplayMetrics metric = new DisplayMetrics();
+	        getWindowManager().getDefaultDisplay().getMetrics(metric);
+	         int a = metric.widthPixels;  // 屏幕宽度（像素）
+	         int b = metric.heightPixels;  // 屏幕高度（像素）
+	         width=String.valueOf(a);
+	         height=String.valueOf(b);
 	}
 
 	private void initSlidingPaneLayout() {
@@ -219,9 +274,6 @@ public class MapHomeActivity extends BaseFragmentActivity {
 							GuangdaApplication.mUserInfo.setCity(locationname);
 						 //ArrayList<Province> provincelist = (ArrayList<Province>) mgr.queryProvince();
 							mgr.closeDB();
-						
-							
-							
 							}
 
 							if(GuangdaApplication.isInvited==1){
@@ -248,6 +300,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 //	else{
 //		nowLocation.setVisibility(View.GONE);
 //	}
+		
+		
 	}
 
 	/**
@@ -351,6 +405,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	 * 开启定位
 	 */
 	private void initLocationClient() {
+		
 		LocationClient mLocClient = new LocationClient(this);
 		LocationClientOption option = new LocationClientOption();
 		// option.setOpenGps(true);// 打开gps
@@ -377,28 +432,33 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					LatLng pre = new LatLng(mLatitude, mLongitude);
 					LatLng next = new LatLng(arg0.getLatitude(), arg0.getLongitude());
 					mDistanse = (int) DistanceUtil.getDistance(pre, next);
-					city=arg0.getCity().replace("市","");
-					nowlocaionId=arg0.getCityCode();
-					if (GuangdaApplication.mUserInfo.getCity() !=null)
-					{
-					if(GuangdaApplication.mUserInfo.getCity().indexOf(city)!=-1){
-						//nowLocation.setVisibility(View.GONE);
-				}
-				else{
-						showToast("您设置的驾考城市不是当前城市，可前往基本信息页面修改。");
-					
-				}
-					}else{
-						showToast("您还未设置驾考城市，请前往基本信息页面设置。");
+					if(arg0.getCity()!=null){
+						city=arg0.getCity().replace("市","");
 					}
-
+					nowlocaionId=arg0.getCityCode();
+					if(!reGps){
+						if (GuangdaApplication.mUserInfo.getCity() !=null)
+						{
+						if(GuangdaApplication.mUserInfo.getCity().indexOf(city)!=-1){
+							//nowLocation.setVisibility(View.GONE);
+					}
+					else{
+							showToast("您设置的驾考城市不是当前城市，可前往基本信息页面修改。");
+						
+					}
+						}else{
+							showToast("您还未设置驾考城市，请前往基本信息页面设置。");
+						}
+					}
 					mLatitude = arg0.getLatitude();
 					mLongitude = arg0.getLongitude();
-					getCityId();
+					if(!city.equals("")){
+						getCityId();
+					}
 				}
 				if (mMapLoaded && (mDistanse > 100)) {
 					LogUtilLj.LLJi("onReceiveLocation:" + "mDistanse" + mDistanse);
-					doRequest(0, true);
+						doRequest(0, true);
 				}
 			}
 		});
@@ -417,6 +477,29 @@ public class MapHomeActivity extends BaseFragmentActivity {
 
 	@Override
 	public void addListeners() {
+		
+		showAdvDialog.imgAdvertisement.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {	
+//				if(url!=null){
+//					if(!url.contains("http")){
+//						url="http://"+url;
+//						Uri u = Uri.parse(url);  
+//						Intent it = new Intent(Intent.ACTION_VIEW,u);
+//						MapHomeActivity.this.startActivity(it); 
+//					}		
+//				}
+				if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
+					GuangdaApplication.isToBaoMing=true;
+					startMyActivity(LoginActivity.class);
+				} else {
+					startMyActivity(BookDriveActivity.class);
+				}
+			}
+		});
+		
+		
 		llHeader.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -429,14 +512,28 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			}
 		});
 		
-		nowLocation.setOnClickListener(new OnClickListener() {
+		imgGps.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				nowLocation.setVisibility(View.GONE);
+				onResume();
+				
+				reGps=true;
+				initLocationClient();
+				//getCardModelRequest();
+				
 			}
 		});
+		
+//		nowLocation.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				nowLocation.setVisibility(View.GONE);
+//			}
+//		});
 		
 		mMenuIv.setOnClickListener(new OnClickListener() {
 
@@ -501,6 +598,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		});
 		
 	}
+	
+	
 	
 	public void getCityId() {
 		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.LOCATION_URL, GetCityId.class, new MySubResponseHandler<GetCityId>() {
@@ -765,6 +864,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					} else {
 						count = GuangdaApplication.DISPLAY_WIDTH / DensityUtils.dp2px(mBaseFragmentActivity, 60);
 					}
+					mCarModels.clear();
 					mCarModels.addAll(baseReponse.getModellist());
 					if (mCarModels.size() != 0 && mCarModels.get(0) != null) {
 						mCarModels.get(0).setSelect(true);

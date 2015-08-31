@@ -11,6 +11,26 @@ import com.common.library.llj.base.BaseReponse;
  */
 public class CoachScheduleResponse extends BaseReponse {
 	private List<Data> datelist;
+	private int coachstate; //1 开课， 0 休息
+	private int remindstate;//1 已提醒过  0 未提醒
+	
+	
+
+	public int getCoachstate() {
+		return coachstate;
+	}
+
+	public void setCoachstate(int coachstate) {
+		this.coachstate = coachstate;
+	}
+
+	public int getRemindstate() {
+		return remindstate;
+	}
+
+	public void setRemindstate(int remindstate) {
+		this.remindstate = remindstate;
+	}
 
 	public List<Data> getDatelist() {
 		return datelist;
@@ -34,6 +54,7 @@ public class CoachScheduleResponse extends BaseReponse {
 		private String subject;
 		private int pasttime;
 		private int isbooked;
+
 		private int status;// 0不能选，1可以选，2选中
 
 		public long getDateLong() {

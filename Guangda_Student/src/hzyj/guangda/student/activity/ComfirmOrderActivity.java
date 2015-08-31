@@ -90,6 +90,8 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 	private float hasCoin = 0;
 	private float hasMoney = 0;
 	private boolean hasmoneyflag = true;
+	private float mixCoins=0; //混合支付 小巴币支付的个数
+	private boolean IspayQuan=false;
 	
 
 	@Override
@@ -117,6 +119,8 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 
 	@Override
 	public void addListeners() {
+		
+		//预定流程
 		mSureOrderTv.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -237,6 +241,18 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 					chosePayWay.dismiss();
 					initData();
 					break;
+				case 4://混合支付
+					hasChosedOrderPrice.get(chosedIndex).setType(4);
+					if(hasCoin>0){
+						hasChosedOrderPrice.get(chosedIndex).setDemoney((int)hasCoin);
+					}
+					if (hasChosedOrderPrice.get(chosedIndex).getCoupon() != null)
+					{
+						hasChosedOrderPrice.get(chosedIndex).setCoupon(null);
+					}
+					chosePayWay.dismiss();
+					initData();
+					break;
 				default:
 					break;
 				}
@@ -256,6 +272,11 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 				{
 					chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_normal);
 				}
+				else if(chosePayWay.Type==4){
+					chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_normal);
+					chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_normal);
+					
+				}
 				chosePayWay.Type = 2;
 
 				
@@ -263,19 +284,36 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 		});
 		
 		chosePayWay.rlXiaobabi.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_select);
-				if (chosePayWay.Type == 2)
-				{
-					chosePayWay.imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
-				}else if (chosePayWay.Type == 1)
-				{
-					chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_normal);
+				
+				if(chosePayWay.Type==4){
+				
+						chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_normal);
+						chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_select);
+						chosePayWay.Type=1;
+
+				}else if(hasCoin>0&&hasCoin<hasChosedOrderPrice.get(chosedIndex).getPrice()){
+					if(IspayQuan){
+						chosePayWay.imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
+					}
+					chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_select);
+					chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_select);
+					chosePayWay.Type=4;
+				}else{
+					chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_select);
+					if (chosePayWay.Type == 2)
+					{
+						chosePayWay.imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
+					}else if (chosePayWay.Type == 1)
+					{
+						chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_normal);
+					}
+					chosePayWay.Type = 3;
+					
 				}
-				chosePayWay.Type = 3;
+				
 
 			}
 		});
@@ -285,15 +323,30 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (chosePayWay.Type == 3)
-				{
-					chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_normal);
-				}else if (chosePayWay.Type == 2)
-				{
-					chosePayWay.imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
+				
+				if(chosePayWay.Type==4){
+					if(hasCoin>=hasChosedOrderPrice.get(chosedIndex).getPrice()){
+						chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_select);
+						chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_normal);
+						chosePayWay.Type=3;
+					}else{
+						chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_select);
+						chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_select);
+						showToast("小巴币不足");
+						chosePayWay.Type=4;
+					}
+				}else{
+					if (chosePayWay.Type == 3)
+					{
+						chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_normal);
+					}else if (chosePayWay.Type == 2)
+					{
+						chosePayWay.imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
+					}
+					chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_select);
+					chosePayWay.Type = 1;
 				}
-				chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_select);
-				chosePayWay.Type = 1;
+
 
 			}
 		});
@@ -384,6 +437,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 	
 
 	private void initData() {
+		IspayQuan=false;//是否是小巴券支付
 		mHasUseCoinsNum = 0;
 		mHasUseCouponMoney = 0;
 		mHasUseResetMoney = 0;
@@ -409,6 +463,8 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 					final TextView tv_select_oupon = (TextView) header.findViewById(R.id.tv_select_oupon);
 //					LinearLayout mCouponLi = (LinearLayout) header.findViewById(R.id.li_coupon);
 					tv_select_oupon.setTag(i);
+					
+					// 点开选择方式
 					tv_select_oupon.setOnClickListener(new OnClickListener() {
 
 						@Override
@@ -421,7 +477,17 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							int type = hasChosedOrderPrice.get(chosedIndex).getType();
 							chosePayWay.Type = type;
 							chosePayWay.setChosedItem(type);
-							chosePayWay.setItemVisible(tickets,hasCoin,hasMoney,price,type);
+							if(type==2){
+								IspayQuan=true;
+							}
+							if(type==4){
+								chosePayWay.setItemVisible(tickets,hasCoin,hasMoney,price,type,hasChosedOrderPrice.get(chosedIndex).getDemoney());
+							}else if(hasCoin>0){
+								chosePayWay.setItemVisible(tickets,hasCoin,hasMoney,price,type,0);
+							}else{
+								chosePayWay.setItemVisible(tickets,hasCoin,hasMoney,price,type,0);
+							}
+							
 //							String chosedWay = tv_select_oupon.getText().toString();
 //							if (chosedWay.equals("学时券"))
 //							{
@@ -445,6 +511,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 						}
 					});
 					List<Float> price = new ArrayList<Float>();
+					
 					for (Data data : mRemain.get(date)) {
 						if (data != null)
 							price.add(data.getPrice());
@@ -528,7 +595,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 ////					}
 //					}
 					
-					
+					 
 					if (isFirstLoad == 0)
 					{
 						OrderList orderPrice = new OrderList();
@@ -559,9 +626,25 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 						orderPrice.setPrice(price.get(0));
 						hasCoin = hasCoin - price.get(0);
 						mHasUseCoinsNum = mHasUseCoinsNum+price.get(0);
-						
 						request.setDelmoney(price.get(0).intValue());
 						request.setPaytype(3);
+					}
+					//混合支付
+					else if(hasCoin>0&&hasCoin<price.get(0)){
+						tv_select_oupon.setText("小巴币和余额混合支付");
+					    orderPrice.setPrice(price.get(0));
+					    orderPrice.setType(4); //type=4 混合支付
+					    orderPrice.setDemoney((int)hasCoin);
+					    orderPrice.setPrice(price.get(0).intValue());
+					    mixCoins=hasCoin;
+					    request.setDelmoney((int)hasCoin);
+					    request.setPaytype(4);
+					    request.setTotal(price.get(0).intValue());
+					    mHasUseCoinsNum=mHasUseCoinsNum+hasCoin;
+					    mHasUseResetMoney=mHasUseResetMoney+price.get(0)-hasCoin;
+					    hasMoney=hasMoney-price.get(0)+hasCoin;
+					    hasCoin=0;
+
 					}else{
 						tv_select_oupon.setText("余额支付");
 						orderPrice.setType(1); //type=1 余额
@@ -570,7 +653,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 						request.setPaytype(1);
 						hasMoney = hasMoney - price.get(0);
 					}
-					hasChosedOrderPrice.add(orderPrice);
+					hasChosedOrderPrice.add(orderPrice);   //本地记录订单
 					}else{
 						switch (hasChosedOrderPrice.get(i).getType()) {
 						case 1:
@@ -581,7 +664,6 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							break;
 						case 2:
 							tv_select_oupon.setText("学时券");
-
 							mHasUseCouponMoney = mHasUseCouponMoney + price.get(0);
 							Coupon coupon = mCouponList.get(0);
 							hasChosedOrderPrice.get(chosedIndex).setCoupon(coupon);
@@ -599,6 +681,15 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							request.setDelmoney(price.get(0).intValue());
 							request.setPaytype(3);
 							break;
+						case 4:
+							tv_select_oupon.setText("小巴币和余额混合支付");
+							hasCoin=hasCoin-hasChosedOrderPrice.get(i).getDemoney();
+							mHasUseCoinsNum=mHasUseCoinsNum+hasChosedOrderPrice.get(i).getDemoney();
+							hasMoney=hasMoney-price.get(0)+hasChosedOrderPrice.get(i).getDemoney();
+							mHasUseResetMoney = mHasUseResetMoney + price.get(0)-hasChosedOrderPrice.get(i).getDemoney();
+							request.setDelmoney(hasChosedOrderPrice.get(i).getDemoney());
+							request.setTotal(price.get(0).intValue());
+							request.setPaytype(4);
 						default:
 							break;
 						}

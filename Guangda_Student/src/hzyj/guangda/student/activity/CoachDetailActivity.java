@@ -330,7 +330,7 @@ public class CoachDetailActivity extends BaseFragmentActivity implements OnClick
 			if (convertView == null) {
 				convertView = getLayoutInflater().inflate(R.layout.comment_list_activity_item, null);
 			}
-			ImageView imageView = ViewHolderUtilLj.get(convertView, R.id.iv_head);
+			//ImageView imageView = ViewHolderUtilLj.get(convertView, R.id.iv_head);
 			TextView tv_name = ViewHolderUtilLj.get(convertView, R.id.tv_name);
 			TextView tv_time = ViewHolderUtilLj.get(convertView, R.id.tv_time);
 			TextView tv_content = ViewHolderUtilLj.get(convertView, R.id.tv_comment);
@@ -338,7 +338,7 @@ public class CoachDetailActivity extends BaseFragmentActivity implements OnClick
 			Comment comment = mCommentlist.get(position);
 			if (comment != null) {
 				// 头像
-				loadHeadImage(comment.getAvatarUrl(), 40, 40, imageView);
+				//loadHeadImage(comment.getAvatarUrl(), 40, 40, imageView);
 				//
 				setText(tv_name, comment.getNickname());
 				//
@@ -363,6 +363,7 @@ public class CoachDetailActivity extends BaseFragmentActivity implements OnClick
 					intent.putExtra("mCoachid", mCoachId);
 					intent.putExtra("flag","student_comment");
 					intent.putExtra("studentId",mCommentlist.get(a).getFrom_user());
+					intent.putExtra("student_name",mCommentlist.get(a).getNickname() );
 					startActivity(intent);
 					
 				}

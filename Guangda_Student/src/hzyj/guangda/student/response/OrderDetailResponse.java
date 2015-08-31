@@ -39,6 +39,28 @@ public class OrderDetailResponse extends BaseReponse {
 		private int can_comment;
 		private MyEvaluation myevaluation;
 		private Evaluation evaluation;
+		private String complaintcontent;
+		private String reason;
+		
+		
+		
+		
+
+		public String getReason() {
+			return reason;
+		}
+
+		public void setReason(String reason) {
+			this.reason = reason;
+		}
+
+		public String getComplaintcontent() {
+			return complaintcontent;
+		}
+
+		public void setComplaintcontent(String complaintcontent) {
+			this.complaintcontent = complaintcontent;
+		}
 
 		public String getCreat_time() {
 			return creat_time;
@@ -318,6 +340,7 @@ public class OrderDetailResponse extends BaseReponse {
 			private String subject;
 			private float price;
 			private int state;
+			
 
 			public String getRecordid() {
 				return recordid;

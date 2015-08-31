@@ -227,10 +227,10 @@ public class NotFinishedFragment extends BaseFragment{
 				final TextView carlicense=helper.getView(R.id.tv_carlicense);
 				final TextView all_money = helper.getView(R.id.tv_all_money);
 				//final TextView tv_modelid=helper.getView(R.id.tv_model);
-//				TextView tv_complaint = helper.getView(R.id.tv_complaint);
+				TextView tv_complaint = helper.getView(R.id.tv_complaint);
 //				TextView tv_complaint_more = helper.getView(R.id.tv_complaint_more);
 //				TextView tv_cancel_complaint = helper.getView(R.id.tv_cancel_complaint);
-				TextView tv_get_on = helper.getView(R.id.tv_get_on);
+				//TextView tv_get_on = helper.getView(R.id.tv_get_on);
 				TextView tv_get_off = helper.getView(R.id.tv_get_off);
 				TextView tv_cancel_order = helper.getView(R.id.tv_cancel_order);
 				TextView tv_comment = helper.getView(R.id.tv_comment);
@@ -434,44 +434,60 @@ public class NotFinishedFragment extends BaseFragment{
 				
 
 				// 订单是否可以确认上车
-				if (item.getCan_up() == 0) {
-					tv_get_on.setVisibility(View.GONE);
-					tv_confirm_on.setVisibility(View.GONE);
-				} else if (item.getCan_up() == 1) {
-					tv_get_on.setVisibility(View.VISIBLE);
-					tv_confirm_on.setVisibility(View.VISIBLE);
-					tv_get_on.setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							DialogUtil dUtil = new DialogUtil(new DialogConfirmListener()
-							{
-								@Override
-								public void doConfirm(String str) {
-									if (mDialog != null)
-										try {
-											initLocationClient(item, "ConfirmOn");
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
-										mDialog.dismiss();
-								}
-
-								@Override
-								public void doCancel() {
-									if (mDialog != null)
-										mDialog.dismiss();
-								}
-							});
-							mDialog = dUtil.CallConfirmDialog("确认上车","","",mActivity, mDialog);
-						}
-					});
-				}
+//				if (item.getCan_up() == 0) {
+//					tv_get_on.setVisibility(View.GONE);
+//					tv_confirm_on.setVisibility(View.GONE);
+//				} else if (item.getCan_up() == 1) {
+//					tv_get_on.setVisibility(View.VISIBLE);
+//					tv_confirm_on.setVisibility(View.VISIBLE);
+//					tv_get_on.setOnClickListener(new OnClickListener() {
+//
+//						@Override
+//						public void onClick(View v) {
+//							DialogUtil dUtil = new DialogUtil(new DialogConfirmListener()
+//							{
+//								@Override
+//								public void doConfirm(String str) {
+//									if (mDialog != null)
+//										try {
+//											initLocationClient(item, "ConfirmOn");
+//										} catch (Exception e) {
+//											e.printStackTrace();
+//										}
+//										mDialog.dismiss();
+//								}
+//
+//								@Override
+//								public void doCancel() {
+//									if (mDialog != null)
+//										mDialog.dismiss();
+//								}
+//							});
+//							mDialog = dUtil.CallConfirmDialog("确认上车","","",mActivity, mDialog);
+//						}
+//					});
+//				}
 				// 订单是否可以确认下车
 				if (item.getCan_down() == 0) {
 					tv_get_off.setVisibility(View.GONE);
+					tv_complaint.setVisibility(View.GONE);
 				} else if (item.getCan_down() == 1) {
 					tv_get_off.setVisibility(View.VISIBLE);
+					tv_complaint.setVisibility(View.VISIBLE);
+					
+					tv_complaint.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(mBaseFragmentActivity, ComplaintActivity.class);
+						intent.putExtra("mOrderid", item.getOrderid());
+						intent.putExtra("mCreatTime", item.getCreat_time());
+						intent.putExtra("mOrderCoach", name.getText().toString().trim());
+						intent.putExtra("mOrderTime", date.getText().toString().trim() + " " + time.getText().toString().trim());
+						intent.putExtra("mOrderAddress", item.getDetail());
+						intent.putExtra("mAllMoney", all_money.getText().toString().trim());
+						startActivity(intent);
+					}
+				});
 					tv_get_off.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
