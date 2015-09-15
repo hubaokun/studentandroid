@@ -25,6 +25,7 @@ public class ChosePayWayDialog extends BaseDialog {
 	private TextView tvRestMoney;
 	public TextView tvSure;
 	public int Type = 0;
+	
 
 	public ChosePayWayDialog(Context context) {
 		super(context,R.style.dim_dialog);

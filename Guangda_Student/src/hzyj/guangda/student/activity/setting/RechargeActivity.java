@@ -70,6 +70,7 @@ public class RechargeActivity extends TitlebarActivity {
 						requestParams.add("action", "Recharge");
 						requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
 						requestParams.add("amount", mMoneyEt.getText().toString().trim());
+//						requestParams.add("resource","0");
 						return requestParams;
 					}
 

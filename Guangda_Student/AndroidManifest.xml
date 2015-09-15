@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hzyj.guangda.student"
     android:versionCode="2"
-    android:versionName="1.9.3" >
+    android:versionName="1.9.4" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -28,7 +28,7 @@
     <!-- 使用定位功能所需权限,demo已集成百度定位SDK,不使用定位功能可去掉以下6项 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
+    <!-- <permission android:name="android.permission.BAIDU_LOCATION_SERVICE" /> -->
 
     <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

@@ -297,8 +297,8 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 				status.setTextColor(Color.parseColor("#50cb8c"));
 				break;
 			case -2:
-				status.setText("学车已经结束");
-				status.setTextColor(Color.parseColor("#50cb8c"));
+				status.setText("学车完成");
+				status.setTextColor(Color.parseColor("#f7645c"));
 				break;
 			case -3:
 				status.setText("待确认上车");
@@ -334,8 +334,6 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 				
 				//订单编号
 				setText(mOrderId, orderDetailResponse.getOrderinfo().getOrderid());
-				
-
 			}
 			
 			if(mOrderDetailResponse.getOrderinfo().getHours()==-5){

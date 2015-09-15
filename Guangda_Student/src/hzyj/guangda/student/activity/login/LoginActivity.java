@@ -26,8 +26,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.common.library.llj.base.BaseFragmentActivity;
@@ -52,6 +54,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 	private long mill;
 	private DBManager mgr;
 	private Context context;
+	private LinearLayout ll_hind_keyboard;
 	private CountDownTimer timer = new CountDownTimer(60000, 1000) {
 		@Override
 		public void onTick(long millisUntilFinished) {
@@ -90,6 +93,8 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 		mQQLoginTv = (TextView) findViewById(R.id.tv_qq);
 		mWeixinLoginTv = (TextView) findViewById(R.id.tv_weixin);
 		mWeiboLoginTv = (TextView) findViewById(R.id.tv_weibo);
+		
+		ll_hind_keyboard=(LinearLayout)findViewById(R.id.ll_hind_keyboard);
 	}
 
 	@Override
@@ -177,6 +182,18 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 				}
 			}
 		});
+		
+		ll_hind_keyboard.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				InputMethodManager im=(InputMethodManager)getSystemService(context.INPUT_METHOD_SERVICE);
+				im.hideSoftInputFromWindow(ll_hind_keyboard.getWindowToken(),0);
+				
+			}
+		});
+		
 		mBackIv.setOnClickListener(this);
 		mLoginTv.setOnClickListener(this);
 		mRegistTv.setOnClickListener(this);

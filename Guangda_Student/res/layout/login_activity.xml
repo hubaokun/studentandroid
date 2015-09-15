@@ -20,6 +20,7 @@
         android:scrollbars="@null" >
 
         <LinearLayout
+            android:id="@+id/ll_hind_keyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -60,7 +61,8 @@
                         android:singleLine="true"
                         android:textColor="@color/login_et_text"
                         android:textColorHint="@color/login_et_hint"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        android:maxLength="11" />
 
                     <TextView
                         android:id="@+id/tv_get_code"

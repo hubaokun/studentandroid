@@ -33,7 +33,7 @@ public class MessageDetailActivity extends TitlebarActivity {
 		mDetailStr = getIntent().getStringExtra("mDetailStr");
 		mDateStr = getIntent().getStringExtra("mDateStr");
 		mNoticeid = getIntent().getStringExtra("mNoticeid");
-		mReadState = getIntent().getIntExtra("mReadState", 1);
+		mReadState =0;
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class MessageDetailActivity extends TitlebarActivity {
 
 	@Override
 	public void requestOnCreate() {
-		if (mReadState == 0) {
+		
 			// 设置已读
 			AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SSET_URL, GetNoticesResponse.class, new MySubResponseHandler<GetNoticesResponse>() {
 				@Override
@@ -90,6 +90,6 @@ public class MessageDetailActivity extends TitlebarActivity {
 				}
 			});
 		}
-	}
+	
 
 }

@@ -188,7 +188,7 @@ public class FinishedFragment extends BaseFragment {
 				TextView tv_cancel_order = helper.getView(R.id.tv_cancel_order);
 				TextView tv_comment = helper.getView(R.id.tv_comment);
 				TextView tv_continue = helper.getView(R.id.tv_continue);
-				TextView tv_course=helper.getView(R.id.tv_course);
+				//TextView tv_course=helper.getView(R.id.tv_course);
 				
 				tv_continue.setVisibility(View.VISIBLE);
 				tv_continue.setOnClickListener(new OnClickListener() {
@@ -217,8 +217,8 @@ public class FinishedFragment extends BaseFragment {
 					status.setTextColor(Color.parseColor("#50cb8c"));
 					break;
 				case -2:
-					status.setText("学车已经结束");
-					status.setTextColor(Color.parseColor("#50cb8c"));
+					status.setText("学车完成");
+					status.setTextColor(Color.parseColor("#f7645c"));
 					break;
 				case -3:
 					status.setText("待确认上车");
@@ -236,7 +236,7 @@ public class FinishedFragment extends BaseFragment {
 				
 				carlicense.setText("("+item.getCarlicense()+")");
 				//tv_address.setText(item.getDetail());
-				tv_course.setText(item.getSubjectname());
+				//tv_course.setText(item.getSubjectname());
 				// date
 				long dateStartLong = TimeUitlLj.stringToMilliseconds(2, item.getStart_time());
 

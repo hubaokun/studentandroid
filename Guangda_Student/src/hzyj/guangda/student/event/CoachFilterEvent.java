@@ -1,17 +1,18 @@
 package hzyj.guangda.student.event;
 
 public class CoachFilterEvent {
-	private String condition1, condition3, condition6;
+	private String condition1, condition3, condition6,driverschoolid;
 
 	public CoachFilterEvent() {
 		super();
 	}
 
-	public CoachFilterEvent(String condition1, String condition3, String condition6) {
+	public CoachFilterEvent(String condition1, String condition3, String condition6,String driverSchoolid) {
 		super();
 		this.condition1 = condition1;
 		this.condition3 = condition3;
 		this.condition6 = condition6;
+		this.setDriverschoolid(driverSchoolid);
 	}
 
 	public String getCondition1() {
@@ -36,6 +37,14 @@ public class CoachFilterEvent {
 
 	public void setCondition6(String condition6) {
 		this.condition6 = condition6;
+	}
+
+	public String getDriverschoolid() {
+		return driverschoolid;
+	}
+
+	public void setDriverschoolid(String driverschoolid) {
+		this.driverschoolid = driverschoolid;
 	}
 
 }

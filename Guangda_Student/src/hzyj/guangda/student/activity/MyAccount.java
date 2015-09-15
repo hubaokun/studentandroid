@@ -128,7 +128,7 @@ public class MyAccount extends TitlebarActivity{
 				tvCoin.setText(""+baseReponse.getCoinsum());
 				tvYue.setText(""+baseReponse.getMoney());
 				GuangdaApplication.mUserInfo.setMoney(""+baseReponse.getMoney());
-				tv_money.setText("余额"+baseReponse.getConsumeMoney()+"元"+" "+"小巴币"+baseReponse.getConsumeCoin()+"枚"+" "+"小巴券"+baseReponse.getConsumeCoupon()+"张");
+				tv_money.setText("金额"+baseReponse.getConsumeMoney()+"元"+" "+"小巴币"+baseReponse.getConsumeCoin()+"枚"+" "+"小巴券"+baseReponse.getConsumeCoupon()+"张");
 				
 			}
 			

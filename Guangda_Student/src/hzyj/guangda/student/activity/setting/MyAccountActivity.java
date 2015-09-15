@@ -172,12 +172,14 @@ public class MyAccountActivity extends TitlebarActivity {
 					helper.setText(R.id.tv_tag, "提现");
 				} else if (item.getType() == 3) {
 					helper.setText(R.id.tv_tag, "订单支付");
+				}else if(item.getType()==4){
+					helper.setText(R.id.tv_tag,"提现不通过");
 				}
 				//
 				helper.setText(R.id.tv_date, item.getAddtime());
 				//
 				TextView monry = helper.getView(R.id.tv_money);
-				if (item.getType() == 1) {
+				if (item.getType() == 1||item.getType()==4) {
 					monry.setText("+" + (int) item.getAmount()+"元");
 					monry.setTextColor(Color.parseColor("#50cb8c"));
 				} else {

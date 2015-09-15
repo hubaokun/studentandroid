@@ -1,6 +1,7 @@
 package hzyj.guangda.student.activity;
 import hzyj.guangda.student.GuangdaApplication;
 import hzyj.guangda.student.R;
+import hzyj.guangda.student.R.drawable;
 import hzyj.guangda.student.activity.login.LoginActivity;
 import hzyj.guangda.student.activity.order.MyOrderListActivity;
 import hzyj.guangda.student.activity.personal.UserInfoActivity;
@@ -23,6 +24,7 @@ import hzyj.guangda.student.response.GetCarModelResponse.CarModel;
 import hzyj.guangda.student.response.GetMessageCountResponse;
 import hzyj.guangda.student.response.LoginResponse;
 import hzyj.guangda.student.response.getAdvertiseResponse;
+import hzyj.guangda.student.util.ImageUtils.OnImageLoad;
 import hzyj.guangda.student.util.MySubResponseHandler;
 import hzyj.guangda.student.view.MapBottomDialog;
 import hzyj.guangda.student.view.MySlidingPaneLayout;
@@ -91,6 +93,7 @@ import com.common.library.llj.base.BaseApplication;
 import com.common.library.llj.base.BaseFragmentActivity;
 import com.common.library.llj.utils.AsyncHttpClientUtil;
 import com.common.library.llj.utils.DensityUtils;
+import com.common.library.llj.utils.ImageUtils;
 import com.common.library.llj.utils.LogUtilLj;
 import com.common.library.llj.utils.MyResponseHandler;
 import com.common.library.llj.utils.ViewHolderUtilLj;
@@ -147,10 +150,12 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private LinearLayout llHeader;
 	private Marker mark;
 	private LoadingDialog loadingdialog;
-	private boolean reGps=false;
+	private boolean reGps=false;   //是否重新定位
 	private String type="2",model="2",height,width,url;
 	private hzyj.guangda.student.view.ShowAdvertisementDialog showAdvDialog;
-//	private LinearLayout llPersonBook;
+	private String android_flag;
+	private String driverschoolid;
+	private LinearLayout ll_waibiank;;
 	@Override
 	public int getLayoutId() {
 		return R.layout.map_home_activity;
@@ -159,7 +164,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	@Override
 	public void findViews(Bundle savedInstanceState) {
 		
-		context = this;
+		context = MapHomeActivity.this;
 		mCardTypeLi = (LinearListView) findViewById(R.id.li_bottom_card_type);
 		mSlidingPaneLayout = (MySlidingPaneLayout) findViewById(R.id.sliding_layout);
 		initSlidingPaneLayout();
@@ -175,6 +180,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		imgService = (ImageView)findViewById(R.id.img_service);
 		llHeader = (LinearLayout)findViewById(R.id.li_menu_head);
 		imgGps=(ImageView)findViewById(R.id.img_gps);
+		ll_waibiank=(LinearLayout)findViewById(R.id.ll_waibiank);
 		initFirstLocation();
 		initLocationClient();
 		autoLogin();
@@ -196,6 +202,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				requestParams.add("width",width);
 				requestParams.add("model",type);
 				requestParams.add("type",type);
+				requestParams.add("cityname",city);
 				return requestParams;
 			}
 
@@ -207,13 +214,26 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, getAdvertiseResponse baseReponse) {
 				if(baseReponse.getCode()==1){
+					android_flag=baseReponse.getS_flag();
 					if(baseReponse.getS_flag().equals("2")){
 						//showAdvDialog.setImageAdvertisement(baseReponse.getS_img_android());
-						loadImageDefault(baseReponse.getS_img_android(),580,620,showAdvDialog.imgAdvertisement);
+						//loadImageDefault(baseReponse.getS_img_android(),400,400,showAdvDialog.imgAdvertisement);
+						hzyj.guangda.student.util.ImageUtils.downloadAsyncTask(showAdvDialog.imgAdvertisement, baseReponse.getS_img_android());
+						hzyj.guangda.student.util.ImageUtils.setImageShowListener(new OnImageLoad(){
+							@Override
+							public void showCancle(Boolean image) {
+								// TODO Auto-generated method stub
+								if(image){
+									showAdvDialog.imgClose.setBackgroundResource(drawable.ic_close);
+								}
+								
+								
+							}
+							
+						});
 						showAdvDialog.show();
 						url = baseReponse.getS_url();
 					}
-					
 				}
 			}
 		});
@@ -389,6 +409,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
 		mMapView.removeViewAt(2);
 		mMapView.removeViewAt(1);
+		mMapView.showScaleControl(false);
 		mBaiduMap.setMyLocationEnabled(true);
 		LatLng center = null;
 		if (GuangdaApplication.mUserInfo.getLatitude() != null && GuangdaApplication.mUserInfo.getLongitude() != null) {
@@ -434,21 +455,28 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					mDistanse = (int) DistanceUtil.getDistance(pre, next);
 					if(arg0.getCity()!=null){
 						city=arg0.getCity().replace("市","");
+						GuangdaApplication.location=arg0.getCity().replace("市","");
 					}
 					nowlocaionId=arg0.getCityCode();
 					if(!reGps){
-						if (GuangdaApplication.mUserInfo.getCity() !=null)
-						{
-						if(GuangdaApplication.mUserInfo.getCity().indexOf(city)!=-1){
-							//nowLocation.setVisibility(View.GONE);
-					}
-					else{
-							showToast("您设置的驾考城市不是当前城市，可前往基本信息页面修改。");
 						
-					}
-						}else{
-							showToast("您还未设置驾考城市，请前往基本信息页面设置。");
+						if(!TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())){  //判断是否登录
+							if (GuangdaApplication.mUserInfo.getCity() !=null)
+							{
+							if(GuangdaApplication.mUserInfo.getCity().indexOf(city)!=-1){
+								//nowLocation.setVisibility(View.GONE);
 						}
+						else{
+								showToast("您设置的驾考城市不是当前城市，可前往基本信息页面修改。");
+							
+						    }
+							}else{
+								showToast("请设置驾考城市");
+							}
+						}else{
+							showToast("请登录");
+						}
+						
 					}
 					mLatitude = arg0.getLatitude();
 					mLongitude = arg0.getLongitude();
@@ -481,21 +509,29 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		showAdvDialog.imgAdvertisement.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {	
-//				if(url!=null){
-//					if(!url.contains("http")){
-//						url="http://"+url;
-//						Uri u = Uri.parse(url);  
-//						Intent it = new Intent(Intent.ACTION_VIEW,u);
-//						MapHomeActivity.this.startActivity(it); 
-//					}		
-//				}
-				if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
-					GuangdaApplication.isToBaoMing=true;
-					startMyActivity(LoginActivity.class);
-				} else {
-					startMyActivity(BookDriveActivity.class);
+			public void onClick(View arg0) {
+				
+				if(android_flag.equals("1")){
+					if(url!=null){
+					if(!url.contains("http")){
+						url="http://"+url;
+						Uri u = Uri.parse(url);  
+						Intent it = new Intent(Intent.ACTION_VIEW,u);
+						MapHomeActivity.this.startActivity(it); 
+					}		
 				}
+				}
+				if(android_flag.equals("2")){
+					if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
+						GuangdaApplication.isToBaoMing=true;
+						startMyActivity(LoginActivity.class);
+					} else {
+						startMyActivity(BookDriveActivity.class);
+					}
+				}
+                if(android_flag.equals("0")){
+                	return ;
+                }
 			}
 		});
 		
@@ -554,6 +590,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				condition1 = null;
 				condition3 = null;
 				condition6 = "0";
+				driverschoolid = null;
 				mCardTypeAdapter.notifyDataSetChanged();
 				doRequest(1, false);
 			}
@@ -567,6 +604,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				intent.putExtra("condition3", condition3);
 				intent.putExtra("condition6", condition6);
 				intent.putExtra("condition11", condition11);
+				intent.putExtra("driverschool", driverschoolid);
 				intent.putExtra("mLatitude", String.valueOf(mLatitude));
 				intent.putExtra("mLongitude",String.valueOf(mLongitude));
 				intent.putExtra("cityId",String.valueOf(cityId));
@@ -577,7 +615,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				EventBus.getDefault().postSticky(new CoachFilterEvent(condition1, condition3, condition6));
+				EventBus.getDefault().postSticky(new CoachFilterEvent(condition1, condition3, condition6,driverschoolid));
 				ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(mBaseFragmentActivity, R.anim.bottom_to_center, R.anim.no_fade);
 				Intent intent = new Intent(mBaseFragmentActivity, CoachFilterActivity2.class);
 				ActivityCompat.startActivity(mBaseFragmentActivity, intent, options.toBundle());
@@ -630,7 +668,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	@Override
 	public void initViews() {
 		// 是否现实全部按钮
-		if (condition1 == null && condition3 == null && condition6.equals("0")) {
+		if (condition1 == null && condition3 == null && condition6.equals("0")&&driverschoolid == null) {
 			mAllIv.setVisibility(View.INVISIBLE);
 		} else {
 			mAllIv.setVisibility(View.VISIBLE);
@@ -703,8 +741,9 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			condition1 = coachListEvent.getCondition1();
 			condition3 = coachListEvent.getCondition3();
 			condition6 = coachListEvent.getCondition6();
+			driverschoolid = coachListEvent.getDriverschoolid();
 			// 是否现实全部按钮
-			if (condition1 == null && condition3 == null && condition6.equals("0")) {
+			if (condition1 == null && condition3 == null && condition6.equals("0") && driverschoolid == null) {
 				mAllIv.setVisibility(View.INVISIBLE);
 			} else {
 				mAllIv.setVisibility(View.VISIBLE);
@@ -772,6 +811,10 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					requestParams.add("condition6", condition6);
 				if (condition11 != null)
 					requestParams.add("condition11", condition11);
+				if (driverschoolid != null)
+				{
+					requestParams.add("driverschoolid", driverschoolid);
+				}
 				requestParams.add("version", ((GuangdaApplication) mBaseApplication).getVersion());
 				if (!TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid()))
 				{
@@ -809,16 +852,22 @@ public class MapHomeActivity extends BaseFragmentActivity {
 							mBaiduMap.addOverlay(overlayOptions);
 						}
 					}
-					LatLng ll = new LatLng(Double.valueOf(GuangdaApplication.mUserInfo.getLatitude()), Double.valueOf(GuangdaApplication.mUserInfo.getLongitude()));
-					MapStatus mMapStatus = null;
-					if (isUpateByStatus) {
-						mMapStatus = new MapStatus.Builder().build();
-					} else {
-						mMapStatus = new MapStatus.Builder().target(ll).build();
+					if(GuangdaApplication.mUserInfo.getLatitude()!=null&&GuangdaApplication.mUserInfo.getLongitude()!=null){
+						LatLng ll = new LatLng(Double.valueOf(GuangdaApplication.mUserInfo.getLatitude()), Double.valueOf(GuangdaApplication.mUserInfo.getLongitude()));
+						MapStatus mMapStatus = null;
+						if (isUpateByStatus) {
+							mMapStatus = new MapStatus.Builder().build();
+						} else {
+							mMapStatus = new MapStatus.Builder().target(ll).build();
+						}
+						MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
+						mBaiduMap.setMapStatus(mMapStatusUpdate);
+					}else{
+						Toast.makeText(mBaseFragmentActivity, "未获取到您的坐标，请重新定位！", 0).show();
 					}
-					MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
-					mBaiduMap.setMapStatus(mMapStatusUpdate);
+					//LatLng ll = new LatLng(Double.valueOf(GuangdaApplication.mUserInfo.getLatitude()), Double.valueOf(GuangdaApplication.mUserInfo.getLongitude()));
 				}
+
 			}
 		});
 	}
@@ -852,12 +901,34 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				requestParams.add("action", "GetCarModel");
 				return requestParams;
 			}
+			
+			@Override
+			public void onNotSuccess(Context context, int statusCode, Header[] headers,
+					GetCarModelResponse baseReponse) {
+				// TODO Auto-generated method stub
+				super.onNotSuccess(context, statusCode, headers, baseReponse);
+				ll_waibiank.setVisibility(View.GONE);
+				mCardTypeLi.setVisibility(View.GONE);
+			}
+
+
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+				// TODO Auto-generated method stub
+				super.onFailure(statusCode, headers, responseString, throwable);
+				ll_waibiank.setVisibility(View.GONE);
+				mCardTypeLi.setVisibility(View.GONE);
+			}
+
+
 
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, GetCarModelResponse baseReponse) {
 
 				if (baseReponse.getModellist() != null && baseReponse.getModellist().size() != 0) {
 					//ll_selector.setVisibility(View.VISIBLE);
+					ll_waibiank.setVisibility(View.VISIBLE);
 					mCardTypeLi.setVisibility(View.VISIBLE);
 					if (GuangdaApplication.DISPLAY_WIDTH % DensityUtils.dp2px(mBaseFragmentActivity, 60) == 0) {
 						count = GuangdaApplication.DISPLAY_WIDTH / DensityUtils.dp2px(mBaseFragmentActivity, 60);
@@ -876,6 +947,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					mCardTypeAdapter.notifyDataSetChanged();
 				} else {
 					mCardTypeLi.setVisibility(View.GONE);
+					ll_waibiank.setVisibility(View.GONE);
 					//ll_selector.setVisibility(View.GONE);
 				}
 			}
@@ -988,7 +1060,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 							startMyActivity(MyAccount.class);
 							break;
 						case 2:
-							// 一键报名
+							// 系统消息
 //							if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
 //								startMyActivity(LoginActivity.class);
 //							} else {
@@ -1102,7 +1174,5 @@ public class MapHomeActivity extends BaseFragmentActivity {
           } 
    
 		
-	}
-	
-	
+	}	
 }

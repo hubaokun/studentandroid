@@ -92,6 +92,8 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 	private boolean hasmoneyflag = true;
 	private float mixCoins=0; //混合支付 小巴币支付的个数
 	private boolean IspayQuan=false;
+	private float mixremindCoins;
+	private Boolean IsmixCoin;  //是否混合支付下改变的支付状态
 	
 
 	@Override
@@ -220,11 +222,14 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 					{
 						hasChosedOrderPrice.get(chosedIndex).setCoupon(null);
 					}
+					IsmixCoin=false;
 					chosePayWay.dismiss();
+					
 					initData();
 					break;
 				case 2:  //学时券
 					hasChosedOrderPrice.get(chosedIndex).setType(2);
+					IsmixCoin=false;
 					chosePayWay.dismiss();			
 					if (hasChosedOrderPrice.get(chosedIndex).getCoupon() != null)
 					{
@@ -243,6 +248,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 					break;
 				case 4://混合支付
 					hasChosedOrderPrice.get(chosedIndex).setType(4);
+					IsmixCoin=false;
 					if(hasCoin>0){
 						hasChosedOrderPrice.get(chosedIndex).setDemoney((int)hasCoin);
 					}
@@ -256,6 +262,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 				default:
 					break;
 				}
+				
 			}
 		});
 		
@@ -293,8 +300,9 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 						chosePayWay.imgChosedXiaoBaBi.setImageResource(R.drawable.coupon_normal);
 						chosePayWay.imgChosedYuE.setImageResource(R.drawable.coupon_select);
 						chosePayWay.Type=1;
+						IsmixCoin=true;
 
-				}else if(hasCoin>0&&hasCoin<hasChosedOrderPrice.get(chosedIndex).getPrice()){
+				}else if(hasCoin>0&&hasCoin<hasChosedOrderPrice.get(chosedIndex).getPrice()||IsmixCoin){
 					if(IspayQuan){
 						chosePayWay.imgChosedXueShiQuan.setImageResource(R.drawable.coupon_normal);
 					}
@@ -482,6 +490,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							}
 							if(type==4){
 								chosePayWay.setItemVisible(tickets,hasCoin,hasMoney,price,type,hasChosedOrderPrice.get(chosedIndex).getDemoney());
+								mixremindCoins=hasCoin+hasChosedOrderPrice.get(chosedIndex).getDemoney();
 							}else if(hasCoin>0){
 								chosePayWay.setItemVisible(tickets,hasCoin,hasMoney,price,type,0);
 							}else{

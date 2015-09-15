@@ -3,6 +3,7 @@ package hzyj.guangda.student.event;
 public class CoachListEvent {
 	private int type;
 	private String condition1, condition2, condition3, condition4, condition5, condition6, condition8, condition9, condition10, condition11;
+	private String driverschoolid;
 
 	public CoachListEvent() {
 		super();
@@ -26,6 +27,16 @@ public class CoachListEvent {
 		this.condition9 = condition9;
 		this.condition10 = condition10;
 		this.condition11 = condition11;
+	}
+	
+	
+
+	public String getDriverschoolid() {
+		return driverschoolid;
+	}
+
+	public void setDriverschoolid(String driverschoolid) {
+		this.driverschoolid = driverschoolid;
 	}
 
 	public int getType() {

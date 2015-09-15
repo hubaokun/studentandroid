@@ -9,7 +9,11 @@ import hzyj.guangda.student.event.CoachListEvent;
 import hzyj.guangda.student.event.Update;
 import hzyj.guangda.student.response.GetAllSubjectResponse;
 import hzyj.guangda.student.response.GetAllSubjectResponse.Subject;
+import hzyj.guangda.student.response.getCoachHomeResponse;
+import hzyj.guangda.student.response.getCoachHomeResponse.getInfor;
 import hzyj.guangda.student.util.MySubResponseHandler;
+import hzyj.guangda.student.view.WheelCityPriceDialog;
+import hzyj.guangda.student.view.WheelCoachHomeDialog;
 import hzyj.guangda.student.view.WheelDateDialog;
 import hzyj.guangda.student.view.WheelDateDialog.OnComfirmClickListener;
 
@@ -54,6 +58,11 @@ public class CoachFilterActivity2 extends TitlebarActivity {
 	private TextView mReSetTv, mFilterTv;
 	private long mLeftDate, mRightDate;
 	private WheelDateDialog mDateFromDialog;
+	private TextView tv_coach_home;
+	private WheelCoachHomeDialog weelCoachSchooldialog;
+	private String schoolId,schoolName,Telphone;
+	private ArrayList<getCoachHomeResponse.getInfor> coachHomeList=new ArrayList<getInfor>();
+
 
 	@Override
 	public int getLayoutId() {
@@ -72,6 +81,8 @@ public class CoachFilterActivity2 extends TitlebarActivity {
 
 		mReSetTv = (TextView) findViewById(R.id.tv_reset);
 		mFilterTv = (TextView) findViewById(R.id.tv_filter);
+		
+	    tv_coach_home=(TextView)findViewById(R.id.tv_coach_home);
 	}
 
 	private void initDefultType() {
@@ -90,10 +101,61 @@ public class CoachFilterActivity2 extends TitlebarActivity {
 		mSubjectOks.add(ok);
 		mSubjectTvs.add(content);
 		mSubjectFy.addView(view, lp);
+		getCoachHome();
+	}
+	
+	private void getCoachHome(){
+		if(GuangdaApplication.location!=null){
+			AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, getCoachHomeResponse.class, new MySubResponseHandler<getCoachHomeResponse>() {
+				@Override
+				public void onStart() {
+					super.onStart();
+					mLoadingDialog.show();
+				}
+
+				@Override
+				public RequestParams setParams(RequestParams requestParams) {
+					requestParams.add("action", "GETDRIVERSCHOOLBYCITYNAME");
+					requestParams.add("cityname", GuangdaApplication.location);
+					//requestParams.add("cityname","杭州");
+					return requestParams;
+				}
+
+				@Override
+				public void onFinish() {
+					mLoadingDialog.dismiss();
+				}
+
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, getCoachHomeResponse baseReponse) {
+					if(baseReponse.getCode()==1){
+						coachHomeList.addAll(baseReponse.getDslist());
+
+						
+					}
+					
+				}
+			});
+		}else{
+			showToast("定位失败");
+		}
+		
+		
 	}
 
 	@Override
 	public void addListeners() {
+		
+		tv_coach_home.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				weelCoachSchooldialog.WheelCityData(coachHomeList);
+				weelCoachSchooldialog.show();
+			}
+		});
+		
+		
 		mCommonTitlebar.getRightTextView().setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -187,6 +249,11 @@ public class CoachFilterActivity2 extends TitlebarActivity {
 				} else {
 					mCoachListEvent.setCondition3(mFromCenterDateTv.getText().toString().trim());
 				}
+				if(schoolId==null){
+					mCoachListEvent.setDriverschoolid(null);
+				}else{
+					mCoachListEvent.setDriverschoolid(schoolId);
+				}
 				EventBus.getDefault().post(mCoachListEvent);
 				finish();
 			}
@@ -195,6 +262,18 @@ public class CoachFilterActivity2 extends TitlebarActivity {
 
 	@Override
 	public void initViews() {
+		weelCoachSchooldialog=new WheelCoachHomeDialog(this);
+		weelCoachSchooldialog.setOnCoachClickListener(new WheelCoachHomeDialog.OnCoachClickListener() {
+
+			@Override
+			public void onCoachBtnClick(String schoolid,String name,String telphone) {
+				schoolId=schoolid;
+				schoolName=name;
+				Telphone=telphone;
+				
+				tv_coach_home.setText(schoolName);
+			}
+		});
 		mDateFromDialog = new WheelDateDialog(this);
 		mDateFromDialog.setOnComfirmClickListener(new OnComfirmClickListener() {
 

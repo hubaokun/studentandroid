@@ -70,6 +70,7 @@ public class WithdrawalsActivity extends TitlebarActivity {
 						requestParams.add("action", "ApplyCash");
 						requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
 						requestParams.add("count", mMoneyEt.getText().toString().trim());
+//						requestParams.add("resource","0");
 						return requestParams;
 					}
 

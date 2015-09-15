@@ -58,7 +58,6 @@ public class WaitCommentFragment extends BaseFragment {
 		mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_frame);
 		mPtrClassicFrameLayout.setDurationToCloseHeader(800);
 		mListView = (ListView) view.findViewById(R.id.lv_order);
-
 		mNoDataRl = (RelativeLayout) view.findViewById(R.id.rl_no_date);
 		return view;
 	}
@@ -81,6 +80,7 @@ public class WaitCommentFragment extends BaseFragment {
 
 	public void doLoadMoreData() {
 		if (isVisible())
+		{
 			if(state){
 				state=false;
 			AsyncHttpClientUtil.get().post(getActivity(), Setting.SORDER_URL, GetUnCompleteOrderResponse.class, new MySubResponseHandler<GetUnCompleteOrderResponse>() {
@@ -103,6 +103,9 @@ public class WaitCommentFragment extends BaseFragment {
 					initAllData(baseReponse);
 				}
 			});
+		}
+		}else{
+			mPtrClassicFrameLayout.refreshComplete();
 		}
 	}
 
@@ -183,7 +186,7 @@ public class WaitCommentFragment extends BaseFragment {
 				TextView tv_get_off = helper.getView(R.id.tv_get_off);
 				TextView tv_cancel_order = helper.getView(R.id.tv_cancel_order);
 				TextView tv_comment = helper.getView(R.id.tv_comment);
-				TextView tv_course=helper.getView(R.id.tv_course);
+				//TextView tv_course=helper.getView(R.id.tv_course);
 				//TextView tv_continue = helper.getView(R.id.tv_continue);
 				//
 //				tv_continue.setOnClickListener(new OnClickListener() {
@@ -212,8 +215,8 @@ public class WaitCommentFragment extends BaseFragment {
 					status.setTextColor(Color.parseColor("#50cb8c"));
 					break;
 				case -2:
-					status.setText("学车已经结束");
-					status.setTextColor(Color.parseColor("#50cb8c"));
+					status.setText("学车完成");
+					status.setTextColor(Color.parseColor("#f7645c"));
 					break;
 				case -3:
 					status.setText("待确认上车");
@@ -231,7 +234,7 @@ public class WaitCommentFragment extends BaseFragment {
 				}
 				
 				carlicense.setText("("+item.getCarlicense()+")");
-				tv_course.setText(item.getSubjectname());
+				//tv_course.setText(item.getSubjectname());
 				// date
 				long dateStartLong = TimeUitlLj.stringToMilliseconds(2, item.getStart_time());
 

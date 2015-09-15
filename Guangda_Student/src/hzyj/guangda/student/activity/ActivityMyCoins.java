@@ -47,7 +47,7 @@ public class ActivityMyCoins extends TitlebarActivity {
 	private myCoinsAdapter myCoinsAda;
 	private coinAffiliationAdapter coinAffiliationadaper;
 	private List<RecordList> studentRecordArray = new ArrayList<RecordList>();
-	private ArrayList<GetCoinsLimitResponse.coinAffiliation> coinafffiliation=new ArrayList<>();
+	private ArrayList<GetCoinsLimitResponse.coinAffiliation> coinafffiliation=new ArrayList<coinAffiliation>();
 	private TextView tvCoachName;
 	private int studentId;
 	private View vwnum1,vwnum2;
@@ -109,7 +109,7 @@ public class ActivityMyCoins extends TitlebarActivity {
 		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, GetStudentCoinList.class, new MySubResponseHandler<GetStudentCoinList>() {
 			@Override
 			public RequestParams setParams(RequestParams requestParams) {
-				requestParams.add("action", "GETSTUDENTWALLETINFO");
+				requestParams.add("action", "GETSTUDENTCOINRECORDLIST");
 				requestParams.add("studentid",studentId+"");
 				return requestParams;
 			}

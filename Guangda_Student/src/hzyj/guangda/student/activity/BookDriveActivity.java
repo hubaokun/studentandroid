@@ -73,21 +73,22 @@ public class BookDriveActivity extends BaseFragmentActivity {
 	private LinearLayout ll_test_city;
 	private LinearLayout ll_drive_type;
 	private TextView tv_test_city,tv_test_car_type,tv_price,tv_normal_price,tv_pay;
-	private ArrayList<OpenCity> cityInfor=new ArrayList<>();
-	private ArrayList<CarType> cartype=new ArrayList<>();
-	private ArrayList<Modelprice> modelprice=new ArrayList<>();
+	private ArrayList<OpenCity> cityInfor=new ArrayList<OpenCity>();
+	private ArrayList<CarType> cartype=new ArrayList<CarType>();
+	private ArrayList<Modelprice> modelprice=new ArrayList<Modelprice>();
 	private WheelCityPriceDialog welcity;
 	private WheelCarTypeDialog welCarType;
 	private OpenCity city=new OpenCity();
 	private boolean IsHave=false;
 	private String sltCityid,sltCity,sltcartype,sltxiaobaprice,sltmarketprice;
 	private boolean canPay;
-	private LinearLayout ll_recrod;
+	private LinearLayout ll_recrod,ll_price;
 	private Button ll_pay_car_price;
 	private TextView tv_name_cartype,money,tv_pay_time,tv_ispay;
 	private RelativeLayout rl_market;
 	private NeedCityInfor needcitynamedialog;
 	private int cityposition=-1;
+	private View vw_num;
 	
 	private boolean isCityUnInclude,IsPay;
 	@Override
@@ -118,6 +119,9 @@ public class BookDriveActivity extends BaseFragmentActivity {
 		money=(TextView)findViewById(R.id.money);
 		tv_pay_time=(TextView)findViewById(R.id.tv_pay_time);
 		tv_ispay=(TextView)findViewById(R.id.tv_ispay);
+		
+		ll_price=(LinearLayout)findViewById(R.id.ll_price);
+		vw_num=(View)findViewById(R.id.vw_num);
 		
 		needcitynamedialog=new NeedCityInfor(mBaseFragmentActivity);
 		
@@ -313,6 +317,7 @@ public class BookDriveActivity extends BaseFragmentActivity {
 			{
 				mLoadingDialog.dismiss();
 			}
+			
 			if (baseReponse.getCode()==1)
 			{
 				BookSuccessDialog bookSuccess = new BookSuccessDialog(mBaseFragmentActivity);
@@ -400,6 +405,9 @@ public class BookDriveActivity extends BaseFragmentActivity {
 				if(!sltCityid.equals("-1")){
 					isCityUnInclude=false;
 					tv_pay.setText("报名并支付");
+					vw_num.setVisibility(View.VISIBLE);
+					ll_drive_type.setVisibility(View.VISIBLE);
+					ll_price.setVisibility(View.VISIBLE);
 					ModelPrice();
 				}else{
 					isCityUnInclude=true;
@@ -407,6 +415,9 @@ public class BookDriveActivity extends BaseFragmentActivity {
 					tv_test_car_type.setText("");
 					tv_price.setText("0"+"元");
 					tv_normal_price.setText("市场价:"+"0"+"元");
+					vw_num.setVisibility(View.GONE);
+					ll_drive_type.setVisibility(View.GONE);
+					ll_price.setVisibility(View.GONE);
 					
 				}
 			}
@@ -468,6 +479,9 @@ public class BookDriveActivity extends BaseFragmentActivity {
 							isCityUnInclude=false;
 							sltCityid=baseReponse.getOpencity().get(i).getCityid();
 							cityposition=i-1;
+							vw_num.setVisibility(View.VISIBLE);
+							ll_drive_type.setVisibility(View.VISIBLE);
+							ll_price.setVisibility(View.VISIBLE);
 							ModelPrice();
 						}
 					}
@@ -476,13 +490,16 @@ public class BookDriveActivity extends BaseFragmentActivity {
 						tv_pay.setText("我要报名");
 						cityInfor.clear();
 						city.setCityname(GuangdaApplication.mUserInfo.getCity().split("-")[1]);
+						vw_num.setVisibility(View.GONE);
+						ll_drive_type.setVisibility(View.GONE);
+						ll_price.setVisibility(View.GONE);
 						city.setCityid("-1");
 						cityInfor.add(city);
 						cityInfor.addAll(baseReponse.getOpencity());
 					}	
 				}
 			}
-		});	
+		});
 		
 		//是否支付
 		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, getCarOrderInforResponse.class, new MySubResponseHandler<getCarOrderInforResponse>() {
@@ -502,6 +519,8 @@ public class BookDriveActivity extends BaseFragmentActivity {
 			public void onSuccess(int statusCode, Header[] headers, getCarOrderInforResponse baseReponse) {
 				if (baseReponse.getCode()==1)
 				{
+					if (baseReponse.getEnrollpay()!=null)
+					{
 					if(baseReponse.getEnrollstate().equals("1")&&(baseReponse.getEnrollpay().equals("-1")||baseReponse.getEnrollpay().equals("1"))){
 						ll_pay_car_price.setVisibility(View.VISIBLE);
 						tv_pay.setText("已报名");
@@ -517,17 +536,17 @@ public class BookDriveActivity extends BaseFragmentActivity {
 								rl_market.setVisibility(View.VISIBLE);
 								tv_normal_price.setText("市场价"+baseReponse.getMarketprice()+"元");
 							}
-							
 							if(baseReponse.getModel().equals("c1")){
 								tv_name_cartype.setText(GuangdaApplication.mUserInfo.getRealname()+"-"+baseReponse.getModel()+"手动档");
 							}else{
 								tv_name_cartype.setText(GuangdaApplication.mUserInfo.getRealname()+"-"+baseReponse.getModel()+"自动挡");
 							}
-							money.setText(baseReponse.getXiaobaprice());
+							money.setText(baseReponse.getXiaobaprice()+"元");
 							tv_pay_time.setText(baseReponse.getEnrolltime());
 							tv_ispay.setText("已支付");
 							ll_recrod.setVisibility(View.VISIBLE);
 						}
+					}
 					}
 					else{
 						ll_pay_car_price.setVisibility(View.GONE);
@@ -557,16 +576,15 @@ public class BookDriveActivity extends BaseFragmentActivity {
 			public void onSuccess(int statusCode, Header[] headers, CarModelPriceResponse baseReponse) {
 				if (baseReponse.getCode()==1)
 				{
-					
 						sltcartype = baseReponse.getModelprice().get(0).getName();
 						sltxiaobaprice=baseReponse.getModelprice().get(0).getXiaobaprice()+"";
 						tv_test_car_type.setText(baseReponse.getModelprice().get(0).getName());
 						tv_price.setText(baseReponse.getModelprice().get(0).getXiaobaprice()+""+"元");
-						if(baseReponse.getModelprice().get(cityposition).getMarketprice()==0){
+						if(baseReponse.getModelprice().get(0).getMarketprice()==0){
 							rl_market.setVisibility(View.GONE);
 						}else{
 							rl_market.setVisibility(View.VISIBLE);
-							tv_normal_price.setText("市场价"+baseReponse.getModelprice().get(cityposition).getMarketprice()+""+"元");
+							tv_normal_price.setText("市场价"+baseReponse.getModelprice().get(0).getMarketprice()+""+"元");
 						}
 					
 					

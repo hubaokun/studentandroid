@@ -63,6 +63,7 @@ public class CoachDetailActivity extends BaseFragmentActivity implements OnClick
 	private LinearLayout mHasDataLi;
 	private PullToRefreshScrollView pullToRefreshSL;
 	private int pageNum=0;
+	private String telPhone,telMessage;
 
 	@Override
 	public void getIntentData() {
@@ -149,10 +150,12 @@ public class CoachDetailActivity extends BaseFragmentActivity implements OnClick
 		setText(mPhoneTv, "电话");
 		setText(mMobileTv, "短信");
 		if (coachInfoVo.getTelphone() != null) {
-			mPhoneTv.setTag(coachInfoVo.getTelphone());
+			//mPhoneTv.setTag(coachInfoVo.getTelphone());
+			telPhone=coachInfoVo.getTelphone();
 		}
 		if (coachInfoVo.getPhone() != null) {
-			mMobileTv.setTag(coachInfoVo.getPhone());
+			//mMobileTv.setTag(coachInfoVo.getPhone());
+			telMessage=coachInfoVo.getPhone();
 		}
 
 	}
@@ -191,15 +194,15 @@ public class CoachDetailActivity extends BaseFragmentActivity implements OnClick
 			finish();
 			break;
 		case R.id.li_phone:
-			if (!TextUtils.isEmpty(mPhoneTv.getText().toString().trim())) {
-				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mPhoneTv.getText().toString().trim()));
+			if (!TextUtils.isEmpty(telPhone)) {
+				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +telPhone));
 				startActivity(intent);
 			}
 			break;
 		case R.id.li_mobile:
-			if (!TextUtils.isEmpty(mMobileTv.getText().toString().trim())) {
+			if (!TextUtils.isEmpty(telMessage)) {
 				// 系统默认的action，用来打开默认的短信界面
-				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + mMobileTv.getText().toString().trim()));
+				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + telMessage));
 				startActivity(intent);
 			}
 			break;

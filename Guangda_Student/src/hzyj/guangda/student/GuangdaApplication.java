@@ -78,6 +78,8 @@ public class GuangdaApplication extends BaseApplication {
 	public List<Zone> areaArray = new ArrayList<Zone>();
 	public static String baiduId;
 	public static boolean isToBaoMing;
+	public static String location;//当前定位城市
+	
 	
 	
 	

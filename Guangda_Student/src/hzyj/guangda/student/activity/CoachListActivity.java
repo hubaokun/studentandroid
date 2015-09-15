@@ -62,6 +62,7 @@ public class CoachListActivity extends BaseFragmentActivity {
 	private List<CoachInfoVo> coachList = new ArrayList<CoachInfoVo>();
 	private String Version,longitude,latitude,cityId;
 	private boolean state=true;
+	private String driverschoolid;
 
 	@Override
 	public void getIntentData() {
@@ -70,6 +71,7 @@ public class CoachListActivity extends BaseFragmentActivity {
 		condition3 = getIntent().getStringExtra("condition3");
 		condition6 = getIntent().getStringExtra("condition6");
 		condition11 = getIntent().getStringExtra("condition11");
+		driverschoolid = getIntent().getStringExtra("driverschool");
 		longitude=getIntent().getStringExtra("mLongitude");
 		latitude=getIntent().getStringExtra("mLatitude");
 		cityId=getIntent().getStringExtra("cityId");
@@ -128,14 +130,13 @@ public class CoachListActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				EventBus.getDefault().postSticky(new CoachFilterEvent(condition1, condition3, condition6));
+				EventBus.getDefault().postSticky(new CoachFilterEvent(condition1, condition3, condition6,driverschoolid));
 				ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(mBaseFragmentActivity, R.anim.bottom_to_center, R.anim.no_fade);
 				Intent intent = new Intent(mBaseFragmentActivity, CoachFilterActivity2.class);
 				ActivityCompat.startActivity(mBaseFragmentActivity, intent, options.toBundle());
 			}
 		});
 	}
-	
 	
 
 	@Override
@@ -165,6 +166,7 @@ public class CoachListActivity extends BaseFragmentActivity {
 			condition1 = coachListEvent.getCondition1();
 			condition3 = coachListEvent.getCondition3();
 			condition6 = coachListEvent.getCondition6();
+			driverschoolid=coachListEvent.getDriverschoolid();
 			// 是否现实全部按钮
 			if (condition1 == null && condition3 == null && condition6.equals("0")) {
 				mAllIv.setVisibility(View.INVISIBLE);
@@ -204,6 +206,9 @@ public class CoachListActivity extends BaseFragmentActivity {
 					{
 						requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
 					}
+					if(driverschoolid!=null){
+						requestParams.add("driverschoolid",driverschoolid);
+					}
 					requestParams.add("longitude",longitude);
 					requestParams.add("latitude",latitude);
 					requestParams.add("cityid",cityId);
@@ -219,9 +224,17 @@ public class CoachListActivity extends BaseFragmentActivity {
 
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, CoachListResponse baseReponse) {
-					
+
 					initAllData(baseReponse);
 					mPtrFrameLayout.refreshComplete();
+				}
+				
+				
+				@Override
+				public void onNotSuccess(Context context, int statusCode, Header[] headers,
+						CoachListResponse baseReponse) {
+					// TODO Auto-generated method stub
+					super.onNotSuccess(context, statusCode, headers, baseReponse);
 				}
 			});
 		}
@@ -321,6 +334,7 @@ public class CoachListActivity extends BaseFragmentActivity {
 		coachListEven.setCondition1(condition1);
 		coachListEven.setCondition3(condition3);
 		coachListEven.setCondition6(condition6);
+		coachListEven.setDriverschoolid(driverschoolid);
 		coachListEven.setCondition11(condition11);
 		EventBus.getDefault().post(coachListEven);
 	}

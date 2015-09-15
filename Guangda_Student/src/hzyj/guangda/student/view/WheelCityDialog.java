@@ -40,7 +40,7 @@ public class WheelCityDialog extends BaseDialog {
 	 private ArrayList<Province> provincelist;
 	 private ArrayList<Area> zoneList;
 	 private DBManager mgr;
-	 private String[] ArrayProvince,ArrayCity,ArrayZone;
+	 private String[]  ArrayProvince;
 
 	public WheelCityDialog(Context context) {
 		super(context, R.style.dim_dialog);
@@ -236,7 +236,7 @@ public class WheelCityDialog extends BaseDialog {
 	
 	// 获取到数据
     private void getProvince(){
-    	ArrayProvince=new String[provincelist.size()];
+    	 ArrayProvince=new String[provincelist.size()];
     	for(int i=0;i<provincelist.size();i++){
     		ArrayProvince[i]=provincelist.get(i).provinceName;
     	}
@@ -258,7 +258,7 @@ public class WheelCityDialog extends BaseDialog {
         String provinceid = provincelist.get(index).provinceId;
         citylist = (ArrayList<City>) mgr.queryCity(provinceid);
 
-        ArrayCity = new String[citylist.size()];
+        String[] ArrayCity = new String[citylist.size()];
         if (citylist.size()>0)
         {
         for (int i =0;i<citylist.size();i++)
@@ -282,7 +282,7 @@ public class WheelCityDialog extends BaseDialog {
         int index = mCityWheel.getCurrentItem();
         String cityid = citylist.get(index).cityid;
         zoneList = (ArrayList<Area>) mgr.queryArea(cityid);
-        ArrayZone = new String[zoneList.size()];
+        String[]  ArrayZone = new String[zoneList.size()];
         if (zoneList.size()>0)
         {
         for (int i = 0;i<zoneList.size();i++)
@@ -297,7 +297,7 @@ public class WheelCityDialog extends BaseDialog {
             mAreaWheel.setViewAdapter(adapter);
         }
 		}else{
-			 ArrayZone = new String[0];
+			String[] ArrayZone = new String[0];
             CountryAdapter adapter = new CountryAdapter(mContext, ArrayZone);
             mAreaWheel.setViewAdapter(adapter);
 		}

@@ -38,6 +38,11 @@ public class ArrayWheelAdapter<T> extends AbstractWheelTextAdapter {
         this.items = items;
     }
     
+    public void risetSchool(T items[])
+    {
+    	this.items = items;
+    }
+    
     @Override
     public CharSequence getItemText(int index) {
         if (index >= 0 && index < items.length) {
