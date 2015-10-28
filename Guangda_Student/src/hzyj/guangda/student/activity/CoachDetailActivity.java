@@ -286,8 +286,8 @@ public class CoachDetailActivity extends BaseFragmentActivity implements OnClick
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, CommentListResponse baseReponse) {
 				if (baseReponse.getEvalist() != null && baseReponse.getEvalist().size() != 0) {
-					mCommentNumtv.setText(baseReponse.getCount()+"条");
-					studentnum.setText(baseReponse.getStudentnum()+"个学员");
+					mCommentNumtv.setText(+baseReponse.getCount()+"条评论");
+					studentnum.setText(baseReponse.getStudentnum()+"个学员/");
 					mNoDataTv.setVisibility(View.INVISIBLE);
 					mHasDataLi.setVisibility(View.VISIBLE);
 					if(pageNum==0){

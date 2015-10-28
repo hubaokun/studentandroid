@@ -334,7 +334,7 @@ public class CoachFilterActivity2 extends TitlebarActivity {
 	}
 
 	private void doRequest() {
-		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SMY_URL, GetAllSubjectResponse.class, new MySubResponseHandler<GetAllSubjectResponse>() {
+		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, GetAllSubjectResponse.class, new MySubResponseHandler<GetAllSubjectResponse>() {
 			@Override
 			public void onStart() {
 				super.onStart();
@@ -343,7 +343,7 @@ public class CoachFilterActivity2 extends TitlebarActivity {
 
 			@Override
 			public RequestParams setParams(RequestParams requestParams) {
-				requestParams.add("action", "GetAllSubject");
+				requestParams.add("action", "GETQUERYSUBJECT");
 				return requestParams;
 			}
 

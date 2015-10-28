@@ -213,15 +213,16 @@
                 android:layout_marginLeft="25dp">
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="小巴客服"
+                    android:text="小巴在线客服"
                     android:textColor="@color/text"
                     android:textSize="16sp"/>
-                
+                 
                 <LinearLayout android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <LinearLayout android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="horizontal">
                         <TextView android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -243,15 +244,20 @@
                     
                     <TextView android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="  群号：470384808"
+                            android:text="实时在线与你交流"
                             android:textSize="12sp"
                             android:textColor="@color/text_light_gray"
-                            android:drawableLeft="@drawable/ico_qq_service"
                             android:layout_marginTop="5dp"/>
                 </LinearLayout>
             </LinearLayout>
+            
         </LinearLayout>
-        
+        		<ImageView 
+                     android:layout_width="wrap_content"
+            		 android:layout_height="wrap_content"
+            		 android:src="@drawable/userinfo_next_img"
+            		 android:layout_alignParentRight="true"
+            		 android:layout_centerVertical="true"/>
     </RelativeLayout>
     
     <View style="@style/common_line" />

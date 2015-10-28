@@ -51,6 +51,8 @@ import com.common.library.llj.lifecycle.ActivityLifecycleCallbacksCompat;
 import com.common.library.llj.lifecycle.LifecycleDispatcher;
 import com.common.library.llj.utils.AsyncHttpClientUtil;
 import com.common.library.llj.utils.PackageMangerUtilLj;
+import com.easemob.chat.EMChat;
+import com.easemob.helpdeskdemo.DemoHXSDKHelper;
 import com.google.gson.Gson;
 import com.igexin.sdk.PushManager;
 import com.loopj.android.http.RequestParams;
@@ -79,10 +81,11 @@ public class GuangdaApplication extends BaseApplication {
 	public static String baiduId;
 	public static boolean isToBaoMing;
 	public static String location;//当前定位城市
+		
 	
 	
-	
-	
+	public static String currentUserNick = "";
+	public static DemoHXSDKHelper hxSDKHelper = new DemoHXSDKHelper();
 	public static int isInvited;
 	
      
@@ -94,7 +97,7 @@ public class GuangdaApplication extends BaseApplication {
 		//
 		SDKInitializer.initialize(this);
 		//
-		PgyCrashManager.register(this, Constants.PGY_APPID);
+		PgyCrashManager.register(this, Setting.PGY_APPID);
 		//
 		mUserInfo = new UserInfo(this);
 		// 注册全局activity的监听
@@ -103,6 +106,15 @@ public class GuangdaApplication extends BaseApplication {
 		//initLocationClient();
 		//
 		//autoLogin();
+		EMChat.getInstance().init(getApplicationContext());
+		 
+		/**
+		 * debugMode == true 时为打开，sdk 会在log里输入调试信息
+		 * @param debugMode
+		 * 在做代码混淆的时候需要设置成false
+		 */
+		EMChat.getInstance().setDebugMode(true);//在做打包混淆时，要关闭debug模式，如果未被关闭，则会出现程序无法运行问题
+		hxSDKHelper.onInit(getApplicationContext());
 	}
 
 	/**

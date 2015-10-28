@@ -150,7 +150,6 @@ public class NotFinishedFragment extends BaseFragment{
 
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, GetUnCompleteOrderResponse baseReponse) {
-					
 					initAllData(baseReponse);
 				}
 			});
@@ -236,7 +235,7 @@ public class NotFinishedFragment extends BaseFragment{
 				TextView tv_comment = helper.getView(R.id.tv_comment);
 //				TextView tv_continue = helper.getView(R.id.tv_continue);
 				//TextView tv_course=helper.getView(R.id.tv_course);
-				
+				TextView tv_subjectname=helper.getView(R.id.tv_subjectname);
 				TextView tv_confirm_on = helper.getView(R.id.tv_confirm_on);
 				final LinearLayout ll_coach_sure=helper.getView(R.id.ll_coach_sure);
 				if(String.valueOf(item.getstudentstate()).equals("4")&&!String.valueOf(item.getcoachstate()).equals("4")){
@@ -293,8 +292,13 @@ public class NotFinishedFragment extends BaseFragment{
 					status.setTextColor(Color.parseColor("#b8b8b8"));
 					break;
 				}
+				tv_subjectname.setText("("+item.getSubjectname()+")");
 				
-				carlicense.setText("("+item.getCarlicense()+")");
+				if(item.getCarlicense()!=null){
+					carlicense.setText("("+item.getCarlicense()+")");
+				}else{
+					carlicense.setText("");
+				}
 				//tv_address.setText(item.getDetail());
 				//tv_course.setText(item.getSubjectname());
 				// date
@@ -305,6 +309,7 @@ public class NotFinishedFragment extends BaseFragment{
 				time.setText(TimeUitlLj.millisecondsToString(10, dateStartLong) + "-" + TimeUitlLj.millisecondsToString(10, dateEndLong));
 				// 合计
 				all_money.setText(item.getTotal() + "元");
+				
 				// 是否可以投诉
 //				if (item.getCan_complaint() == 0) {
 //					tv_complaint.setVisibility(View.GONE);
@@ -521,7 +526,7 @@ public class NotFinishedFragment extends BaseFragment{
 										mDialog.dismiss();
 								}
 							});
-							mDialog = dUtil.CallConfirmDialog("确认上车","","",mActivity, mDialog);
+							mDialog = dUtil.CallConfirmDialog("确认下车","","",mActivity, mDialog);
 						}
 					});
 				}

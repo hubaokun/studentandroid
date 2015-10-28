@@ -47,6 +47,8 @@ public class CoachScheduleResponse extends BaseReponse {
 		private int state;
 		private int cancelstate;
 		private float price;
+		private float cuseraddtionalprice;  //陪驾租赁价
+		private float addtionalprice;
 		private int isrest;
 		private String addressid;
 		private String addressdetail;
@@ -54,6 +56,34 @@ public class CoachScheduleResponse extends BaseReponse {
 		private String subject;
 		private int pasttime;
 		private int isbooked;
+		
+		private int isfreecourse;  // 1 是免费体验课  0 是正常课
+		
+		
+        
+		public int getIsfreecourse() {
+			return isfreecourse;
+		}
+
+		public void setIsfreecourse(int isfreecourse) {
+			this.isfreecourse = isfreecourse;
+		}
+
+		public float getCuseraddtionalprice() {
+			return cuseraddtionalprice;
+		}
+
+		public void setCuseraddtionalprice(float cuseraddtionalprice) {
+			this.cuseraddtionalprice = cuseraddtionalprice;
+		}
+
+		public float getAddtionalprice() {
+			return addtionalprice;
+		}
+
+		public void setAddtionalprice(float addtionalprice) {
+			this.addtionalprice = addtionalprice;
+		}
 
 		private int status;// 0不能选，1可以选，2选中
 

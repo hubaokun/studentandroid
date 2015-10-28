@@ -9,6 +9,7 @@
     <!-- android:layout_height="match_parent" -->
     <!-- android:src="@drawable/shape_sub_fragment_cant_select" /> -->
 
+
     <LinearLayout
         android:id="@+id/li_wrap"
         android:layout_width="match_parent"
@@ -18,6 +19,7 @@
         android:orientation="vertical"
         android:paddingBottom="5dp"
         android:paddingTop="7dp" >
+       
 
         <TextView
             android:id="@+id/tv_time"
@@ -59,6 +61,17 @@
                     android:text="100.0元"
                     android:textColor="#348899"
                     android:textSize="12dp" />
+               <!--   <TextView
+                    android:id="@+id/tv_free"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:text="免费"
+                    android:textColor="#ba332a"
+                    android:textSize="12dp" 
+                    android:visibility="gone"/> -->
             </LinearLayout>
 
             <ImageView
@@ -70,5 +83,20 @@
                 android:visibility="invisible" />
         </RelativeLayout>
     </LinearLayout>
+         <RelativeLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/li_wrap"
+            android:id="@+id/rl_free_img"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/icon_taste" />
+            
+        </RelativeLayout>
 
 </RelativeLayout>

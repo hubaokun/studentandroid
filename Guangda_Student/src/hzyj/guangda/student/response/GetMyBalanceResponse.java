@@ -39,6 +39,17 @@ public class GetMyBalanceResponse extends BaseReponse {
 		private int type;
 		private String addtime;
 		private float amount;
+		private String type_explain;
+		
+		
+
+		public String getType_explain() {
+			return type_explain;
+		}
+
+		public void setType_explain(String type_explain) {
+			this.type_explain = type_explain;
+		}
 
 		public int getType() {
 			return type;

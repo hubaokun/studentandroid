@@ -87,6 +87,7 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.bumptech.glide.load.resource.transcode.BitmapBytesTranscoder;
 import com.common.library.llj.adapterhelp.BaseAdapterHelper;
 import com.common.library.llj.adapterhelp.QuickAdapter;
 import com.common.library.llj.base.BaseApplication;
@@ -121,6 +122,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private String mRadius;// 最大半径，单位米
 	private BitmapDescriptor bitmapDescriptor;
 	private BitmapDescriptor chosedBitmap;
+	private BitmapDescriptor freeLearn;
+	private BitmapDescriptor chosedFreeLearn;
 	private float mZoom = 12.0f;
 	private float mRotate = 0.0f;
 	private double mLatitude;
@@ -135,7 +138,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private String condition1;// 教练名字或车牌号
 	private String condition3;// 时间刷选
 	private String condition6 = "0";// 科目选择(0代表不限)
-	private String condition11;// // 车型
+	public static String condition11;// // 车型
 	private long mExitTime;
 	private LinearListView mCardTypeLi;
 	private List<CarModel> mCarModels = new ArrayList<CarModel>();
@@ -224,10 +227,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 							public void showCancle(Boolean image) {
 								// TODO Auto-generated method stub
 								if(image){
-									showAdvDialog.imgClose.setBackgroundResource(drawable.ic_close);
-								}
-								
-								
+									//showAdvDialog.imgClose.setBackgroundResource(drawable.img_close);
+								}	
 							}
 							
 						});
@@ -296,12 +297,12 @@ public class MapHomeActivity extends BaseFragmentActivity {
 							mgr.closeDB();
 							}
 
-							if(GuangdaApplication.isInvited==1){
-//								if(judgmentData(GuangdaApplication.mUserInfo.getAddtime())){
-									//跳转到邀请码
-									startMyActivity(ActivityInputRecord.class);
-//								}
-							}
+//							if(GuangdaApplication.isInvited==1){
+////								if(judgmentData(GuangdaApplication.mUserInfo.getAddtime())){
+//									//跳转到邀请码
+//									startMyActivity(ActivityInputRecord.class);
+////								}
+//							}
 //							System.out.println("success");
 //							Log.e("state","success");
 						}else{
@@ -339,6 +340,9 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private void initFirstLocation() {
 		bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.map_car_img);
 		chosedBitmap = BitmapDescriptorFactory.fromResource(R.drawable.ico_carok);
+		freeLearn=BitmapDescriptorFactory.fromResource(R.drawable.icon_closefree);
+		chosedFreeLearn=BitmapDescriptorFactory.fromResource(R.drawable.ico_free);
+		
 		// 开启定位图层
 		mBaiduMap = mMapView.getMap();
 		// 跟随模式
@@ -396,12 +400,18 @@ public class MapHomeActivity extends BaseFragmentActivity {
 
 			@Override
 			public boolean onMarkerClick(Marker arg0) {
-				if (arg0 != null && arg0.getTitle() != null)
+				if (arg0 != null && arg0.getTitle() != null&&arg0.getPeriod()==1)
 				{
 					arg0.setIcon(chosedBitmap);
 					mark = arg0;
 					popBottomDialog(arg0.getTitle());
 				}
+				if(arg0 != null && arg0.getTitle() != null&&arg0.getPeriod()==2){
+					arg0.setIcon(chosedFreeLearn);
+					mark = arg0;
+					popBottomDialog(arg0.getTitle());
+				}
+				
 				return false;
 			}
 		});
@@ -680,9 +690,13 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
 				// TODO Auto-generated method stub
-				if (mark!=null)
+
+				if (mark!=null&&mark.getPeriod()==1)
 				{
 					mark.setIcon(bitmapDescriptor);
+					mark = null;
+				}else{
+					mark.setIcon(freeLearn);
 					mark = null;
 				}
 			}
@@ -815,12 +829,17 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				{
 					requestParams.add("driverschoolid", driverschoolid);
 				}
+				if(GuangdaApplication.mUserInfo.getCityid()!=null){
+					requestParams.add("cityid", GuangdaApplication.mUserInfo.getCityid()+"");
+					//requestParams.add("cityname", GuangdaApplication.mUserInfo.getLocationname().split("-")[1]);
+				}
+				
 				requestParams.add("version", ((GuangdaApplication) mBaseApplication).getVersion());
 				if (!TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid()))
 				{
 					requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
 				}
-				requestParams.add("cityid", cityId+"");
+				//requestParams.add("cityid", cityId+"");
 				return requestParams;
 			}
 
@@ -832,11 +851,11 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, CoachListResponse baseReponse) {
 				if (type == 1) {
-					showToast("已经重置筛选");
+					//showToast("已经重置筛选");
 					mAllIv.setVisibility(View.INVISIBLE);
 				} else if (type == 2) {
 					// if (baseReponse.getCoachlist() != null && baseReponse.getCoachlist().size() != 0) {
-					showToast("已根据筛选条件筛选出结果");
+					//showToast("已根据筛选条件筛选出结果");
 					// } else {
 					// showToast("没有您想要的结果");
 					// }
@@ -846,9 +865,16 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					mCoachInfoVos.clear();
 					mCoachInfoVos.addAll(baseReponse.getCoachlist());
 					for (CoachInfoVo coachInfoVo : baseReponse.getCoachlist()) {
-						if (coachInfoVo.getLongitude() != null && coachInfoVo.getLatitude() != null && coachInfoVo.getCoachid() != null) {
+						if (coachInfoVo.getLongitude() != null && coachInfoVo.getLatitude() != null && coachInfoVo.getCoachid() != null&&coachInfoVo.getFreecoursestate()==0) {
 							OverlayOptions overlayOptions = new MarkerOptions().position(new LatLng(Double.valueOf(coachInfoVo.getLatitude()), Double.valueOf(coachInfoVo.getLongitude())))
-									.icon(bitmapDescriptor).title(coachInfoVo.getCoachid());
+									.icon(bitmapDescriptor).title(coachInfoVo.getCoachid()).period(1); // 1  正常图标  2 免费体验课
+							mBaiduMap.addOverlay(overlayOptions);
+						}
+						
+						//免费体验图标
+						if(coachInfoVo.getLongitude() != null && coachInfoVo.getLatitude() != null && coachInfoVo.getCoachid() != null&&coachInfoVo.getFreecoursestate()==1){
+							OverlayOptions overlayOptions = new MarkerOptions().position(new LatLng(Double.valueOf(coachInfoVo.getLatitude()), Double.valueOf(coachInfoVo.getLongitude())))
+									.icon(freeLearn).title(coachInfoVo.getCoachid()).period(2);
 							mBaiduMap.addOverlay(overlayOptions);
 						}
 					}
@@ -899,6 +925,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			@Override
 			public RequestParams setParams(RequestParams requestParams) {
 				requestParams.add("action", "GetCarModel");
+				requestParams.add("version", ((GuangdaApplication) mBaseApplication).getVersion());
 				return requestParams;
 			}
 			
@@ -1009,6 +1036,16 @@ public class MapHomeActivity extends BaseFragmentActivity {
 							imageView.setSelected(true);
 							textView.setSelected(true);
 							condition11 = carModel.getModelid();
+							if(condition11.equals("19")){
+								mFilterIv.setVisibility(View.GONE);
+								mAllIv.setVisibility(View.GONE);
+								condition1 = null;
+								condition3 = null;
+								condition6 = "0";
+								driverschoolid = null;
+							}else{
+								mFilterIv.setVisibility(View.VISIBLE);
+							}
 							notifyDataSetChanged();
 							doRequest(2, false);
 						}
@@ -1052,12 +1089,12 @@ public class MapHomeActivity extends BaseFragmentActivity {
 							break;
 						case 1:
 							// 账户
-//							if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
-//								startMyActivity(LoginActivity.class);
-//							} else {
-//								startMyActivity(MyAccountActivity.class);
-//							}
-							startMyActivity(MyAccount.class);
+							if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
+								startMyActivity(LoginActivity.class);
+							} else {
+								startMyActivity(MyAccount.class);
+							}
+							
 							break;
 						case 2:
 							// 系统消息

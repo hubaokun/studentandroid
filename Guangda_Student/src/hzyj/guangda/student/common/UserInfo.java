@@ -41,6 +41,7 @@ public class UserInfo {
 	private String locationname;
 	private String baiduid;
 	
+	private int isfreecourse;  // 1 可以预约免费预约  0 不可以预约
 
 	public UserInfo(Context context) {
 		this.mContext = context;
@@ -76,6 +77,7 @@ public class UserInfo {
 		longitude = mSharedPreferences.getString("longitude", null);
 		latitude = mSharedPreferences.getString("latitude", null);
 		baiduid=mSharedPreferences.getString("locationid", null);
+		isfreecourse=mSharedPreferences.getInt("isfreecourse",0);
 		
 	}
 
@@ -107,6 +109,7 @@ public class UserInfo {
 		mEditor.putString("provinceid",userInfoVo.getProvinceid());
 		mEditor.putString("areaid",userInfoVo.getAreaid());
 		mEditor.putString("locationid",userInfoVo.getBaiduid());
+		mEditor.putInt("isfreecourse",userInfoVo.getIsfreecourse());
 		mEditor.commit();
 
 		studentid = userInfoVo.getStudentid();
@@ -137,6 +140,7 @@ public class UserInfo {
 		cityid = userInfoVo.getCityid();
 		provinceid = userInfoVo.getProvinceid();
 		areaid = userInfoVo.getAreaid();
+		isfreecourse=userInfoVo.getIsfreecourse();
 	}
 
 	public void clearUserInfo() {
@@ -166,7 +170,18 @@ public class UserInfo {
 		city = null;
 		aliaccount = null;
 		token = null;
+		isfreecourse=0;
 
+	}
+
+	
+	
+	public int getIsfreecourse() {
+		return isfreecourse;
+	}
+
+	public void setIsfreecourse(int isfreecourse) {
+		this.isfreecourse = isfreecourse;
 	}
 
 	public String getToken() {

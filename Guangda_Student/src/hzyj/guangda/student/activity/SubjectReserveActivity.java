@@ -2,6 +2,7 @@ package hzyj.guangda.student.activity;
 
 import hzyj.guangda.student.GuangdaApplication;
 import hzyj.guangda.student.R;
+import hzyj.guangda.student.R.drawable;
 import hzyj.guangda.student.activity.login.LoginActivity;
 import hzyj.guangda.student.activity.setting.RechargeActivity;
 import hzyj.guangda.student.common.Setting;
@@ -10,9 +11,11 @@ import hzyj.guangda.student.response.CoachScheduleResponse;
 import hzyj.guangda.student.response.CoachScheduleResponse.Data;
 import hzyj.guangda.student.response.RemindCoachResponse;
 import hzyj.guangda.student.response.UserMoneyResponse;
+import hzyj.guangda.student.response.getCanFreeResponse;
 import hzyj.guangda.student.util.MySubResponseHandler;
 import hzyj.guangda.student.view.NeedRealNameDialog;
 import hzyj.guangda.student.view.NoOverageDialog;
+import hzyj.guangda.student.view.SelectIsUseCarDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,6 +49,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.navisdk.vi.MFE;
 import com.common.library.llj.adapterhelp.BaseAdapterHelper;
 import com.common.library.llj.adapterhelp.QuickAdapter;
 import com.common.library.llj.base.BaseFragment;
@@ -92,16 +96,33 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 	private Button rl_remind_coach;
 	private RelativeLayout rl_remind;
 	private long send_Remind_time;
+	private String scheduleInt="";
+	private SelectIsUseCarDialog selectCarDialog;
+	private float cuseraddtionalprice;
+	private boolean Freecoursestate;  // 是否可以选免费体验课
+	public static int freeNum=0;
+
 //	private int SelectCount = 0;
 	//private boolean isResume = false;
 	@Override
 	public void getIntentData() {
+		selectCarDialog=new SelectIsUseCarDialog(mBaseFragmentActivity);
 		mCoachId = getIntent().getStringExtra("mCoachId");
 		mScore = getIntent().getFloatExtra("mScore", 0f);
 		mName = getIntent().getStringExtra("mName");
 		mAddress = getIntent().getStringExtra("mAddress");
 		mGender = getIntent().getStringExtra("mGender");
 		mPhone = getIntent().getStringExtra("mPhone");
+		scheduleInt=getIntent().getStringExtra("scheduleInt");
+		if(scheduleInt.equals("")){
+			if(MapHomeActivity.condition11.equals("19")){
+				scheduleInt="1";  //陪驾是1  其他为0
+			}
+			else{
+				scheduleInt="0";
+			}
+		}
+		
 	}
 
 	@Override
@@ -139,6 +160,7 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onClick(View v) {
+				freeNum=0;
 				finish();
 			}
 		});
@@ -157,14 +179,91 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				if (mSureTv.isSelected()) {
+					
+
+					if(scheduleInt=="1"){
+						selectCarDialog.setUnitData(mRemain.get(mRemain.keyAt(0)).get(0).getCuseraddtionalprice(),mSelectSub);
+						selectCarDialog.img_select_coach_car.setBackgroundResource(drawable.coupon_normal);
+						selectCarDialog.img_select_my_car.setBackgroundResource(drawable.coupon_select);
+						selectCarDialog.isMyCar=true;
+						selectCarDialog.show();
+						
+					}else{
+						mSureTv.setSelected(false);
+						EventBus.getDefault().postSticky(mRemain);
+						if(freeNum>0){
+							canFreeDriver();
+							
+						}else{
+							Intent intent = new Intent(mBaseFragmentActivity, ComfirmOrderActivity.class);
+							intent.putExtra("mCoachId", mCoachId);
+							intent.putExtra("mOverage", mOverage);
+							intent.putExtra("cuseraddtionalprice",0);
+							intent.putExtra("scheduleInt", scheduleInt);
+							startActivity(intent);
+						}
+						
+						
+					}
+				
+				}
+			}
+		});
+		 
+		selectCarDialog.ll_select_coach_car.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if(selectCarDialog.isMyCar){
+					selectCarDialog.img_select_coach_car.setBackgroundResource(drawable.coupon_select);
+					selectCarDialog.img_select_my_car.setBackgroundResource(drawable.coupon_normal);
+					selectCarDialog.isMyCar=false;
+				}
+					
+			}
+		});
+		
+		selectCarDialog.select_my_car.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if(!selectCarDialog.isMyCar){
+					selectCarDialog.img_select_coach_car.setBackgroundResource(drawable.coupon_normal);
+					selectCarDialog.img_select_my_car.setBackgroundResource(drawable.coupon_select);
+					selectCarDialog.isMyCar=true;
+				}	
+			}
+		});
+		
+		selectCarDialog.tv_select_sure.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if(!selectCarDialog.isMyCar){
 					EventBus.getDefault().postSticky(mRemain);
 					Intent intent = new Intent(mBaseFragmentActivity, ComfirmOrderActivity.class);
 					intent.putExtra("mCoachId", mCoachId);
 					intent.putExtra("mOverage", mOverage);
+					intent.putExtra("cuseraddtionalprice",mRemain.get(mRemain.keyAt(0)).get(0).getCuseraddtionalprice());
+					intent.putExtra("scheduleInt", scheduleInt);
+					startActivity(intent);
+				}else{
+					EventBus.getDefault().postSticky(mRemain);
+					Intent intent = new Intent(mBaseFragmentActivity, ComfirmOrderActivity.class);
+					intent.putExtra("mCoachId", mCoachId);
+					intent.putExtra("mOverage", mOverage);
+					intent.putExtra("cuseraddtionalprice",0);
+					intent.putExtra("scheduleInt", scheduleInt);
 					startActivity(intent);
 				}
+				selectCarDialog.dismiss();	
 			}
 		});
+		
+		
 //		mReChargeTv.setOnClickListener(new OnClickListener() {
 //
 //			@Override
@@ -249,6 +348,8 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 	}
 
 	private void initDates() {
+		
+		
 		mDates.clear();
 		mYears.clear();
 		mMonths.clear();
@@ -419,6 +520,7 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 					requestParams.add("coachid", mCoachId);
 					requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
 					requestParams.add("date", TimeUitlLj.millisecondsToString(9, dateLong));
+					requestParams.add("scheduletype",scheduleInt);
 					return requestParams;
 				}
 
@@ -432,7 +534,7 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 					if (baseReponse.getDatelist() != null && baseReponse.getDatelist().size() == 19) {
 						send_Remind_time=dateLong;
 						dataArraylist = baseReponse.getDatelist();
-						System.out.println(baseReponse);
+						//System.out.println(baseReponse);
 						if(baseReponse.getCoachstate()==0&&baseReponse.getRemindstate()==0){
 							//rl_remind_coach.setVisibility(View.VISIBLE);
 							rl_remind.setVisibility(View.VISIBLE);
@@ -536,6 +638,8 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 				final TextView time = helper.getView(R.id.tv_time);
 				final TextView sub = helper.getView(R.id.tv_sub);
 				final TextView money = helper.getView(R.id.tv_money);
+				final RelativeLayout  rl_free_img=helper.getView(R.id.rl_free_img);
+				
 				
 				final ImageView ok = helper.getView(R.id.iv_ok);
 				switch (type) {
@@ -572,7 +676,7 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 					// 休息
 					time.setSelected(false);
 					sub.setVisibility(View.INVISIBLE);
-					money.setText("休息");
+					money.setText("未开课");
 					money.setTextColor(Color.parseColor("#b3b3b3"));
 					item.setStatus(0);
 					wrap.setBackgroundResource(R.drawable.shape_sub_fragment_cant_select);
@@ -604,11 +708,21 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 //						SelectCount++;
 //						Toast.makeText(SubjectReserveActivity.this, String.valueOf(SelectCount), 0).show();
 					} else {
-						time.setSelected(true);
-						sub.setVisibility(View.VISIBLE);
-						//sub.setTextColor(Color.parseColor("#348899"));
-						money.setText(item.getPrice() + "元");
-						money.setTextColor(Color.parseColor("#348899"));
+						if(item.getIsfreecourse()==1){
+							rl_free_img.setVisibility(View.VISIBLE);
+							money.setText("免费");
+					
+							
+						}else{
+							rl_free_img.setVisibility(View.GONE);
+							time.setSelected(true);
+							sub.setVisibility(View.VISIBLE);
+							//sub.setTextColor(Color.parseColor("#348899"));
+							money.setText(item.getPrice() + "元");
+							money.setTextColor(Color.parseColor("#348899"));
+						}
+						
+
 						item.setStatus(1);
 						wrap.setBackgroundResource(R.drawable.shape_sub_fragment_normal_select);
 					}
@@ -625,6 +739,7 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 						// 判断是否过时
 						if (item.getPasttime() == 1) {
 							time.setSelected(false);
+							rl_free_img.setVisibility(View.GONE);
 							ok.setVisibility(View.INVISIBLE);
 							sub.setVisibility(View.VISIBLE);
 							sub.setTextColor(Color.parseColor("#b3b3b3"));
@@ -664,71 +779,195 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 								startMyActivity(LoginActivity.class);
 								return;
 							}
+						
 							if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getRealname()))
 							{
 								realNameDialog.show();
 								return;
 							}
 							if (item.getStatus() == 1) {
+								
 								if (mSelectSub ==6){
 									showToast("一次选课不能超过6个课时");
 									return;
 								}
 //								if (SelectCount<4)
 //								{
-								mAllMoney = mAllMoney + item.getPrice();
-								// if (mAllMoney > mOverage) {
-								// // 还远金额
-								// mAllMoney = mAllMoney - item.getPrice();
-								// // 余额不足
-								// mNoOverageDialog.show();
-								// return;
-								// }
-								if (mRemain.get(dateLong) == null) {
-									List<Data> datas = new ArrayList<Data>();
-									datas.add(item);
-									mRemain.put(dateLong, datas);
-								} else {
-									mRemain.get(dateLong).add(item);
+								if(item.getIsfreecourse()==1){    // 选的是免费的
+//									if(GuangdaApplication.mUserInfo.getIsfreecourse()==1){
+										 if(freeNum<1){
+											 mAllMoney = mAllMoney + item.getPrice();
+												// if (mAllMoney > mOverage) {
+												// // 还远金额
+												// mAllMoney = mAllMoney - item.getPrice();
+												// // 余额不足
+												// mNoOverageDialog.show();
+												// return;
+												// }
+												if (mRemain.get(dateLong) == null) {
+													List<Data> datas = new ArrayList<Data>();
+													datas.add(item);
+													mRemain.put(dateLong, datas);
+												} else {
+													mRemain.get(dateLong).add(item);
+												}
+												wrap.setBackgroundResource(R.drawable.shape_sub_fragment_has_select);
+												time.setSelected(true);
+												ok.setVisibility(View.VISIBLE);
+												sub.setVisibility(View.INVISIBLE);
+												money.setVisibility(View.INVISIBLE);
+												item.setStatus(2);
+												dataArraylist.get(item.getHour()-5).setStatus(2);
+												//showToast(item.getHour()-5+"");
+												int lastHour = item.getHour()-1;
+												int nextHour = item.getHour()+1;
+												for (int i=0;i<dataArraylist.size();i++)
+												{
+													if (dataArraylist.get(i).getHour()==lastHour||dataArraylist.get(i).getHour()==nextHour)
+													{
+														if (dataArraylist.get(i).getStatus()==2)
+														{
+															Toast.makeText(SubjectReserveActivity.this, "连续上课会很累的哦，慎重考虑哦亲", Toast.LENGTH_SHORT).show();
+//															return;
+														}
+													}
+												}
+											    freeNum++;
+												mSelectSub++;
+//												SelectCount++;
+//												Toast.makeText(SubjectReserveActivity.this, String.valueOf(SelectCount), 0).show();
+												if (mSelectSub != 0) {
+													mSelectNumTv.setText("已选择" + mSelectSub + "个小时");
+													mSureTv.setSelected(true);
+												} else {
+													mSelectNumTv.setText("您还未选择任何时间");
+													mSureTv.setSelected(false);
+												}
+
+												if (mAllMoney != 0) {
+													mAllMoneyTv.setVisibility(View.VISIBLE);
+													mAllMoneyTv.setText("合计" + mAllMoney + "元");
+												} else {
+													mAllMoneyTv.setVisibility(View.GONE);
+												}
+										 }else{
+											 showToast("免费体验课只能预约一节");
+										 }
+										
+//									}else{
+//										showToast("非新用户无发预约");
+//									}
 								}
-								wrap.setBackgroundResource(R.drawable.shape_sub_fragment_has_select);
-								time.setSelected(true);
-								ok.setVisibility(View.VISIBLE);
-								sub.setVisibility(View.INVISIBLE);
-								money.setVisibility(View.INVISIBLE);
-								item.setStatus(2);
-								dataArraylist.get(item.getHour()-5).setStatus(2);
-								//showToast(item.getHour()-5+"");
-								int lastHour = item.getHour()-1;
-								int nextHour = item.getHour()+1;
-								for (int i=0;i<dataArraylist.size();i++)
-								{
-									if (dataArraylist.get(i).getHour()==lastHour||dataArraylist.get(i).getHour()==nextHour)
+								
+								
+								if(item.getIsfreecourse()==0){
+									mAllMoney = mAllMoney + item.getPrice();
+									// if (mAllMoney > mOverage) {
+									// // 还远金额
+									// mAllMoney = mAllMoney - item.getPrice();
+									// // 余额不足
+									// mNoOverageDialog.show();
+									// return;
+									// }
+									if (mRemain.get(dateLong) == null) {
+										List<Data> datas = new ArrayList<Data>();
+										datas.add(item);
+										mRemain.put(dateLong, datas);
+									} else {
+										mRemain.get(dateLong).add(item);
+									}
+									wrap.setBackgroundResource(R.drawable.shape_sub_fragment_has_select);
+									time.setSelected(true);
+									ok.setVisibility(View.VISIBLE);
+									sub.setVisibility(View.INVISIBLE);
+									money.setVisibility(View.INVISIBLE);
+									item.setStatus(2);
+									dataArraylist.get(item.getHour()-5).setStatus(2);
+									//showToast(item.getHour()-5+"");
+									int lastHour = item.getHour()-1;
+									int nextHour = item.getHour()+1;
+									for (int i=0;i<dataArraylist.size();i++)
 									{
-										if (dataArraylist.get(i).getStatus()==2)
+										if (dataArraylist.get(i).getHour()==lastHour||dataArraylist.get(i).getHour()==nextHour)
 										{
-											Toast.makeText(SubjectReserveActivity.this, "连续上课会很累的哦，慎重考虑哦亲", Toast.LENGTH_SHORT).show();
-//											return;
+											if (dataArraylist.get(i).getStatus()==2)
+											{
+												Toast.makeText(SubjectReserveActivity.this, "连续上课会很累的哦，慎重考虑哦亲", Toast.LENGTH_SHORT).show();
+//												return;
+											}
 										}
 									}
-								}
-								mSelectSub++;
-//								SelectCount++;
-//								Toast.makeText(SubjectReserveActivity.this, String.valueOf(SelectCount), 0).show();
-								if (mSelectSub != 0) {
-									mSelectNumTv.setText("已选择" + mSelectSub + "个小时");
-									mSureTv.setSelected(true);
-								} else {
-									mSelectNumTv.setText("您还未选择任何时间");
-									mSureTv.setSelected(false);
-								}
+									mSelectSub++;
+//									SelectCount++;
+//									Toast.makeText(SubjectReserveActivity.this, String.valueOf(SelectCount), 0).show();
+									if (mSelectSub != 0) {
+										mSelectNumTv.setText("已选择" + mSelectSub + "个小时");
+										mSureTv.setSelected(true);
+									} else {
+										mSelectNumTv.setText("您还未选择任何时间");
+										mSureTv.setSelected(false);
+									}
 
-								if (mAllMoney != 0) {
-									mAllMoneyTv.setVisibility(View.VISIBLE);
-									mAllMoneyTv.setText("合计" + mAllMoney + "元");
-								} else {
-									mAllMoneyTv.setVisibility(View.GONE);
+									if (mAllMoney != 0) {
+										mAllMoneyTv.setVisibility(View.VISIBLE);
+										mAllMoneyTv.setText("合计" + mAllMoney + "元");
+									} else {
+										mAllMoneyTv.setVisibility(View.GONE);
+									}
 								}
+//								mAllMoney = mAllMoney + item.getPrice();
+//								// if (mAllMoney > mOverage) {
+//								// // 还远金额
+//								// mAllMoney = mAllMoney - item.getPrice();
+//								// // 余额不足
+//								// mNoOverageDialog.show();
+//								// return;
+//								// }
+//								if (mRemain.get(dateLong) == null) {
+//									List<Data> datas = new ArrayList<Data>();
+//									datas.add(item);
+//									mRemain.put(dateLong, datas);
+//								} else {
+//									mRemain.get(dateLong).add(item);
+//								}
+//								wrap.setBackgroundResource(R.drawable.shape_sub_fragment_has_select);
+//								time.setSelected(true);
+//								ok.setVisibility(View.VISIBLE);
+//								sub.setVisibility(View.INVISIBLE);
+//								money.setVisibility(View.INVISIBLE);
+//								item.setStatus(2);
+//								dataArraylist.get(item.getHour()-5).setStatus(2);
+//								//showToast(item.getHour()-5+"");
+//								int lastHour = item.getHour()-1;
+//								int nextHour = item.getHour()+1;
+//								for (int i=0;i<dataArraylist.size();i++)
+//								{
+//									if (dataArraylist.get(i).getHour()==lastHour||dataArraylist.get(i).getHour()==nextHour)
+//									{
+//										if (dataArraylist.get(i).getStatus()==2)
+//										{
+//											Toast.makeText(SubjectReserveActivity.this, "连续上课会很累的哦，慎重考虑哦亲", Toast.LENGTH_SHORT).show();
+////											return;
+//										}
+//									}
+//								}
+//								mSelectSub++;
+////								SelectCount++;
+////								Toast.makeText(SubjectReserveActivity.this, String.valueOf(SelectCount), 0).show();
+//								if (mSelectSub != 0) {
+//									mSelectNumTv.setText("已选择" + mSelectSub + "个小时");
+//									mSureTv.setSelected(true);
+//								} else {
+//									mSelectNumTv.setText("您还未选择任何时间");
+//									mSureTv.setSelected(false);
+//								}
+//
+//								if (mAllMoney != 0) {
+//									mAllMoneyTv.setVisibility(View.VISIBLE);
+//									mAllMoneyTv.setText("合计" + mAllMoney + "元");
+//								} else {
+//									mAllMoneyTv.setVisibility(View.GONE);
+//								}
 //								}else{
 //									Toast.makeText(SubjectReserveActivity.this,"一天中不能预约超过4个学时的课程",Toast.LENGTH_SHORT).show();
 //								}
@@ -744,8 +983,13 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 									Iterator<Data> iter = mRemain.get(dateLong).iterator();
 									while (iter.hasNext()) {
 										Data data = iter.next();
-										if ((data.getHour() == item.getHour())) {
+										if ((data.getHour() == item.getHour()&&data.getIsfreecourse()==0)) {
 											mRemain.get(dateLong).remove(data);
+											break;
+										}
+										if ((data.getHour() == item.getHour()&&data.getIsfreecourse()==1)) {
+											mRemain.get(dateLong).remove(data);
+											freeNum--;
 											break;
 										}
 									}
@@ -781,4 +1025,47 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 		super.finish();
 		overridePendingTransition(R.anim.no_fade, R.anim.center_to_bottom);
 	}
+	
+	
+	// 是否可以可以预约免费体验课
+	public void canFreeDriver(){
+		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, getCanFreeResponse.class, new MySubResponseHandler<getCanFreeResponse>() {
+			@Override
+			public void onStart() {
+				mLoadingDialog.setCanceledOnTouchOutside(false);
+				mLoadingDialog.show();
+			}
+
+			@Override
+			public RequestParams setParams(RequestParams requestParams) {
+				requestParams.add("action", "GETFREECOURSESTATE");
+				requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+				return requestParams;
+			}
+
+			@Override
+			public void onFinish() {
+				mLoadingDialog.dismiss();
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, getCanFreeResponse baseReponse) {
+				Freecoursestate=baseReponse.isFreecoursestate();
+				if(Freecoursestate){
+					Intent intent = new Intent(mBaseFragmentActivity, ComfirmOrderActivity.class);
+					intent.putExtra("mCoachId", mCoachId);
+					intent.putExtra("mOverage", mOverage);
+					intent.putExtra("cuseraddtionalprice",0);
+					intent.putExtra("scheduleInt", scheduleInt);
+					startActivity(intent);
+				}else{
+					showToast("你不是新用户，不能预约体验课");
+				}
+				mSureTv.setSelected(true);
+ 
+			}
+
+		});
+	}
+	
 }

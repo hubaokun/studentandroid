@@ -82,6 +82,7 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 	private String complaintcontent;
 	private RelativeLayout rl_explant,rl_cancle_explant;
 	private CancelComplaint cancelDialog;
+	private String scheduleInt="";
 	
 	@Override
 	public void getIntentData() {
@@ -102,7 +103,7 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 
 	@Override
 	public void findViews(Bundle savedInstanceState) {
-		//mContinueTv = (TextView) findViewById(R.id.tv_continue);
+		mContinueTv = (TextView) findViewById(R.id.tv_continue);
 
 		mNameTv = (TextView) findViewById(R.id.tv_name);
 		mOrderId=(TextView)findViewById(R.id.tv_orderid);
@@ -223,6 +224,12 @@ public class OrderDetailActivity extends BaseFragmentActivity implements onButto
 				if (mOrderDetailResponse != null && mOrderDetailResponse.getOrderinfo() != null) {
 					intent.putExtra("mCoachId", mOrderDetailResponse.getOrderinfo().getCoachid());
 					intent.putExtra("mAddress", mOrderDetailResponse.getOrderinfo().getDetail());
+					if(mOrderDetailResponse.getOrderinfo().getOrderprice().get(0).getSubject().equals("陪驾")){
+						scheduleInt="1";
+					}else{
+						scheduleInt="0";
+					}
+					intent.putExtra("scheduleInt", scheduleInt);
 					if (mOrderDetailResponse.getOrderinfo().getCuserinfo() != null)
 						intent.putExtra("mName", mOrderDetailResponse.getOrderinfo().getCuserinfo().getRealname());
 				}

@@ -9,6 +9,7 @@ public class Pparams {
 	private String total_fee;// 总金额
 	private String body;// 对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。
 	private String rsakey;// 客户私钥
+	
 
 	public String getPartner() {
 		return partner;

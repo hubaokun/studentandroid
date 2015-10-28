@@ -259,13 +259,15 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 						
 						GuangdaApplication.isInvited=baseReponse.getIsInvited();
 						((GuangdaApplication) mBaseApplication).uploadPushInfo();
-						if(GuangdaApplication.isInvited==1){
-//							if(judgmentData(GuangdaApplication.mUserInfo.getAddtime())){
-								//跳转到邀请码
-								startMyActivity(ActivityInputRecord.class);
-//							}
-						}
-						else{
+						
+						  //  跳转邀请码
+//						if(GuangdaApplication.isInvited==1){
+////							if(judgmentData(GuangdaApplication.mUserInfo.getAddtime())){
+//								//跳转到邀请码
+//								startMyActivity(ActivityInputRecord.class);
+////							}
+//						}
+//						else{
 							if(GuangdaApplication.isToBaoMing){
 								startMyActivity(BookDriveActivity.class);	
 							}else{
@@ -273,7 +275,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 							}
 							
 						}
-					}
+					
 					
 					//startMyActivity(MapHomeActivity.class);
 					finish();

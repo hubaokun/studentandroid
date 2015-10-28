@@ -5,6 +5,7 @@ import org.apache.http.Header;
 import com.common.library.llj.utils.AsyncHttpClientUtil;
 import com.loopj.android.http.RequestParams;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,6 +30,7 @@ public class MyAccount extends TitlebarActivity{
 	private TextView tvXiaoBaQuan,tv_money;
 	private LinearLayout llCoin;
 	private TextView tvCoin;
+	private String coins,freeCoins;
 	@Override
 	public int getLayoutId() {
 		// TODO Auto-generated method stub
@@ -84,7 +86,12 @@ public class MyAccount extends TitlebarActivity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				startMyActivity(ActivityMyCoins.class);
+				Intent intent=new Intent(MyAccount.this,ActivityMyCoins.class);
+				Bundle mBundle = new Bundle();
+				mBundle.putString("coins",coins);
+				mBundle.putString("freecoins",freeCoins);
+				intent.putExtras(mBundle);
+				  startActivity(intent);  
 			}
 		});
 	}
@@ -128,7 +135,9 @@ public class MyAccount extends TitlebarActivity{
 				tvCoin.setText(""+baseReponse.getCoinsum());
 				tvYue.setText(""+baseReponse.getMoney());
 				GuangdaApplication.mUserInfo.setMoney(""+baseReponse.getMoney());
-				tv_money.setText("金额"+baseReponse.getConsumeMoney()+"元"+" "+"小巴币"+baseReponse.getConsumeCoin()+"枚"+" "+"小巴券"+baseReponse.getConsumeCoupon()+"张");
+				freeCoins=baseReponse.getFcoinsum()+"";
+				coins=baseReponse.getCoinsum()+"";
+				tv_money.setText("金额"+baseReponse.getConsumeMoney()+"元"+" "+"小巴币"+baseReponse.getConsumeCoin()+"个"+" "+"小巴券"+baseReponse.getConsumeCoupon()+"张");
 				
 			}
 			

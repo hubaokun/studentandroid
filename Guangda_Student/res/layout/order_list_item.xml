@@ -178,6 +178,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/tv_black"
                 android:text="100.0元" />
+             <TextView
+                android:id="@+id/tv_subjectname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(陪驾)"
+                android:textColor="@color/tv_black"
+                android:textSize="13dp" />
+            
         </LinearLayout>
     </LinearLayout>
 

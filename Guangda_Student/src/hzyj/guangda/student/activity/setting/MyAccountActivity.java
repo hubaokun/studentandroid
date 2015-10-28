@@ -142,7 +142,7 @@ public class MyAccountActivity extends TitlebarActivity {
 //		if (baseReponse.getFmoney() == 0) {
 //			mFreezeMoneyTv.setVisibility(View.GONE);
 //		} else {
-			mFreezeMoneyTv.setVisibility(View.VISIBLE);
+			mFreezeMoneyTv.setVisibility(View.GONE);
 			SpannableString fmoney = new SpannableString(baseReponse.getFmoney() + "");
 			fmoney.setSpan(new AbsoluteSizeSpan(sizeFmoney), 0, fmoney.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			fmoney.setSpan(new ForegroundColorSpan(Color.parseColor("#f7645c")), 0, fmoney.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -166,24 +166,26 @@ public class MyAccountActivity extends TitlebarActivity {
 		protected void convert(BaseAdapterHelper helper, View convertView, Record item, int position) {
 			if (item != null) {
 				// 流水状态
-				if (item.getType() == 1) {
-					helper.setText(R.id.tv_tag, "充值");
-				} else if (item.getType() == 2) {
-					helper.setText(R.id.tv_tag, "提现");
-				} else if (item.getType() == 3) {
-					helper.setText(R.id.tv_tag, "订单支付");
-				}else if(item.getType()==4){
-					helper.setText(R.id.tv_tag,"提现不通过");
-				}
+				
+				helper.setText(R.id.tv_tag,item.getType_explain());
+//				if (item.getType() == 1) {
+//					helper.setText(R.id.tv_tag, "充值");
+//				} else if (item.getType() == 2) {
+//					helper.setText(R.id.tv_tag, "提现");
+//				} else if (item.getType() == 3) {
+//					helper.setText(R.id.tv_tag, "订单支付");
+//				}else if(item.getType()==4){
+//					helper.setText(R.id.tv_tag,"提现不通过");
+//				}
 				//
 				helper.setText(R.id.tv_date, item.getAddtime());
 				//
 				TextView monry = helper.getView(R.id.tv_money);
-				if (item.getType() == 1||item.getType()==4) {
-					monry.setText("+" + (int) item.getAmount()+"元");
+				if((int) item.getAmount()>0){
+					monry.setText("+"+ (int) item.getAmount()+"元");
 					monry.setTextColor(Color.parseColor("#50cb8c"));
-				} else {
-					monry.setText("-" + (int) item.getAmount()+"元");
+				}else{
+					monry.setText((int) item.getAmount()+"元");
 					monry.setTextColor(Color.parseColor("#f7645c"));
 				}
 			}

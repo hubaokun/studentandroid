@@ -13,6 +13,22 @@
         android:inputType="number"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:hint="输入充值金额"
         android:singleLine="true" />
+           <TextView
+                android:id="@+id/tv_to_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/recharge_shape"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="10dp"
+                android:text="下一步"
+                android:textSize="17dp"
+                android:textColor="#ffffff"
+                />
 
 </LinearLayout>

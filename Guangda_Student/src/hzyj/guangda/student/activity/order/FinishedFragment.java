@@ -55,6 +55,7 @@ public class FinishedFragment extends BaseFragment {
 	private OrderListAdapter mOrderListAdapter;
 	private RelativeLayout mNoDataRl;
 	private boolean state=true;
+	private String scheduleInt="";
 
 	@Override
 	protected View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -188,6 +189,7 @@ public class FinishedFragment extends BaseFragment {
 				TextView tv_cancel_order = helper.getView(R.id.tv_cancel_order);
 				TextView tv_comment = helper.getView(R.id.tv_comment);
 				TextView tv_continue = helper.getView(R.id.tv_continue);
+				helper.setText(R.id.tv_subjectname, item.getSubjectname());
 				//TextView tv_course=helper.getView(R.id.tv_course);
 				
 				tv_continue.setVisibility(View.VISIBLE);
@@ -197,8 +199,16 @@ public class FinishedFragment extends BaseFragment {
 					public void onClick(View v) {
 						ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(mBaseFragmentActivity, R.anim.bottom_to_center, R.anim.no_fade);
 						Intent intent = new Intent(mBaseFragmentActivity, SubjectReserveActivity.class);
+						
 						intent.putExtra("mCoachId", item.getCoachid());
 						intent.putExtra("mAddress", item.getDetail());
+						
+						if(item.getSubjectname().equals("陪驾")){
+							scheduleInt="1";
+						}else{
+							scheduleInt="0";
+						}
+						intent.putExtra("scheduleInt",scheduleInt);
 						if (item.getCuserinfo() != null) {
 							intent.putExtra("mScore", item.getCuserinfo().getScore());
 							intent.putExtra("mName", item.getCuserinfo().getRealname());
@@ -233,8 +243,12 @@ public class FinishedFragment extends BaseFragment {
 					status.setTextColor(Color.parseColor("#b8b8b8"));
 					break;
 				}
+				if(item.getCarlicense()!=null){
+					carlicense.setText("("+item.getCarlicense()+")");
+				}else{
+					carlicense.setText("");
+				}
 				
-				carlicense.setText("("+item.getCarlicense()+")");
 				//tv_address.setText(item.getDetail());
 				//tv_course.setText(item.getSubjectname());
 				// date

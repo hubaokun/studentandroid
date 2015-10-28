@@ -4,17 +4,29 @@ import hzyj.guangda.student.GuangdaApplication;
 import hzyj.guangda.student.R;
 import hzyj.guangda.student.TitlebarActivity;
 import hzyj.guangda.student.common.Setting;
+import hzyj.guangda.student.entity.CoachInfoVo;
+import hzyj.guangda.student.response.CasheResponse;
+import hzyj.guangda.student.response.CoachListResponse;
 import hzyj.guangda.student.util.MySubResponseHandler;
 
 import org.apache.http.Header;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.common.library.llj.base.BaseReponse;
 import com.common.library.llj.utils.AsyncHttpClientUtil;
 import com.common.library.llj.utils.ParseUtilLj;
@@ -70,7 +82,7 @@ public class WithdrawalsActivity extends TitlebarActivity {
 						requestParams.add("action", "ApplyCash");
 						requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
 						requestParams.add("count", mMoneyEt.getText().toString().trim());
-//						requestParams.add("resource","0");
+						requestParams.add("resource","0");
 						return requestParams;
 					}
 
@@ -108,6 +120,38 @@ public class WithdrawalsActivity extends TitlebarActivity {
 
 	@Override
 	public void requestOnCreate() {
+		
+		AsyncHttpClientUtil.get().post(this, Setting.SMY_URL, CasheResponse.class, new MySubResponseHandler<CasheResponse>() {
+//			@Override
+//			public void onStart() {
+//				if (!isUpateByStatus) {
+//					mLoadingDialog.show();
+//					mLoadingDialog.setOnDismissListener(new OnDismissListener() {
+//
+//						@Override
+//						public void onDismiss(DialogInterface dialog) {
+//						}
+//					});
+//				}
+//			}
+
+			@Override
+			public RequestParams setParams(RequestParams requestParams) {
+				requestParams.add("action", "CASHEXPLAIN");
+				return requestParams;
+			}
+
+			@Override
+			public void onFinish() {
+				mLoadingDialog.dismiss();
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, CasheResponse baseReponse) {
+				showToast(baseReponse.getCashexplain());
+
+			}
+		});
 
 	}
 

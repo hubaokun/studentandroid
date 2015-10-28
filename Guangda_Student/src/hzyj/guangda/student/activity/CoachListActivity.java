@@ -31,6 +31,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.common.library.llj.adapterhelp.BaseAdapterHelper;
@@ -61,8 +63,9 @@ public class CoachListActivity extends BaseFragmentActivity {
 	private String condition11;// 车型
 	private List<CoachInfoVo> coachList = new ArrayList<CoachInfoVo>();
 	private String Version,longitude,latitude,cityId;
-	private boolean state=true;
+	private boolean state=true;   //上拉 控制是否加载完加载数据（避免教练重复）  
 	private String driverschoolid;
+	private RelativeLayout ll_noCoachData;
 
 	@Override
 	public void getIntentData() {
@@ -87,10 +90,16 @@ public class CoachListActivity extends BaseFragmentActivity {
 		mPtrFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.ptr_frame);
 		mPtrFrameLayout.setDurationToCloseHeader(800);
 		mListView = (ListView) findViewById(R.id.lv_coach);
+		ll_noCoachData=(RelativeLayout)findViewById(R.id.rl_no_coach_date);
 
 		mAllIv = (ImageView) findViewById(R.id.iv_all);
 		mMapIv = (ImageView) findViewById(R.id.iv_map);
 		mFilterIv = (ImageView) findViewById(R.id.iv_filter);
+		if(condition11.equals("19")){
+			mFilterIv.setVisibility(View.GONE);
+		}else{
+			mFilterIv.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -191,52 +200,61 @@ public class CoachListActivity extends BaseFragmentActivity {
 		if(state){
 			//Toast.makeText(mBaseFragmentActivity,mPage+"",0).show();
 			state=false;
-			AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, CoachListResponse.class, new MySubResponseHandler<CoachListResponse>() {
+				AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, CoachListResponse.class, new MySubResponseHandler<CoachListResponse>() {
 
-				@Override
-				public RequestParams setParams(RequestParams requestParams) {
-					requestParams.add("action", "GetCoachList");
-					if (condition1 != null)
-						requestParams.add("condition1", condition1);
-					if (condition3 != null)
-						requestParams.add("condition3", condition3 + " 05:00:00");
-					if (condition6 != null)
-						requestParams.add("condition6", condition6);
-					if (!TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid()))
-					{
-						requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+					@Override
+					public RequestParams setParams(RequestParams requestParams) {
+						requestParams.add("action", "GetCoachList");
+						if (condition1 != null)
+							requestParams.add("condition1", condition1);
+						if (condition3 != null)
+							requestParams.add("condition3", condition3 + " 05:00:00");
+						if (condition6 != null)
+							requestParams.add("condition6", condition6);
+						if(condition11!=null)
+							requestParams.add("condition11", condition11);
+						if (!TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid()))
+						{
+							requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
+						}
+						if(driverschoolid!=null){
+							requestParams.add("driverschoolid",driverschoolid);
+						}
+						
+						requestParams.add("longitude",longitude);
+						requestParams.add("latitude",latitude);
+						if(GuangdaApplication.mUserInfo.getCityid()!=null){
+							requestParams.add("cityid",GuangdaApplication.mUserInfo.getCityid());
+						}else{
+							requestParams.add("fixedposition",GuangdaApplication.location);
+						}
+						requestParams.add("pagenum", mPage + "");
+						requestParams.add("version",Version);
+						return requestParams;
 					}
-					if(driverschoolid!=null){
-						requestParams.add("driverschoolid",driverschoolid);
+
+					@Override
+					public void onFinish() {
+						mPtrFrameLayout.refreshComplete();
 					}
-					requestParams.add("longitude",longitude);
-					requestParams.add("latitude",latitude);
-					requestParams.add("cityid",cityId);
-					requestParams.add("pagenum", mPage + "");
-					requestParams.add("version",Version);
-					return requestParams;
-				}
 
-				@Override
-				public void onFinish() {
-					mPtrFrameLayout.refreshComplete();
-				}
+					@Override
+					public void onSuccess(int statusCode, Header[] headers, CoachListResponse baseReponse) {
 
-				@Override
-				public void onSuccess(int statusCode, Header[] headers, CoachListResponse baseReponse) {
+						initAllData(baseReponse);
+						mPtrFrameLayout.refreshComplete();
+					}
+					
+					
+					@Override
+					public void onNotSuccess(Context context, int statusCode, Header[] headers,
+							CoachListResponse baseReponse) {
+						// TODO Auto-generated method stub
+						super.onNotSuccess(context, statusCode, headers, baseReponse);
+					}
+				});
+		
 
-					initAllData(baseReponse);
-					mPtrFrameLayout.refreshComplete();
-				}
-				
-				
-				@Override
-				public void onNotSuccess(Context context, int statusCode, Header[] headers,
-						CoachListResponse baseReponse) {
-					// TODO Auto-generated method stub
-					super.onNotSuccess(context, statusCode, headers, baseReponse);
-				}
-			});
 		}
 		
 	}
@@ -265,33 +283,42 @@ public class CoachListActivity extends BaseFragmentActivity {
 //	}
 
 	private void initAllData(CoachListResponse baseReponse) {
-		if (mPage == 0) {
-			mCoachListAdapter.clear();
-		}
-		if (baseReponse.getHasmore() == 0) {
-			mCoachListAdapter.showIndeterminateProgress(false);
-		} else if (baseReponse.getHasmore() == 1 && baseReponse.getCoachlist() != null) {
-			mCoachListAdapter.showIndeterminateProgress(true);
-			mPage++;
-		}
-//		for (int i =0 ;i<baseReponse.getCoachlist().size();i++)
-//		{
-//			if (!baseReponse.getCoachlist().get(i).getPhone().equals("18888888888"));
+		if(baseReponse.getCoachlist()!=null&&baseReponse.getCoachlist().size()!=0){
+			ll_noCoachData.setVisibility(View.GONE);
+			//mListView.setVisibility(View.VISIBLE);
+			if (mPage == 0) {
+				mCoachListAdapter.clear();
+			}
+			if (baseReponse.getHasmore() == 0) {
+				mCoachListAdapter.showIndeterminateProgress(false);
+			} else if (baseReponse.getHasmore() == 1 && baseReponse.getCoachlist() != null) {
+				mCoachListAdapter.showIndeterminateProgress(true);
+				mPage++;
+			}
+//			for (int i =0 ;i<baseReponse.getCoachlist().size();i++)
 //			{
-//				coachList.add(baseReponse.getCoachlist().get(i));
+//				if (!baseReponse.getCoachlist().get(i).getPhone().equals("18888888888"));
+//				{
+//					coachList.add(baseReponse.getCoachlist().get(i));
+//				}
 //			}
-//		}
+			
+			//测试版 ，测试教练放出，正式版，测试教练移除
+//			Iterator<CoachInfoVo> iter = baseReponse.getCoachlist().iterator();  
+//			while(iter.hasNext()){  
+//			    CoachInfoVo s = iter.next();  
+//			    if(s.getPhone().equals("18888888888")){  
+//			        iter.remove();  
+//			    }
+//			}
+			state=true;
+			mCoachListAdapter.addAll(baseReponse.getCoachlist());
+		}else{
+			state=true;
+			ll_noCoachData.setVisibility(View.VISIBLE);
+			//mListView.setVisibility(View.INVISIBLE);
+		}
 		
-		//测试版 ，测试教练放出，正式版，测试教练移除
-//		Iterator<CoachInfoVo> iter = baseReponse.getCoachlist().iterator();  
-//		while(iter.hasNext()){  
-//		    CoachInfoVo s = iter.next();  
-//		    if(s.getPhone().equals("18888888888")){  
-//		        iter.remove();  
-//		    }
-//		}
-		state=true;
-		mCoachListAdapter.addAll(baseReponse.getCoachlist());
 	}
 
 	private class CoachListAdapter extends QuickAdapter<CoachInfoVo> {
@@ -307,13 +334,45 @@ public class CoachListActivity extends BaseFragmentActivity {
 				
 				//
 				loadHeadImage(item.getAvatarurl(), 110, 110, ((ImageView) helper.getView(R.id.iv_header)));
+				
+				if(item.getFreecoursestate()==1){
+					helper.getView(R.id.tv_freeicon).setVisibility(View.VISIBLE);
+				}else{
+					helper.getView(R.id.tv_freeicon).setVisibility(View.GONE);;
+				}
 				//
-				helper.setText(R.id.tv_coach, item.getRealname()).setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
-				
-				
+				if(condition11.equals("19")){
+					helper.setText(R.id.tv_order, "陪驾次数");
+					if(item.getModellist().get(0).getModelname().contains("C1")){
+						
+						helper.setText(R.id.tv_sumnum,String.valueOf(item.getAccompanynum()));
+						if(item.getRealname()==null){
+							helper.setText(R.id.tv_coach,"未命名").setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
+						}else{
+							helper.setText(R.id.tv_coach,item.getRealname()).setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
+						}
+
+					}else{
+						if(item.getRealname()==null){
+							helper.setText(R.id.tv_coach,"未命名").setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
+						}else{
+							helper.setText(R.id.tv_coach,item.getRealname()).setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
+						}
+					}
+				}else{
+					helper.setText(R.id.tv_order, "订单数");
+					helper.setText(R.id.tv_sumnum,String.valueOf(item.getSumnum()));
+					if(item.getRealname()==null){
+						helper.setText(R.id.tv_coach,"未命名").setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
+					}else{
+						helper.setText(R.id.tv_coach,item.getRealname()).setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
+					}
+				}				
 				//驾校暂时先屏蔽掉
 				//helper.setText(R.id.tv_school, item.getDrive_school());
-				helper.setText(R.id.tv_sumnum,String.valueOf(item.getSumnum()));
+				
+				
+				
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override

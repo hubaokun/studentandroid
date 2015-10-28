@@ -1,7 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hzyj.guangda.student"
-    android:versionCode="2"
-    android:versionName="1.9.4" >
+    android:versionCode="9"
+    android:versionName="1.9.8" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -28,7 +28,7 @@
     <!-- 使用定位功能所需权限,demo已集成百度定位SDK,不使用定位功能可去掉以下6项 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <!-- <permission android:name="android.permission.BAIDU_LOCATION_SERVICE" /> -->
+    <!-- <permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />  -->
 
     <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -61,6 +61,31 @@
     <!-- 允许程序录制音频 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="getui.permission.GetuiService.hzyj.guangda.student" />
+    
+     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <permission
         android:name="getui.permission.GetuiService.hzyj.guangda.student"
@@ -81,6 +106,12 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+             <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="wxa508cf6ae267e0a8"/>
             </intent-filter>
         </activity>
         <activity
@@ -332,6 +363,32 @@
             android:configChanges="keyboardHidden|navigation|orientation"
             android:screenOrientation="portrait" >
         </activity>
+        <activity android:name="hzyj.guangda.student.activity.ActivityRechargePay"
+             android:configChanges="keyboardHidden|navigation|orientation"
+             android:exported="true"
+             android:launchMode="singleTop"
+             android:screenOrientation="portrait" >
+             
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="wxa508cf6ae267e0a8"/>
+            </intent-filter>
+        </activity>
+         <activity android:name="hzyj.guangda.student.activity.WXPayEntryActivity"
+             android:configChanges="keyboardHidden|navigation|orientation"
+             android:exported="true"
+             android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+          
+        </activity>
+        
+        <receiver
+            android:name="net.sourceforge.simcpux.AppRegister">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
         
         <!-- 友盟统计 -->
         <meta-data android:value="55bf1332e0f55a84ed001f92" android:name="UMENG_APPKEY"></meta-data>
@@ -485,6 +542,67 @@
             android:exported="false"
             android:screenOrientation="behind" >
         </activity>
+        
+       //环信
+        <!-- 登陆 -->
+        <activity
+            android:name="com.easemob.helpdeskdemo.activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+
+        <!-- 聊天页面 -->
+        <activity
+            android:name="com.easemob.helpdeskdemo.activity.ChatActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <!-- 地图 -->
+        <activity
+            android:name="com.easemob.helpdeskdemo.activity.BaiduMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+
+        <!-- 自定义的contextmenu -->
+        <activity
+            android:name="com.easemob.helpdeskdemo.activity.ContextMenu"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyle" >
+        </activity>
+        <!-- 自定义的alertdialog -->
+        <activity
+            android:name="com.easemob.helpdeskdemo.activity.AlertDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyle" >
+        </activity>
+        <!-- 显示下载大图页面 -->
+        <activity
+            android:name="com.easemob.helpdeskdemo.activity.ShowBigImage"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+
+        <!-- choose video -->
+        <activity
+            android:name="com.easemob.helpdeskdemo.activity.ImageGridActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <!-- upload error log -->
+        <activity
+            android:name="com.easemob.helpdeskdemo.activity.DiagnoseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <!-- 设置环信应用的appkey -->
+    	<meta-data android:name="EASEMOB_APPKEY"  android:value="xiaobaxueche#xiaobaxueche" />
+        <!-- 声明sdk所需的service -->
+        <service android:name="com.easemob.chat.EMChatService" />
     </application>
 
 </manifest>

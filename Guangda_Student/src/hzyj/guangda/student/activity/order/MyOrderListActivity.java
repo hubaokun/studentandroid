@@ -122,7 +122,6 @@ public class MyOrderListActivity extends BaseFragmentActivity {
 	@Override
 	public void initViews() {
 		mTitleLeftTv.setSelected(true);
-
 		mTabAdapter = new TabAdapter(getSupportFragmentManager());
 		mViewPager.setAdapter(mTabAdapter);
 	}

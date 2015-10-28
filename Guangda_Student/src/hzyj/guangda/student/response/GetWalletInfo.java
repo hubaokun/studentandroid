@@ -10,9 +10,17 @@ public class GetWalletInfo extends BaseReponse {
 	private int consumeMoney;
 	private int consumeCoin;
 	private int consumeCoupon;
+	private int  fcoinsum;
 	
 	
 	
+	
+	public int getFcoinsum() {
+		return fcoinsum;
+	}
+	public void setFcoinsum(int fcoinsum) {
+		this.fcoinsum = fcoinsum;
+	}
 	public int getConsumeMoney() {
 		return consumeMoney;
 	}

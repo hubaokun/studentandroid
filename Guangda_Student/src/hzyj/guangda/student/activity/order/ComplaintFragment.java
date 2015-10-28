@@ -239,7 +239,11 @@ public class ComplaintFragment extends BaseFragment{
 					break;
 				}
 				
-				carlicense.setText("("+item.getCarlicense()+")");
+				if(item.getCarlicense()!=null){
+					carlicense.setText("("+item.getCarlicense()+")");
+				}else{
+					carlicense.setText("");
+				}
 				//tv_course.setText(item.getSubjectname());
 				// date
 				long dateStartLong = TimeUitlLj.stringToMilliseconds(2, item.getStart_time());

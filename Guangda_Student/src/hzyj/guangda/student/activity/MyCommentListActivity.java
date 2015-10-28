@@ -197,6 +197,7 @@ public class MyCommentListActivity extends TitlebarActivity {
 				else{
 					TextView tv_name=helper.getView(R.id.tv_name);
 					tv_name.setVisibility(View.INVISIBLE);
+					helper.setText(R.id.tv_comment,item.getContent());
 				}
 				// 时间
 				

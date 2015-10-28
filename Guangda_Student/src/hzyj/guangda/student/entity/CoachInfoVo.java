@@ -25,8 +25,38 @@ public class CoachInfoVo {
 	private String selfeval;// 教练自我评价
 	private int sumnum;
 	private List<Model> modellist;
+	private int orderbyaccompany;
+	private int accompanynum;
+	
+	private int freecoursestate; //教练体验课是否开课  1：有免费体验    0：没有
 	
 	
+	
+	
+    
+	public int getFreecoursestate() {
+		return freecoursestate;
+	}
+
+	public void setFreecoursestate(int freecoursestate) {
+		this.freecoursestate = freecoursestate;
+	}
+
+	public int getAccompanynum() {
+		return accompanynum;
+	}
+
+	public void setAccompanynum(int accompanynum) {
+		this.accompanynum = accompanynum;
+	}
+
+	public int getOrderbyaccompany() {
+		return orderbyaccompany;
+	}
+
+	public void setOrderbyaccompany(int orderbyaccompany) {
+		this.orderbyaccompany = orderbyaccompany;
+	}
 
 	public int getSumnum() {
 		return sumnum;

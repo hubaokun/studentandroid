@@ -232,8 +232,11 @@ public class WaitCommentFragment extends BaseFragment {
 					status.setTextColor(Color.parseColor("#b8b8b8"));
 					break;
 				}
-				
-				carlicense.setText("("+item.getCarlicense()+")");
+				if(item.getCarlicense()!=null){
+					carlicense.setText("("+item.getCarlicense()+")");
+				}else{
+					carlicense.setText("");
+				}
 				//tv_course.setText(item.getSubjectname());
 				// date
 				long dateStartLong = TimeUitlLj.stringToMilliseconds(2, item.getStart_time());

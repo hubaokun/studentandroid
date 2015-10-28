@@ -64,7 +64,7 @@ public class ShowAdvertisementDialog extends BaseDialog {
 	protected void setWindowParam() {
 		// TODO Auto-generated method stub
 		setWindowParams(-1, -2, Gravity.CENTER);
-		setCanceledOnTouchOutside(false);
+		setCanceledOnTouchOutside(true);
 	}
 	
 //	public void setImage(String imgurl,String advertisemetnUrl)

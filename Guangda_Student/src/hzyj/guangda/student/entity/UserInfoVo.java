@@ -29,7 +29,19 @@ public class UserInfoVo {
 	private String areaid;
 	private String locationname;
 	private String baiduid;
+	private int isfreecourse; // 1 可以参加活动 0 你参加活动
 	
+	
+	
+	
+	public int getIsfreecourse() {
+		return isfreecourse;
+	}
+
+	public void setIsfreecourse(int isfreecourse) {
+		this.isfreecourse = isfreecourse;
+	}
+
 	public String getToken() {
 		return token;
 	}

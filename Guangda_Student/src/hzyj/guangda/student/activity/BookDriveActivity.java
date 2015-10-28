@@ -343,45 +343,58 @@ public class BookDriveActivity extends BaseFragmentActivity {
 	
 	
 	private void payPrice(){
-		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, RechargeResponse.class, new MySubResponseHandler<RechargeResponse>() {
-			@Override
-			public void onStart() {
-				super.onStart();
-				mLoadingDialog.show();
-			}
-
-			@Override
-			public RequestParams setParams(RequestParams requestParams) {
-				requestParams.add("action", "PROMOENROLL");
-				requestParams.add("studentid",GuangdaApplication.mUserInfo.getStudentid());
-				requestParams.add("cityid",sltCityid);
-				requestParams.add("model",sltcartype);
-				requestParams.add("amount",sltxiaobaprice);
-				return requestParams;
-			}
-
-			@Override
-			public void onFinish() {
-				mLoadingDialog.dismiss();
-			}
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, RechargeResponse baseReponse) {
-				Pparams mPparams = new Pparams();
-				mPparams.setBody(baseReponse.getBody());
-				mPparams.setNotify_url(baseReponse.getNotify_url());
-				mPparams.setOut_trade_no(baseReponse.getOut_trade_no());
-				mPparams.setPartner(baseReponse.getPartner());
-				mPparams.setRsakey(baseReponse.getPrivate_key());
-				mPparams.setSeller_id(baseReponse.getSeller_id());
-				mPparams.setSubject(baseReponse.getSubject());
-				mPparams.setTotal_fee(baseReponse.getTotal_fee());
-				// mPparams.setTotal_fee(0.01 + "");
-				AliPayTask mAliPayTask = new AliPayTask(mBaseFragmentActivity, mPparams, baseReponse.getOut_trade_no());
-				mAliPayTask.Execute();
-			}
-		});
 		
+		Intent intent=new Intent(BookDriveActivity.this,ActivityRechargePay.class);
+		Bundle bundle=new Bundle();
+	    bundle.putString("money",sltxiaobaprice);
+	    intent.putExtra("wPage","1");  //1 一键报名 2 充值 接口
+	    intent.putExtra("cityid",sltCityid);
+	    intent.putExtra("model", sltcartype);
+	    
+	    intent.putExtras(bundle);
+	   
+	    startActivity(intent);
+		
+		
+//		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, RechargeResponse.class, new MySubResponseHandler<RechargeResponse>() {
+//			@Override
+//			public void onStart() {
+//				super.onStart();
+//				mLoadingDialog.show();
+//			}
+//
+//			@Override
+//			public RequestParams setParams(RequestParams requestParams) {
+//				requestParams.add("action", "PROMOENROLL");
+//				requestParams.add("studentid",GuangdaApplication.mUserInfo.getStudentid());
+//				requestParams.add("cityid",sltCityid);
+//				requestParams.add("model",sltcartype);
+//				requestParams.add("amount",sltxiaobaprice);
+//				return requestParams;
+//			}
+//
+//			@Override
+//			public void onFinish() {
+//				mLoadingDialog.dismiss();
+//			}
+//
+//			@Override
+//			public void onSuccess(int statusCode, Header[] headers, RechargeResponse baseReponse) {
+//				Pparams mPparams = new Pparams();
+//				mPparams.setBody(baseReponse.getBody());
+//				mPparams.setNotify_url(baseReponse.getNotify_url());
+//				mPparams.setOut_trade_no(baseReponse.getOut_trade_no());
+//				mPparams.setPartner(baseReponse.getPartner());
+//				mPparams.setRsakey(baseReponse.getPrivate_key());
+//				mPparams.setSeller_id(baseReponse.getSeller_id());
+//				mPparams.setSubject(baseReponse.getSubject());
+//				mPparams.setTotal_fee(baseReponse.getTotal_fee());
+//				// mPparams.setTotal_fee(0.01 + "");
+//				AliPayTask mAliPayTask = new AliPayTask(mBaseFragmentActivity, mPparams, baseReponse.getOut_trade_no());
+//				mAliPayTask.Execute();
+//			}
+//		});
+//		
 	}
 
 	@Override

@@ -7,10 +7,21 @@ public class Request {
 	private List<String> time = new ArrayList<String>();
 	private String date;
 	private String recordid ;
-	private int delmoney;
+	private int delmoney;  //用券或者币所抵用的金额
 	private int paytype;
 	private int total;
+	private String attachcar;
 	
+	
+	
+
+	public String getAttachcar() {
+		return attachcar;
+	}
+
+	public void setAttachcar(String attachcar) {
+		this.attachcar = attachcar;
+	}
 
 	public int getTotal() {
 		return total;

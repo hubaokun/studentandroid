@@ -13,7 +13,7 @@ import com.common.library.llj.base.BaseReponse;
  */
 public class CoachListResponse extends BaseReponse {
 	private List<CoachInfoVo> coachlist;
-	private int hasmore;// 是否还有更多数据1：有0：没有
+	private int hasmore;// 是否还有更多数据  
 
 	public int getHasmore() {
 		return hasmore;

@@ -56,6 +56,7 @@ public class ActivityService extends TitlebarActivity {
 	 private String cityid = "0";
 	 private String areaid="0";
 	 private String provinceid="0";
+	 private GuangdaApplication id;
 	@Override
 	public int getLayoutId() {
 		// TODO Auto-generated method stub
@@ -69,6 +70,7 @@ public class ActivityService extends TitlebarActivity {
 		rlMoniPeiXun = (LinearLayout)findViewById(R.id.rl_monipeixun);
 		rlZaixianYueKao = (LinearLayout)findViewById(R.id.rl_zaixianyukao);
 		rlXiaoBaKeFu = (RelativeLayout)findViewById(R.id.rl_xiobakefu);
+		id =(GuangdaApplication)getApplication();
 	}
 
 	@Override
@@ -144,6 +146,23 @@ public class ActivityService extends TitlebarActivity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent (mBaseFragmentActivity,IdentityInfoActivity.class);
 				mBaseFragmentActivity.startActivity(intent);
+			}
+		});
+		rlXiaoBaKeFu.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent (ActivityService.this,com.easemob.helpdeskdemo.activity.LoginActivity.class);
+				 id.mUserInfo.getStudentid();
+				 System.out.println("____________点击我了__________________"+id.mUserInfo.getPhone()+GuangdaApplication.mUserInfo.getAvatarurl());
+				intent.putExtra("phone", id.mUserInfo.getPhone());
+				if(GuangdaApplication.mUserInfo.getAvatarurl()!=null){
+					intent.putExtra("iv", GuangdaApplication.mUserInfo.getAvatarurl());
+				}else {
+					intent.putExtra("iv", "");
+				}
+				startActivity(intent);
 			}
 		});
 	}

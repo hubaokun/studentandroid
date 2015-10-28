@@ -19,6 +19,7 @@ import hzyj.guangda.student.view.ChosePayWayDialog;
 import hzyj.guangda.student.view.NoOverageDialog;
 import hzyj.guangda.student.view.ReserveNotSuccessDialog;
 import hzyj.guangda.student.view.ReserveSuccessDialog;
+import hzyj.guangda.student.view.SelectIsUseCarDialog;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -93,15 +94,22 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 	private float mixCoins=0; //混合支付 小巴币支付的个数
 	private boolean IspayQuan=false;
 	private float mixremindCoins;
-	private Boolean IsmixCoin;  //是否混合支付下改变的支付状态
+	private Boolean IsmixCoin=false;  //是否混合支付下改变的支付状态
+	
+	private String subjectid="";
+	private float cuseraddtionalprice;
+	private String scheduleInt;
 	
 
 	@Override
 	public void getIntentData() {
 		super.getIntentData();
+		cuseraddtionalprice=getIntent().getFloatExtra("cuseraddtionalprice",0);
 		mCoachId = getIntent().getStringExtra("mCoachId");
 		mOverage = getIntent().getFloatExtra("mOverage", 0);
+		scheduleInt=getIntent().getStringExtra("scheduleInt");
 		chosePayWay = new ChosePayWayDialog(mBaseFragmentActivity);
+		
 	}
 
 	@Override
@@ -150,6 +158,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SBOOK_URL, BookCoachReponse.class, new MySubResponseHandler<BookCoachReponse>() {
 								@Override
 								public void onStart() {
+									//mLoadingDialog.setCancelable(false);
 									mLoadingDialog.show();
 								}
 								
@@ -165,13 +174,18 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 								}
 								@Override
 								public void onFinish() {
-									mLoadingDialog.dismiss();
+									
 								}
 								@Override
 								public void onSuccess(int statusCode, Header[] headers, BookCoachReponse baseReponse) {
 									float restMoney = canUseCoinsNum - mHasUseResetMoney;
 									GuangdaApplication.mUserInfo.setMoney(String.valueOf(restMoney));
+									SubjectReserveActivity.freeNum=0;
+									SelectIsUseCarDialog.isMyCar=false;
+									//mLoadingDialog.dismiss();
+									mLoadingDialog.dismiss();
 									new ReserveSuccessDialog(mBaseFragmentActivity, baseReponse.getSuccessorderid()).show();
+									
 								}
 
 								@Override
@@ -378,6 +392,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 	// 上一个界面传入的数据
 	public void onEventMainThread(LongSparseArray<List<Data>> remain) {
 		mRemain = sortSparseArray(remain);
+		subjectid=mRemain.get(mRemain.keyAt(0)).get(0).getSubjectid();
 	}
 
 	/**
@@ -523,7 +538,8 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 					
 					for (Data data : mRemain.get(date)) {
 						if (data != null)
-							price.add(data.getPrice());
+							
+							price.add(data.getPrice()+cuseraddtionalprice);   //减去租赁费
 					}
 					float hasUseCouponMoney = 0;
 //					if (mCouponList.size() != 0) {
@@ -624,18 +640,38 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 						request.setDelmoney(price.get(0).intValue());
 						request.setRecordid(mCouponList.get(0).getRecordid());
 						request.setPaytype(2);
+						
+						if(scheduleInt.equals("1")){
+							if(!SelectIsUseCarDialog.isMyCar){
+								request.setAttachcar("1"); // 教练车
+							}else {
+								request.setAttachcar("0");  //学员车
+							}
+						}else{
+							request.setAttachcar("0");
+						}
 						mCouponList.get(0).setSelect(true);
 						orderPrice.setCoupon(mCouponList.get(0));
 						orderPrice.setType(2);   //type2是小巴券
 						orderPrice.setPrice(price.get(0));
 						mCouponList.remove(0);
-					}else if (hasCoin>=price.get(0)){
+					}else if (hasCoin>=price.get(0)&&price.get(0)!=0){
 						tv_select_oupon.setText("小巴币");
 						orderPrice.setType(3);  //tyep=3 小巴币
 						orderPrice.setPrice(price.get(0));
 						hasCoin = hasCoin - price.get(0);
 						mHasUseCoinsNum = mHasUseCoinsNum+price.get(0);
 						request.setDelmoney(price.get(0).intValue());
+						request.setTotal(price.get(0).intValue());
+						if(scheduleInt.equals("1")){
+							if(!SelectIsUseCarDialog.isMyCar){
+								request.setAttachcar("1"); //用教练的车 1 
+							}else {
+								request.setAttachcar("0");
+							}
+						}else{
+							request.setAttachcar("0");
+						}
 						request.setPaytype(3);
 					}
 					//混合支付
@@ -648,6 +684,15 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 					    mixCoins=hasCoin;
 					    request.setDelmoney((int)hasCoin);
 					    request.setPaytype(4);
+						if(scheduleInt.equals("1")){
+							if(!SelectIsUseCarDialog.isMyCar){
+								request.setAttachcar("1");
+							}else {
+								request.setAttachcar("0");
+							}
+						}else{
+							request.setAttachcar("0");
+						}
 					    request.setTotal(price.get(0).intValue());
 					    mHasUseCoinsNum=mHasUseCoinsNum+hasCoin;
 					    mHasUseResetMoney=mHasUseResetMoney+price.get(0)-hasCoin;
@@ -659,6 +704,16 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 						orderPrice.setType(1); //type=1 余额
 						orderPrice.setPrice(price.get(0)); 
 						mHasUseResetMoney = mHasUseResetMoney+price.get(0);
+						if(scheduleInt.equals("1")){
+							if(!SelectIsUseCarDialog.isMyCar){
+								request.setAttachcar("1");
+							}else {
+								request.setAttachcar("0");
+							}
+						}else{
+							request.setAttachcar("0");
+						}
+						request.setTotal(price.get(0).intValue());
 						request.setPaytype(1);
 						hasMoney = hasMoney - price.get(0);
 					}
@@ -667,6 +722,16 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 						switch (hasChosedOrderPrice.get(i).getType()) {
 						case 1:
 							tv_select_oupon.setText("余额支付");
+							if(scheduleInt.equals("1")){
+								if(!SelectIsUseCarDialog.isMyCar){
+									request.setAttachcar("1");
+								}else {
+									request.setAttachcar("0");
+								}
+							}else{
+								request.setAttachcar("0");
+							}
+							request.setTotal(price.get(0).intValue());
 							request.setPaytype(1);
 							hasMoney = hasMoney - price.get(0);
 							mHasUseResetMoney = mHasUseResetMoney + price.get(0);
@@ -678,6 +743,16 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							hasChosedOrderPrice.get(chosedIndex).setCoupon(coupon);
 							mCouponList.get(0).setSelect(true);
 							request.setDelmoney(price.get(0).intValue());
+							request.setTotal(price.get(0).intValue());
+							if(scheduleInt.equals("1")){
+								if(!SelectIsUseCarDialog.isMyCar){
+									request.setAttachcar("1");
+								}else {
+									request.setAttachcar("0");
+								}
+							}else{
+								request.setAttachcar("0");
+							}
 							request.setRecordid(mCouponList.get(0).getRecordid());
 							request.setPaytype(2);
 							mCouponList.remove(0);
@@ -688,6 +763,16 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							hasCoin = hasCoin - price.get(0);
 							mHasUseCoinsNum = mHasUseCoinsNum+price.get(0);
 							request.setDelmoney(price.get(0).intValue());
+							request.setTotal(price.get(0).intValue());
+							if(scheduleInt.equals("1")){
+								if(!SelectIsUseCarDialog.isMyCar){
+									request.setAttachcar("1");
+								}else {
+									request.setAttachcar("0");
+								}
+							}else{
+								request.setAttachcar("0");
+							}
 							request.setPaytype(3);
 							break;
 						case 4:
@@ -697,6 +782,15 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							hasMoney=hasMoney-price.get(0)+hasChosedOrderPrice.get(i).getDemoney();
 							mHasUseResetMoney = mHasUseResetMoney + price.get(0)-hasChosedOrderPrice.get(i).getDemoney();
 							request.setDelmoney(hasChosedOrderPrice.get(i).getDemoney());
+							if(scheduleInt.equals("1")){
+								if(!SelectIsUseCarDialog.isMyCar){
+									request.setAttachcar("1");
+								}else {
+									request.setAttachcar("0");
+								}
+							}else{
+								request.setAttachcar("0");
+							}
 							request.setTotal(price.get(0).intValue());
 							request.setPaytype(4);
 						default:
@@ -717,7 +811,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							TextView time = (TextView) item.findViewById(R.id.tv_time);
 							TextView timeSub = (TextView) item.findViewById(R.id.tv_time_sub);
 							TextView money = (TextView) item.findViewById(R.id.tv_money);
-							TextView sub = (TextView) item.findViewById(R.id.tv_sub);
+							//TextView sub = (TextView) item.findViewById(R.id.tv_sub);
 							TextView address = (TextView) item.findViewById(R.id.tv_address);
 							request.getTime().add(data.getHour() + "");
 							request.setDate(TimeUitlLj.millisecondsToString(9, data.getDateLong()));
@@ -728,11 +822,12 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 							} else if (j == count - 1) {
 								headerTv.append((data.getHour() + 1) + ":00");
 							}
-							time.setText(data.getHour() + ":00");
-							timeSub.setText("上午的" + data.getHour() + ":00-" + (data.getHour() + 1) + ":00");
-							mAllMoney = mAllMoney + data.getPrice();
-							money.setText(data.getPrice() + "元");
-							sub.setText(data.getSubject());
+							time.setText(data.getHour() + ":00-" + (data.getHour() + 1) + ":00");
+							//timeSub.setText("上午的" + data.getHour() + ":00-" + (data.getHour() + 1) + ":00");
+							timeSub.setText("("+data.getSubject()+")");
+							mAllMoney = mAllMoney + data.getPrice()+cuseraddtionalprice;
+							money.setText(data.getPrice() +cuseraddtionalprice+"元");
+							//sub.setText(data.getSubject());
 							address.setText(data.getAddressdetail());
 							addLi.addView(item);
 							if (count != 1 && (j != count - 1)) {
@@ -811,6 +906,7 @@ public class ComfirmOrderActivity extends TitlebarActivity {
 				requestParams.add("action", "getCanUseCouponList");
 				requestParams.add("studentid", GuangdaApplication.mUserInfo.getStudentid());
 				requestParams.add("coachid", mCoachId);
+				requestParams.add("modelid", MapHomeActivity.condition11);
 				return requestParams;
 			}
 

@@ -55,12 +55,16 @@ public class ActivityMyCoins extends TitlebarActivity {
 	@Override
 	public int getLayoutId() {
 		// TODO Auto-generated method stub
+		
+		
 		return R.layout.my_coins;
 	}
 	@Override
 	public void findViews(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		Bundle bundle=this.getIntent().getExtras();
 		tvCoinsCount = (TextView)findViewById(R.id.tv_my_coins_count);
+		tvCoinsCount.setText(bundle.getString("coins"));
 //	tvCoinSchoolCount = (TextView)findViewById(R.id.tv_coins_school_count);
 //		tvCoinCoachCount = (TextView)findViewById(R.id.tv_coins_coach_count);
 //		tvCoinXiaoBaCount = (TextView)findViewById(R.id.tv_coins_coach_count);
@@ -68,6 +72,8 @@ public class ActivityMyCoins extends TitlebarActivity {
 		lvCoinsLimit=(NoScrollListView)findViewById(R.id.lv_coins_limit);
 		//tvCoachName = (TextView)findViewById(R.id.tv_coach_name);
 		tvFreeCoins=(TextView)findViewById(R.id.tv_freeze_bi);
+		tvFreeCoins.setVisibility(View.GONE);
+		tvFreeCoins.setText("冻结数额:"+bundle.getString("freecoins")+"个");
 		pullToRefreshSl = (PullToRefreshScrollView)findViewById(R.id.pull_re_scroll);
 		
 		vwnum1=(View)findViewById(R.id.vw_num1);
@@ -93,8 +99,8 @@ public class ActivityMyCoins extends TitlebarActivity {
 		// TODO Auto-generated method stub
 		setCenterText("我的小巴币");
 		setRightText("使用规则",10, R.color.text_green);
-		tvFreeCoins.setText("");
-		tvFreeCoins.append("(小巴币冻结：");
+		
+		
 		myCoinsAda = new myCoinsAdapter(mBaseApplication);
 		coinAffiliationadaper=new coinAffiliationAdapter(mBaseApplication);
 		lvCoins.setAdapter(myCoinsAda);
@@ -104,7 +110,9 @@ public class ActivityMyCoins extends TitlebarActivity {
 	@Override
 	public void requestOnCreate() {
 		//lvCoins.setFocusable(false);
-		studentId = Integer.valueOf(GuangdaApplication.mUserInfo.getStudentid());
+		if(GuangdaApplication.mUserInfo.getStudentid()!=null){
+			studentId = Integer.valueOf(GuangdaApplication.mUserInfo.getStudentid());
+		}
 		// TODO Auto-generated method stub
 		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SUSER_URL, GetStudentCoinList.class, new MySubResponseHandler<GetStudentCoinList>() {
 			@Override
@@ -118,9 +126,7 @@ public class ActivityMyCoins extends TitlebarActivity {
 					GetStudentCoinList baseReponse) {
 				if (baseReponse.getCode() == 1)
 				{
-					tvCoinsCount.setText(baseReponse.getCoinnum()+"");
-					tvFreeCoins.append(baseReponse.getFcoinsum()+"");
-					tvFreeCoins.append("枚)");
+					
 					if (!TextUtils.isEmpty(baseReponse.getCoachname()))
 					{
 						//tvCoachName.setText(baseReponse.getCoachname());

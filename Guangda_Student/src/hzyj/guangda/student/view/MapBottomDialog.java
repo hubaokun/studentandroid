@@ -106,6 +106,7 @@ public class MapBottomDialog extends BaseDialog {
 				intent.putExtra("mGender", mCoachGender);
 				intent.putExtra("mAddress", mAddressTv.getText().toString().trim());
 				intent.putExtra("mPhone", phone);
+				intent.putExtra("scheduleInt", "");
 				ActivityCompat.startActivity((Activity) mContext, intent, options.toBundle());
 //				if (GuangdaApplication.mUserInfo.getRealname()!=null&&GuangdaApplication.mUserInfo.getPhone()!=null)
 //				{
