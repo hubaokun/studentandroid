@@ -46,4 +46,5 @@
 \n6.政策更新
 \n我们会更新本隐私政策，以反映我们变更后的信息操作。我们鼓励您定期查看本页以了解有关我们最新的有关隐私保护的操作。
 </string>
+<string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
 </resources>

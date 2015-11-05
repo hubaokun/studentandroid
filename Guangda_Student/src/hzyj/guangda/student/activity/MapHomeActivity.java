@@ -17,6 +17,8 @@ import hzyj.guangda.student.entity.CoachInfoVo;
 import hzyj.guangda.student.event.CoachFilterEvent;
 import hzyj.guangda.student.event.CoachListEvent;
 import hzyj.guangda.student.event.Update;
+import hzyj.guangda.student.fragment.ActivityServiceFragment;
+import hzyj.guangda.student.fragment.DriverQuestionFragment;
 import hzyj.guangda.student.response.CoachListResponse;
 import hzyj.guangda.student.response.GetCarModelResponse;
 import hzyj.guangda.student.response.GetCityId;
@@ -37,30 +39,38 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.http.Header;
-
+import android.annotation.SuppressLint;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.res.Resources;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts.Data;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import db.DBManager;
 
 import com.baidu.location.BDLocation;
@@ -111,6 +121,7 @@ import de.greenrobot.event.EventBus;
  * @author liulj
  * 
  */
+@SuppressLint("ResourceAsColor")
 public class MapHomeActivity extends BaseFragmentActivity {
 	private MySlidingPaneLayout mSlidingPaneLayout;
 	private ImageView mHeaderIv, mMenuIv, mAllIv, mListIv, mFilterIv;
@@ -158,7 +169,16 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private hzyj.guangda.student.view.ShowAdvertisementDialog showAdvDialog;
 	private String android_flag;
 	private String driverschoolid;
-	private LinearLayout ll_waibiank;;
+	private LinearLayout ll_waibiank;
+	
+	private SeekBar mseekbar;
+	Drawable drawable1,drawable2,drawable3,drawable4;
+	TextView tv_question,tv_driver,tv_accompany_driver,tv_servier;
+	LinearLayout ll_type;
+	TextView tv_c1,tv_c2;
+	FrameLayout framelayout;
+	
+	
 	@Override
 	public int getLayoutId() {
 		return R.layout.map_home_activity;
@@ -180,7 +200,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		mListIv = (ImageView) findViewById(R.id.iv_list);
 		mFilterIv = (ImageView) findViewById(R.id.iv_filter);
 		mMapView = (MapView) findViewById(R.id.bmapsView);
-		imgService = (ImageView)findViewById(R.id.img_service);
+		//imgService = (ImageView)findViewById(R.id.img_service);
 		llHeader = (LinearLayout)findViewById(R.id.li_menu_head);
 		imgGps=(ImageView)findViewById(R.id.img_gps);
 		ll_waibiank=(LinearLayout)findViewById(R.id.ll_waibiank);
@@ -190,6 +210,20 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		((GuangdaApplication) mBaseApplication).setLocation();
 		showAdvDialog = new hzyj.guangda.student.view.ShowAdvertisementDialog(mBaseFragmentActivity);
 		getAdvertiseme();
+		
+		mseekbar=(SeekBar) findViewById(R.id.ctrl_skbProgress);
+    	tv_question=(TextView) findViewById(R.id.tv_question);
+    	tv_question.setTextColor(R.color.text_black);
+    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
+    	tv_driver=(TextView)findViewById(R.id.tv_driver);
+    	tv_accompany_driver=(TextView) findViewById(R.id.tv_accompany_driver);
+    	tv_servier=(TextView) findViewById(R.id.tv_servier);
+    	
+    	ll_type=(LinearLayout) findViewById(R.id.ll_type);
+    	tv_c1=(TextView) findViewById(R.id.tv_c1);
+    	tv_c2=(TextView) findViewById(R.id.tv_c2);
+    	framelayout=(FrameLayout)findViewById(R.id.id_fraglayout);
+    	sendDriverQuestion();
 
 	}
 	
@@ -632,18 +666,18 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			}
 		});
 		
-		imgService.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
-					startMyActivity(LoginActivity.class);
-				} else {
-					startMyActivity(ActivityService.class);
-					}
-			}
-		});
+//		imgService.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
+//					startMyActivity(LoginActivity.class);
+//				} else {
+//					startMyActivity(ActivityService.class);
+//					}
+//			}
+//		});
 		
 	}
 	
@@ -677,6 +711,13 @@ public class MapHomeActivity extends BaseFragmentActivity {
 
 	@Override
 	public void initViews() {
+		
+		Resources res=getResources();
+		drawable1=res.getDrawable(R.drawable.btn);
+		drawable2=res.getDrawable(R.drawable.btn2);
+		drawable3=res.getDrawable(R.drawable.btn3);
+		drawable4=res.getDrawable(R.drawable.btn4);
+		setListener();
 		// 是否现实全部按钮
 		if (condition1 == null && condition3 == null && condition6.equals("0")&&driverschoolid == null) {
 			mAllIv.setVisibility(View.INVISIBLE);
@@ -900,6 +941,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 
 	// 获取消息数量
 	private void getMessageCount() {
+		
+		
 		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SSET_URL, GetMessageCountResponse.class, new MyResponseHandler<GetMessageCountResponse>() {
 
 			@Override
@@ -1110,7 +1153,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 							}
 							break;
 						case 3:
-							// 系统约考
+							// 设置
 							//startMyActivity(BookTestActivity.class);
 							startMyActivity(SettingActivity.class);
 							break;
@@ -1211,5 +1254,196 @@ public class MapHomeActivity extends BaseFragmentActivity {
           } 
    
 		
-	}	
+	}
+	
+	@SuppressLint("ResourceAsColor")
+	public void setListener(){
+        mseekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar arg0) {
+				// TODO Auto-generated method stub
+				if(0<=arg0.getProgress()&&arg0.getProgress()<=20){
+					arg0.setProgress(0);
+					arg0.setThumb(drawable4);
+					
+					tv_question.setTextColor(R.color.text_black);
+			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
+			    	
+			    	tv_driver.setTextColor(R.color.text_driver_gray);
+			    	tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			    	
+			    	tv_accompany_driver.setTextColor(R.color.text_driver_gray);
+			    	tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			    	
+			    	tv_servier.setTextColor(R.color.text_driver_gray);
+			    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			    	
+			    	
+			    	ll_type.setVisibility(View.GONE);
+			    	
+			    	sendDriverQuestion();
+				}
+				if(20<arg0.getProgress()&&arg0.getProgress()<=60){
+					arg0.setProgress(40);
+					arg0.setThumb(drawable2);
+					
+					tv_driver.setTextColor(R.color.text_black);
+					tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
+					
+					tv_question.setTextColor(R.color.text_driver_gray);
+			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			    	
+			    	
+			    	tv_accompany_driver.setTextColor(R.color.text_driver_gray);
+			    	tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			    	
+			    	tv_servier.setTextColor(R.color.text_driver_gray);
+			    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			    	
+			    	ll_type.setVisibility(View.VISIBLE);
+			    	framelayout.setVisibility(View.GONE);
+			    	tv_c1.setSelected(true);
+			    	tv_c1.performClick();
+			    	tv_c2.setSelected(false);
+			    		
+				}
+				if(60<arg0.getProgress()&&arg0.getProgress()<=100){
+					arg0.setProgress(80);
+					arg0.setThumb(drawable4);
+					
+					tv_accompany_driver.setTextColor(R.color.text_black);
+					tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
+					
+					tv_driver.setTextColor(R.color.text_driver_gray);
+					tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+					
+					tv_question.setTextColor(R.color.text_driver_gray);
+			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			    	
+			    	
+
+			    	
+			    	tv_servier.setTextColor(R.color.text_driver_gray);
+			    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			    	ll_type.setVisibility(View.GONE);
+
+			      
+			        framelayout.setVisibility(View.GONE);
+			    	
+			    	condition11="19";
+					mFilterIv.setVisibility(View.GONE);
+					mAllIv.setVisibility(View.GONE);
+					condition1 = null;
+					condition3 = null;
+					condition6 = "0";
+					driverschoolid = null;
+			    	getData();
+				}
+				if(100<arg0.getProgress()&&arg0.getProgress()<=120){
+					arg0.setProgress(120);
+					arg0.setThumb(drawable2);
+					
+					tv_servier.setTextColor(R.color.text_black);
+					tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
+					
+					tv_accompany_driver.setTextColor(R.color.text_driver_gray);
+					tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+					
+					tv_driver.setTextColor(R.color.text_driver_gray);
+					tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+					
+					tv_question.setTextColor(R.color.text_driver_gray);
+			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			    	
+			    	ll_type.setVisibility(View.GONE);
+			    	sendService(arg0);
+			    	
+			    	
+
+				}
+				
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+		});
+        
+        
+        
+        tv_c1.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				tv_c1.setSelected(true);
+				tv_c2.setSelected(false);
+				
+				condition11="17";
+				mFilterIv.setVisibility(View.VISIBLE);
+				getData();
+				
+			}
+		});
+        
+        tv_c2.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				tv_c1.setSelected(false);
+				tv_c2.setSelected(true);
+				condition11="18";
+				getData();
+				
+			}
+		});
+		
+    }
+	
+	public void sendService(SeekBar arg0){
+		if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
+		startMyActivity(LoginActivity.class);
+		
+	} else {
+		 
+    	 framelayout.setClickable(true);
+    	 
+    	  android.support.v4.app.FragmentManager fm=getSupportFragmentManager();
+          FragmentTransaction ft=fm.beginTransaction();
+          ActivityServiceFragment mainfragment = new ActivityServiceFragment();
+          ft.replace(R.id.id_fraglayout,mainfragment);
+          ft.addToBackStack(null);
+          ft.commit();
+          framelayout.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	public void sendDriverQuestion(){
+		
+   	    framelayout.setClickable(true);
+   	
+   	 android.support.v4.app.FragmentManager fm=getSupportFragmentManager();
+         FragmentTransaction ft=fm.beginTransaction();
+         DriverQuestionFragment questionfragment = new DriverQuestionFragment();
+         ft.replace(R.id.id_fraglayout,questionfragment);
+         ft.addToBackStack(null);
+         ft.commit();
+         framelayout.setVisibility(View.VISIBLE);
+	}
+	
+	public void getData(){
+		mFilterIv.setVisibility(View.VISIBLE);
+		doRequest(2, false);
+	}
 }

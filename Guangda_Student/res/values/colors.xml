@@ -33,6 +33,7 @@
    	<color name="btn_sure">#50cb8c</color>
    	<color name="tv_black">#3c3c3c</color>
    	<color name="light_yellow">#FFE4B5</color>
+    <color name="text_driver_gray">#Bfbfbf</color>
    	
 
 </resources>
