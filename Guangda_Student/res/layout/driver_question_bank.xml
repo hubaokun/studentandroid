@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+       <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:scaleType="centerInside"
+            android:gravity="center_vertical"
+            android:src="@drawable/go_back_normal" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="驾考题库"
+            android:textColor="@color/text"
+            android:textSize="18dp" />
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#221814"
+            android:text="收藏的题"/>
+        <RelativeLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+            <TextView 
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:text="99"
+             android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/num_green_circle_shape"/>
+        </RelativeLayout>
+        
+    </LinearLayout>
+    
+
+</LinearLayout>
