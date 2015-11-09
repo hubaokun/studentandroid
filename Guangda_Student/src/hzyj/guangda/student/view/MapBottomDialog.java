@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -38,6 +39,8 @@ public class MapBottomDialog extends BaseDialog {
 	private Context mcontext;
 	private String phone;
 	private String mCoachGender;
+	private ImageView imgStarCoach;
+	private LinearLayout llFreeClass;
 
 	public MapBottomDialog(Context context) {
 		super(context, R.style.dim_dialog);
@@ -80,6 +83,8 @@ public class MapBottomDialog extends BaseDialog {
 		mStarRb = (RatingBar) findViewById(R.id.rb_star);
 		tv_sumnum = (TextView) findViewById(R.id.tv_sumnum);
 		coach_sex=(ImageView)findViewById(R.id.coach_sex);
+		imgStarCoach = (ImageView)findViewById(R.id.img_star_coach);
+		llFreeClass = (LinearLayout)findViewById(R.id.ll_free_coach);
 		//
 		mCoachDetailTv.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -162,20 +167,35 @@ public class MapBottomDialog extends BaseDialog {
 			}
 		});
 		//mCoachGender.setText("");
-		mCoachNameTv.setText(coachInfoVo.getRealname() == null ? "" : coachInfoVo.getRealname());
+		mCoachNameTv.setText(coachInfoVo.getRealname() == null ? "" : coachInfoVo.getRealname()+"教练");
 		if (coachInfoVo.getGender() == 1) {
 			//mCoachGender.append("(" + "男" + ")");
 			mCoachGender="(男)";
-			coach_sex.setImageResource(R.drawable.icon_male);
+			coach_sex.setImageResource(R.drawable.ic_female); 
+			coach_sex.setBackgroundResource(R.drawable.shape_female_round);
 		} else if (coachInfoVo.getGender() == 2) {
 			//mCoachGender.append("(" + "女" + ")");
 			mCoachGender="(女)";
-			coach_sex.setImageResource(R.drawable.icon_female);
+			coach_sex.setImageResource(R.drawable.ic_male);
+			coach_sex.setBackgroundResource(R.drawable.shape_male_round);
 		}
 		tv_sumnum.setText(""+coachInfoVo.getSumnum());
 		mCoachNameTv.setText(coachInfoVo.getRealname());
 		mStarRb.setRating(ParseUtilLj.parseFloat(coachInfoVo.getScore(), 0f));
-		mAddressTv.setText(coachInfoVo.getDetail() == null ? "" : coachInfoVo.getDetail());
+		mAddressTv.setText(coachInfoVo.getDetail() == null ? "" : "练车地址："+coachInfoVo.getDetail());
+		if (coachInfoVo.getSignstate()==1)
+		{
+			imgStarCoach.setVisibility(View.VISIBLE);
+		}else{
+			imgStarCoach.setVisibility(View.GONE);
+		}
+		
+		if (coachInfoVo.getFreecoursestate()==1)
+		{
+			llFreeClass.setVisibility(View.VISIBLE);
+		}else{
+			llFreeClass.setVisibility(View.GONE);
+		}
 		phone = coachInfoVo.getPhone();
 	}
 

@@ -67,6 +67,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -131,10 +132,14 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	private MapView mMapView;
 	private BaiduMap mBaiduMap;
 	private String mRadius;// 最大半径，单位米
-	private BitmapDescriptor bitmapDescriptor;
+	private BitmapDescriptor bitmapDescriptor;   //普通教练图标
 	private BitmapDescriptor chosedBitmap;
-	private BitmapDescriptor freeLearn;
+	private BitmapDescriptor freeLearn;  //普通教练开体验课
 	private BitmapDescriptor chosedFreeLearn;
+	private BitmapDescriptor icStarCoach;  //明星教练图标
+	private BitmapDescriptor icStarCoachClick;
+	private BitmapDescriptor icFreeStarCoach;  //明星教练开体验课
+	private BitmapDescriptor icFreeStarCoachClick;
 	private float mZoom = 12.0f;
 	private float mRotate = 0.0f;
 	private double mLatitude;
@@ -177,7 +182,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	LinearLayout ll_type;
 	TextView tv_c1,tv_c2;
 	FrameLayout framelayout;
-	
+	public RelativeLayout rlBottom;
 	
 	@Override
 	public int getLayoutId() {
@@ -223,6 +228,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
     	tv_c1=(TextView) findViewById(R.id.tv_c1);
     	tv_c2=(TextView) findViewById(R.id.tv_c2);
     	framelayout=(FrameLayout)findViewById(R.id.id_fraglayout);
+    	rlBottom = (RelativeLayout)findViewById(R.id.rl_bottom);
     	sendDriverQuestion();
 
 	}
@@ -372,10 +378,14 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	 * 先设置一个初始地址
 	 */
 	private void initFirstLocation() {
-		bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.map_car_img);
-		chosedBitmap = BitmapDescriptorFactory.fromResource(R.drawable.ico_carok);
-		freeLearn=BitmapDescriptorFactory.fromResource(R.drawable.icon_closefree);
-		chosedFreeLearn=BitmapDescriptorFactory.fromResource(R.drawable.ico_free);
+		bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.ic_coach);
+		chosedBitmap = BitmapDescriptorFactory.fromResource(R.drawable.ic_coach_click);
+		freeLearn=BitmapDescriptorFactory.fromResource(R.drawable.ic_free_coach);
+		chosedFreeLearn=BitmapDescriptorFactory.fromResource(R.drawable.ic_free_coach_click);
+		icStarCoach = BitmapDescriptorFactory.fromResource(R.drawable.ic_star_coach);
+		icStarCoachClick = BitmapDescriptorFactory.fromResource(R.drawable.ic_star_coach_click);
+		icFreeStarCoach = BitmapDescriptorFactory.fromResource(R.drawable.ic_free_star_coach);
+		icFreeStarCoachClick = BitmapDescriptorFactory.fromResource(R.drawable.ic_free_star_coach_click);
 		
 		// 开启定位图层
 		mBaiduMap = mMapView.getMap();
@@ -442,6 +452,16 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				}
 				if(arg0 != null && arg0.getTitle() != null&&arg0.getPeriod()==2){
 					arg0.setIcon(chosedFreeLearn);
+					mark = arg0;
+					popBottomDialog(arg0.getTitle());
+				}
+				if(arg0 != null && arg0.getTitle() != null&&arg0.getPeriod()==3){
+					arg0.setIcon(icStarCoachClick);
+					mark = arg0;
+					popBottomDialog(arg0.getTitle());
+				}
+				if(arg0 != null && arg0.getTitle() != null&&arg0.getPeriod()==4){
+					arg0.setIcon(icFreeStarCoachClick);
 					mark = arg0;
 					popBottomDialog(arg0.getTitle());
 				}
@@ -736,8 +756,17 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				{
 					mark.setIcon(bitmapDescriptor);
 					mark = null;
-				}else{
+				}
+				if (mark!=null&&mark.getPeriod()==2){
 					mark.setIcon(freeLearn);
+					mark = null;
+				}
+				if (mark!=null&&mark.getPeriod()==3){
+					mark.setIcon(icStarCoach);
+					mark = null;
+				}
+				if (mark!=null&&mark.getPeriod()==4){
+					mark.setIcon(icFreeStarCoach);
 					mark = null;
 				}
 			}
@@ -906,16 +935,28 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					mCoachInfoVos.clear();
 					mCoachInfoVos.addAll(baseReponse.getCoachlist());
 					for (CoachInfoVo coachInfoVo : baseReponse.getCoachlist()) {
-						if (coachInfoVo.getLongitude() != null && coachInfoVo.getLatitude() != null && coachInfoVo.getCoachid() != null&&coachInfoVo.getFreecoursestate()==0) {
+						//普通教练
+						if (coachInfoVo.getLongitude() != null && coachInfoVo.getLatitude() != null && coachInfoVo.getCoachid() != null&&coachInfoVo.getFreecoursestate()==0&&coachInfoVo.getSignstate()!=1) {
 							OverlayOptions overlayOptions = new MarkerOptions().position(new LatLng(Double.valueOf(coachInfoVo.getLatitude()), Double.valueOf(coachInfoVo.getLongitude())))
 									.icon(bitmapDescriptor).title(coachInfoVo.getCoachid()).period(1); // 1  正常图标  2 免费体验课
 							mBaiduMap.addOverlay(overlayOptions);
 						}
-						
-						//免费体验图标
-						if(coachInfoVo.getLongitude() != null && coachInfoVo.getLatitude() != null && coachInfoVo.getCoachid() != null&&coachInfoVo.getFreecoursestate()==1){
+						//普通教练免费体验图标
+						if(coachInfoVo.getLongitude() != null && coachInfoVo.getLatitude() != null && coachInfoVo.getCoachid() != null&&coachInfoVo.getFreecoursestate()==1&&coachInfoVo.getSignstate()!=1){
 							OverlayOptions overlayOptions = new MarkerOptions().position(new LatLng(Double.valueOf(coachInfoVo.getLatitude()), Double.valueOf(coachInfoVo.getLongitude())))
 									.icon(freeLearn).title(coachInfoVo.getCoachid()).period(2);
+							mBaiduMap.addOverlay(overlayOptions);
+						}
+						//明星教练
+						if(coachInfoVo.getLongitude() != null && coachInfoVo.getLatitude() != null && coachInfoVo.getCoachid() != null&&coachInfoVo.getFreecoursestate()==0&&coachInfoVo.getSignstate()==1){
+							OverlayOptions overlayOptions = new MarkerOptions().position(new LatLng(Double.valueOf(coachInfoVo.getLatitude()), Double.valueOf(coachInfoVo.getLongitude())))
+									.icon(icStarCoach).title(coachInfoVo.getCoachid()).period(3);
+							mBaiduMap.addOverlay(overlayOptions);
+						}
+						//明星教练免费体验
+						if(coachInfoVo.getLongitude() != null && coachInfoVo.getLatitude() != null && coachInfoVo.getCoachid() != null&&coachInfoVo.getFreecoursestate()==1&&coachInfoVo.getSignstate()==1){
+							OverlayOptions overlayOptions = new MarkerOptions().position(new LatLng(Double.valueOf(coachInfoVo.getLatitude()), Double.valueOf(coachInfoVo.getLongitude())))
+									.icon(icFreeStarCoach).title(coachInfoVo.getCoachid()).period(4);
 							mBaiduMap.addOverlay(overlayOptions);
 						}
 					}
@@ -1265,7 +1306,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				// TODO Auto-generated method stub
 				if(0<=arg0.getProgress()&&arg0.getProgress()<=20){
 					arg0.setProgress(0);
-					arg0.setThumb(drawable4);
+					arg0.setThumb(drawable1);
 					
 					tv_question.setTextColor(R.color.text_black);
 			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
@@ -1310,20 +1351,15 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				}
 				if(60<arg0.getProgress()&&arg0.getProgress()<=100){
 					arg0.setProgress(80);
-					arg0.setThumb(drawable4);
+					arg0.setThumb(drawable3);
 					
 					tv_accompany_driver.setTextColor(R.color.text_black);
 					tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
 					
 					tv_driver.setTextColor(R.color.text_driver_gray);
 					tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-					
 					tv_question.setTextColor(R.color.text_driver_gray);
 			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			    	
-			    	
-
-			    	
 			    	tv_servier.setTextColor(R.color.text_driver_gray);
 			    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
 			    	ll_type.setVisibility(View.GONE);
@@ -1342,7 +1378,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 				}
 				if(100<arg0.getProgress()&&arg0.getProgress()<=120){
 					arg0.setProgress(120);
-					arg0.setThumb(drawable2);
+					arg0.setThumb(drawable4);
 					
 					tv_servier.setTextColor(R.color.text_black);
 					tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
@@ -1433,7 +1469,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		
    	    framelayout.setClickable(true);
    	
-   	 android.support.v4.app.FragmentManager fm=getSupportFragmentManager();
+   	    android.support.v4.app.FragmentManager fm=getSupportFragmentManager();
          FragmentTransaction ft=fm.beginTransaction();
          DriverQuestionFragment questionfragment = new DriverQuestionFragment();
          ft.replace(R.id.id_fraglayout,questionfragment);

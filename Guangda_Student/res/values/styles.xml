@@ -31,8 +31,8 @@
 
         <!-- 指向star_rating_bar_full.xml文件 -->
         <item name="android:progressDrawable">@drawable/layer_coach_listrating_bar_star</item>
-        <item name="android:minHeight">14dp</item>
-        <item name="android:maxHeight">14dp</item>
+        <item name="android:minHeight">12dp</item>
+        <item name="android:maxHeight">12dp</item>
     </style>
 
     <style name="userinfo_ratingbar_star" parent="@android:style/Widget.RatingBar">

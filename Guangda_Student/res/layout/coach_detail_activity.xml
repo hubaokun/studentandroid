@@ -3,14 +3,15 @@
     xmlns:myapp="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#f5f4fa"
     android:orientation="vertical" >
     
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:background="@color/white">
 
         <TextView
             android:layout_width="0dp"
@@ -36,421 +37,396 @@
         style="@style/common_line"
         android:layout_height="1dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
 
-        <LinearLayout
-            android:id="@+id/li_phone"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingTop="12dp" >
-
-            <TextView
-                android:id="@+id/tv_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="7dp"
-                android:drawableTop="@drawable/coach_detail_phone_img"
-                android:textColor="#5493da" />
-        </LinearLayout>
-
-        <View
-            style="@style/common_line_v"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp" />
-
-        <LinearLayout
-            android:id="@+id/li_mobile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingTop="12dp" >
-
-            <TextView
-                android:id="@+id/tv_mobile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="7dp"
-                android:drawableTop="@drawable/coach_detail_mobile_img"
-                android:textColor="#5493da" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <View
-        style="@style/common_line"
-        android:layout_marginLeft="11dp"
-        android:layout_marginRight="11dp" />
-
-   <com.daoshun.lib.listview.PullToRefreshScrollView
+      <com.daoshun.lib.listview.PullToRefreshScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/pull_re_scroll"> 
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        
+       <LinearLayout android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+
+           android:background="@color/white"
+           android:orientation="vertical">
+       
+           <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" 
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <ImageView
+            android:id="@+id/iv_header"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/login_head_img" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="姓名:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical" 
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
+                android:orientation="horizontal" >
+                
+                <LinearLayout 
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="星级:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    
+                    <TextView 
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textColor="@color/text"
+                        android:maxEms="6" />
 
+                    <LinearLayout android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:layout_marginLeft="4dp"
+                        android:background="@drawable/shape_female_round"
+                        android:gravity="center_vertical"
+                        android:id="@+id/ll_gray">
+                        
+                        <ImageView android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_female"
+                            android:id="@+id/img_gray"/>
+                        
+                       <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10dp"
+                        android:textColor="@color/white"
+                        android:text="43"
+                        android:layout_marginLeft="2dp"
+                        android:id="@+id/tv_age"/>
+                        
+                    </LinearLayout>
+                    
+                    
+
+
+                
+                <ImageView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_starcoach"
+                    android:layout_marginLeft="7dp"
+                    android:id="@+id/img_star_coach"
+                    android:visibility="gone"/>
+                
+
+                </LinearLayout>
+
+            </LinearLayout>
+            
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
                 <RatingBar
                     android:id="@+id/rb_star"
                     style="@style/coach_ratingbar_star"
                     android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_height="12dp"
                     android:isIndicator="true"
                     android:numStars="5"
-                    android:stepSize="0.1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp" >
-
+                    android:stepSize="0.1" 
+                    android:layout_gravity="center_vertical"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="性别:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
+                         android:id="@+id/tv_order"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="预约次数:"
+                         android:textColor="#999999"
+                         android:textSize="12dp"
+                         android:layout_marginLeft="8dp"
+                         android:layout_gravity="center_vertical" />
                 <TextView
-                    android:id="@+id/tv_gender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
+                         android:id="@+id/tv_sumnum"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:singleLine="true"
+                         android:textColor="#999999"
+                         android:textSize="12dp"
+                         android:layout_gravity="center_vertical" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="年龄:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
-                <TextView
-                    android:id="@+id/tv_age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp"
-                android:visibility="gone" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="住址:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp"
-                android:visibility="gone" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="身份证号:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
-                <TextView
-                    android:id="@+id/tv_identity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="教练证号:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
-                <TextView
-                    android:id="@+id/tv_coach_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="准教车型:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
-                <TextView
-                    android:id="@+id/tv_car_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp"
-                android:visibility="gone" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="所属驾校:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size"
-                     />
-
-                <TextView
-                    android:id="@+id/tv_school"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" 
-                   />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp"
-                android:visibility="gone" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="教练等级:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
-                <TextView
-                    android:id="@+id/tv_coach_level"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp"
-                android:visibility="gone" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="教练星级:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
-                <TextView
-                    android:id="@+id/tv_coach_star"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="自我评价:"
-                    android:textColor="#737880"
-                    android:textSize="@dimen/coach_detail_text_size" />
-
-                <TextView
-                    android:id="@+id/tv_evaluate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/text"
-                    android:textSize="@dimen/coach_detail_text_size" />
-            </LinearLayout>
-
-            <View style="@style/common_line" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/tv_no_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="该教练还没有评论 ~"
-                    android:textSize="20dp"
-                    android:visibility="invisible" />
-
-                <LinearLayout
-                    android:id="@+id/li_has_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:visibility="invisible" >
-
-                   <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal" >
-                        
-                        <TextView
-                            android:id="@+id/tv_studnet_num"
-                            android:layout_width="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="2dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="11dp"
-                             />
-<!--                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="学员评论/"
-                            android:textSize="11dp" /> -->
-                        <TextView
-                            android:id="@+id/tv_comment_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:textSize="11dp" />
-                         
-                      
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:src="@drawable/coach_detail_next_img" />
                 </LinearLayout>
-            </RelativeLayout>
 
-            <View style="@style/common_line" />
+        </LinearLayout>
+    </LinearLayout>
+    
+             <View style="@style/common_line" /> 
+             
+             <RelativeLayout android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="14dp"
+                 android:layout_marginRight="14dp"
+                 android:layout_marginTop="12dp"
+                 android:layout_marginBottom="12dp">
+                 <LinearLayout android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:orientation="horizontal"
+                     android:layout_alignParentLeft="true"
+                     android:layout_centerVertical="true">
+                     <TextView android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="准教车型："
+                         android:textColor="#666666"
+                         android:textSize="10dp"/>
+                     
+                     <TextView android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text=""
+                         android:textColor="#50cb91"
+                         android:textSize="14dp"
+                         android:id="@+id/tv_car_type"/>
+                 </LinearLayout>
+                 
+                         <TextView
+            android:id="@+id/tv_subject_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_coach_detail_order"
+            android:gravity="center"
+            android:text="预约课程"
+            android:textColor="@color/white"
+            android:textSize="14dp" 
+            android:layout_alignParentRight="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"/>
+             </RelativeLayout>
+         <View style="@style/common_line" 
+             android:layout_marginLeft="14dp"/> 
+             
+                          <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="14dp"
+                     android:layout_marginBottom="14dp"
+                     android:layout_marginLeft="18dp"
+                     android:layout_marginRight="18dp"
+                     android:orientation="horizontal"
+                     android:id="@+id/ll_free_coach"
+                     android:visibility="visible" >
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:background="@drawable/shape_rad_round"
+                         android:gravity="center_vertical"
+                         android:paddingLeft="2dp"
+                         android:paddingRight="2dp"
+                         android:text="免"
+                         android:textColor="@color/white"
+                         android:textSize="10dp" />
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="7dp"
+                         android:text="新用户首单免费体验学车课程"
+                         android:textColor="#f25555"
+                         android:textSize="10dp" />
+                 </LinearLayout>
+                          <View style="@style/common_line" /> 
+</LinearLayout>
+
+       <LinearLayout android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_marginTop="10dp"
+           android:background="@color/white">
+           <View style="@style/common_line" /> 
+           
+           <TextView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="练车地址"
+               android:textColor="#999999"
+               android:textSize="11dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginBottom="10dp"
+               android:layout_marginLeft="14dp"/>
+           <View style="@style/common_line" /> 
+           
+           <RelativeLayout android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="14dp"
+               android:layout_marginTop="11dp"
+               android:layout_marginBottom="11dp">
+                     
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_toLeftOf="@+id/ll_coach_mobile"
+                   android:orientation="horizontal" 
+                   android:id="@+id/ll_coach_address"
+                   android:layout_alignParentLeft="true">
+
+                   <ImageView android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:src="@drawable/ic_coach_address"
+                       android:layout_marginTop="2dp"/>
+                   
+                   <TextView android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textColor="#666666"
+                       android:textSize="12dp"
+                       android:id="@+id/tv_address"
+                       android:layout_marginLeft="8dp"
+                       android:text=""/>
+               </LinearLayout>
+               
+               <LinearLayout
+                   android:id="@+id/ll_coach_mobile"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignBottom="@id/ll_coach_address"
+                   android:layout_alignParentRight="true"
+                   android:layout_alignParentTop="true"
+                   android:layout_marginLeft="22dp"
+                   android:orientation="horizontal" >
+
+                   <View style="@style/common_line_v"/>
+                   
+                   <ImageView android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:src="@drawable/ic_coach_mobile"
+                       android:layout_marginLeft="22dp"
+                       android:layout_marginRight="27dp"
+                       android:layout_gravity="center_vertical"/>
+               </LinearLayout>
+               
+           </RelativeLayout>
+           <View style="@style/common_line" /> 
+       </LinearLayout>
+       
+       <LinearLayout android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:background="@color/white"
+           android:layout_marginTop="10dp">
+           <View style="@style/common_line" /> 
+           <TextView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="自我评价"
+               android:textColor="#999999"
+               android:textSize="11dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginBottom="10dp"
+               android:layout_marginLeft="14dp"/>
+           
+           <View style="@style/common_line" /> 
+           
+           <TextView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textColor="#666666"
+               android:textSize="12dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginBottom="10dp"
+               android:layout_marginLeft="14dp"
+               android:layout_marginRight="14dp"
+               android:id="@+id/tv_about_self"/>
+           
+            <View style="@style/common_line" /> 
+       </LinearLayout>
+
+       <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:background="@color/white" >
+            
+            <View style="@style/common_line" /> 
+            
+          <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="该教练暂未有评价~"
+                    android:textColor="#999999"
+                    android:textSize="11dp"
+                    android:layout_marginTop="10dp"
+                	android:layout_marginBottom="10dp"
+                	android:layout_marginLeft="14dp"
+                	android:layout_marginRight="14dp"
+                	android:id="@+id/tv_no_pinlun"
+                	android:visibility="gone"/>
+            
+            <RelativeLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:id="@+id/rl_pinglun"
+                android:visibility="gone">
+               
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="学员评价"
+                    android:textColor="#999999"
+                    android:textSize="11dp"/>
+                
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#aaaaaa"
+                    android:textSize="10dp"
+                    android:text="11"
+                    android:id="@+id/tv_sum_student"
+                    android:layout_marginLeft="7dp"
+                    android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+                
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#aaaaaa"
+                        android:textSize="10dp"
+                        android:text="共236条"
+                        android:id="@+id/tv_pinlin_sum"
+                        android:layout_gravity="center_vertical"/>
+                    
+                    <ImageView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_coach_arrow_next"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+                
+            </RelativeLayout>
+            
+            <View style="@style/common_line" /> 
 
             <com.common.library.llj.views.LinearListView
                 android:id="@+id/lv_comment"
@@ -463,13 +439,9 @@
                 android:showDividers="middle"
                 myapp:dividerThickness="1px" >
             </com.common.library.llj.views.LinearListView>
-        </LinearLayout>          
-   </com.daoshun.lib.listview.PullToRefreshScrollView>
-
-    <View
-        style="@style/common_line"
-        android:layout_marginLeft="10dp"
-        android:paddingRight="10dp" />
+        </LinearLayout>         
+        </LinearLayout> 
+     </com.daoshun.lib.listview.PullToRefreshScrollView>  
 
 
 </LinearLayout>

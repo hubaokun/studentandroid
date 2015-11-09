@@ -81,11 +81,11 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
-            android:divider="@color/divide_color"
-            android:dividerHeight="1px"
             android:fadingEdge="none"
             android:listSelector="@android:color/transparent"
-            android:scrollbars="none" >
+            android:scrollbars="none" 
+            android:divider="#00000000"  
+          	android:dividerHeight="0dip"  >
         </ListView>
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 

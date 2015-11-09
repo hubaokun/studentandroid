@@ -29,7 +29,7 @@ public class CoachInfoVo {
 	private int accompanynum;
 	
 	private int freecoursestate; //教练体验课是否开课  1：有免费体验    0：没有
-	
+	private int signstate;		//0=未签约、1=已签约、2=签约过期
 	
 	
 	
@@ -263,6 +263,14 @@ public class CoachInfoVo {
 
 	public void setGender(int gender) {
 		this.gender = gender;
+	}
+
+	public int getSignstate() {
+		return signstate;
+	}
+
+	public void setSignstate(int signstate) {
+		this.signstate = signstate;
 	}
 
 }

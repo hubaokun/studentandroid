@@ -5,21 +5,21 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingBottom="12dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
     android:paddingTop="12dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" >
 
         <ImageView
             android:id="@+id/iv_header"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="15dp"
             android:src="@drawable/login_head_img" />
 
         <LinearLayout
@@ -27,7 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,53 +48,121 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:textColor="@color/login_et_text"
-                        android:textSize="18dp" />
+                        android:textColor="@color/text"
+                        android:textSize="18dp"
+                        android:maxEms="6"/>
 
                 <ImageView 
                     
                     android:id="@+id/coach_sex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    />
+                    android:background="@drawable/shape_male_round"
+                    android:src="@drawable/ic_male"
+                    android:padding="3dp"
+                    android:layout_marginLeft="4dp"/>
                 
+                <ImageView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_starcoach"
+                    android:layout_marginLeft="7dp"
+                    android:id="@+id/img_star_coach"
+                    android:visibility="gone"/>
+                
+
+                </LinearLayout>
+
+            </LinearLayout>
+            
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <RatingBar
+                    android:id="@+id/rb_star"
+                    style="@style/coach_ratingbar_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="12dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="0.1" />
                 <TextView
-                         android:layout_marginLeft="4dp"
                          android:id="@+id/tv_order"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
-                         android:text="订单数："
-                         android:textColor="#737880"
-                         android:textSize="12dp" />
+                         android:text="预约次数:"
+                         android:textColor="#999999"
+                         android:textSize="11dp"
+                         android:layout_marginLeft="8dp"
+                         android:layout_gravity="center_vertical" />
                 <TextView
                          android:id="@+id/tv_sumnum"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
                          android:singleLine="true"
                          android:text="1000"
-                         android:textColor="#50cb8c"
-                         android:textSize="12dp" />
-                </LinearLayout>
-                <RatingBar
-                    android:id="@+id/rb_star"
-                    style="@style/coach_ratingbar_star"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:stepSize="0.1" />
-            </LinearLayout>
+                         android:textColor="#999999"
+                         android:textSize="11dp"
+                         android:layout_gravity="center_vertical" />
 
-            <TextView
+                </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    
+    <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#d1d1d1"
+        android:layout_marginTop="12dp"/>
+    
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginRight="10dp"
+       	 android:layout_marginLeft="10dp">
+    
+             <TextView
                 android:id="@+id/tv_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="10dp"
                 android:singleLine="true"
-                android:textColor="#737880"
-                android:textSize="12dp" />
-        </LinearLayout>
-    </LinearLayout>
+                android:textColor="#999999"
+                android:textSize="11dp"
+               android:layout_marginBottom="10dp"/>
+             
+                 <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#d1d1d1"/>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="16dp"
+                     android:orientation="horizontal"
+                     android:id="@+id/ll_free_coach"
+                     android:visibility="gone" >
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:background="@drawable/shape_rad_round"
+                         android:gravity="center_vertical"
+                         android:paddingLeft="2dp"
+                         android:paddingRight="2dp"
+                         android:text="免"
+                         android:textColor="@color/white"
+                         android:textSize="10dp" />
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="7dp"
+                         android:text="新用户首单免费体验学车课程"
+                         android:textColor="#f25555"
+                         android:textSize="10dp" />
+                 </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -128,5 +197,5 @@
             android:textColor="@color/white"
             android:textSize="17dp" />
     </LinearLayout>
-
+</LinearLayout>
 </LinearLayout>

@@ -340,32 +340,39 @@ public class CoachListActivity extends BaseFragmentActivity {
 				}else{
 					helper.getView(R.id.tv_freeicon).setVisibility(View.GONE);;
 				}
+				
+				if (item.getSignstate() == 1)
+				{
+					helper.getView(R.id.img_starcoach).setVisibility(View.VISIBLE);
+				}else{
+					helper.getView(R.id.img_starcoach).setVisibility(View.GONE);
+				}
 				//
 				if(condition11.equals("19")){
-					helper.setText(R.id.tv_order, "陪驾次数");
+					helper.setText(R.id.tv_order, "陪驾次数:");
 					if(item.getModellist().get(0).getModelname().contains("C1")){
 						
 						helper.setText(R.id.tv_sumnum,String.valueOf(item.getAccompanynum()));
 						if(item.getRealname()==null){
 							helper.setText(R.id.tv_coach,"未命名").setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
 						}else{
-							helper.setText(R.id.tv_coach,item.getRealname()).setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
+							helper.setText(R.id.tv_coach,item.getRealname()+"教练").setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
 						}
 
 					}else{
 						if(item.getRealname()==null){
 							helper.setText(R.id.tv_coach,"未命名").setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
 						}else{
-							helper.setText(R.id.tv_coach,item.getRealname()).setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
+							helper.setText(R.id.tv_coach,item.getRealname()+"教练").setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
 						}
 					}
 				}else{
-					helper.setText(R.id.tv_order, "订单数");
+					helper.setText(R.id.tv_order, "预约次数:");
 					helper.setText(R.id.tv_sumnum,String.valueOf(item.getSumnum()));
 					if(item.getRealname()==null){
 						helper.setText(R.id.tv_coach,"未命名").setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
 					}else{
-						helper.setText(R.id.tv_coach,item.getRealname()).setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
+						helper.setText(R.id.tv_coach,item.getRealname()+"教练").setText(R.id.tv_address, item.getDetail()).setRating(R.id.rb_star, ParseUtilLj.parseFloat(item.getScore(), 0f));
 					}
 				}				
 				//驾校暂时先屏蔽掉

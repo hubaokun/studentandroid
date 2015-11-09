@@ -26,7 +26,7 @@
                 android:id="@+id/rb_star"
                 style="@style/coach_ratingbar_star"
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="12dp"
                 android:layout_marginTop="10dp"
                 android:isIndicator="true"
                 android:numStars="5"
