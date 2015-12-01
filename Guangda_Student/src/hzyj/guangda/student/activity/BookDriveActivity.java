@@ -90,6 +90,7 @@ public class BookDriveActivity extends BaseFragmentActivity {
 	private int cityposition=-1;
 	private View vw_num;
 	
+	
 	private boolean isCityUnInclude,IsPay;
 	@Override
 	public int getLayoutId() {

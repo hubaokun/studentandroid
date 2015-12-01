@@ -6,6 +6,7 @@ import de.greenrobot.event.EventBus;
 import hzyj.guangda.student.GuangdaApplication;
 import hzyj.guangda.student.R;
 import hzyj.guangda.student.TitlebarActivity;
+import hzyj.guangda.student.activity.MapHomeActivity;
 import hzyj.guangda.student.activity.RulerActivity;
 import hzyj.guangda.student.activity.login.LoginActivity;
 import hzyj.guangda.student.event.Update;
@@ -58,7 +59,11 @@ public class SettingActivity extends TitlebarActivity {
 			public void onClick(View v) {
 				GuangdaApplication.mUserInfo.clearUserInfo();
 				EventBus.getDefault().post(new Update("UserInfo"));
+				MapHomeActivity.bottomTab=2;
+				MapHomeActivity.IsexistService=true;
+			    MapHomeActivity.IsenterService=false;
 				startMyActivity(LoginActivity.class);
+				
 				finish();
 			}
 		});

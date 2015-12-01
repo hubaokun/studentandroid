@@ -9,6 +9,7 @@ import hzyj.guangda.student.R;
 import hzyj.guangda.student.activity.ActivityInputRecord;
 import hzyj.guangda.student.activity.BookDriveActivity;
 import hzyj.guangda.student.activity.MapHomeActivity;
+import hzyj.guangda.student.activity.renrenStore;
 import hzyj.guangda.student.common.Setting;
 import hzyj.guangda.student.event.Update;
 import hzyj.guangda.student.response.GetVerCodeResponse;
@@ -269,9 +270,15 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 //						}
 //						else{
 							if(GuangdaApplication.isToBaoMing){
-								startMyActivity(BookDriveActivity.class);	
+								startMyActivity(renrenStore.class);	
 							}else{
-								startMyActivity(MapHomeActivity.class);	
+								if(MapHomeActivity.IsenterService){
+									MapHomeActivity.bottomTab=4;
+									startMyActivity(MapHomeActivity.class);
+								}else{
+									startMyActivity(MapHomeActivity.class);
+								}
+								
 							}
 							
 						}

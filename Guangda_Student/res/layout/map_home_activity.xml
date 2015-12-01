@@ -5,6 +5,8 @@
     android:layout_height="match_parent" >
 
     <!-- 这里是菜单，隐藏在下面 -->
+    
+     
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -204,42 +206,58 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         >
+      <LinearLayout 
+        android:id="@+id/ll_type" 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        >
+     <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_shadow"/>     
+     
     <LinearLayout 
-        android:id="@+id/ll_type"
+       
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:visibility="gone">
+        >
         <TextView
             android:id="@+id/tv_c1" 
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/witch_select_driver_type"
             android:text="C1手动挡"
+            android:textColor="@color/selector_car_type_color"
             android:gravity="center"
             android:layout_weight="1"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp"/>
         <TextView
             android:layout_marginTop="10dp" 
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:gravity="center"
             android:id="@+id/tv_c2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/witch_select_driver_type"
             android:text="C2自动挡"
+            android:textColor="@color/selector_car_type_color"
             android:layout_weight="1"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"/>
         
+    </LinearLayout>
     </LinearLayout>
     
 
@@ -254,8 +272,10 @@
         style="@style/common_line"
         android:background="#c7c7c7" />
         <SeekBar
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
+            android:paddingLeft="37dp"
+            android:paddingRight="37dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="3dp"
             android:id="@+id/ctrl_skbProgress"
             android:layout_width="match_parent"
             android:maxHeight="15dp"
@@ -264,11 +284,11 @@
             android:layout_centerVertical="true"
             android:layout_height="wrap_content"
             android:progressDrawable="@drawable/tab11"
-            android:thumb="@drawable/btn4"/>
+            android:thumb="@drawable/btn2"/>   
         <LinearLayout 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ctrl_skbProgress"
+            android:layout_below="@id/ctrl_skbProgress"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/tv_question" 
@@ -276,7 +296,7 @@
                 android:layout_width="wrap_content"
                 android:text="题库"
                 android:textSize="12dp"
-                android:textColor="#Bfbfbf"
+                android:textColor="#3d3d3d"
                 android:gravity="center_horizontal"
                 android:layout_weight="1"
                 />
@@ -285,7 +305,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="学车"
-                 android:textColor="#Bfbfbf"
+                 android:textColor="#3d3d3d"
                  android:textSize="12dp"
                  android:gravity="center_horizontal"
                 android:layout_weight="1"
@@ -296,7 +316,7 @@
                 android:layout_width="wrap_content"
                 android:text="陪驾"
                  android:textSize="12dp"
-                  android:textColor="#Bfbfbf"
+                  android:textColor="#3d3d3d"
                  android:gravity="center_horizontal"
                 android:layout_weight="1"
                 />
@@ -306,16 +326,22 @@
                 android:layout_width="wrap_content"
                  android:textSize="12dp"
                 android:text="服务"
-                 android:textColor="#Bfbfbf"
+                 android:textColor="#3d3d3d"
                 android:gravity="center_horizontal"
                 android:layout_weight="1"
                 />
             
             
         </LinearLayout>
-        </RelativeLayout>
+       </RelativeLayout> 
         
          </LinearLayout>
+         <Button 
+               android:id="@+id/vw_masking"
+               android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="#55000000"
+                android:visibility="gone"/>
     </RelativeLayout>
 
 </hzyj.guangda.student.view.MySlidingPaneLayout>

@@ -192,7 +192,7 @@ public class MyCommentListActivity extends TitlebarActivity {
 				if(!flag.equals("student_comment")){
 					TextView tv_name=helper.getView(R.id.tv_name);
 					tv_name.setVisibility(View.VISIBLE);
-					helper.setText(R.id.tv_name, item.getNickname()).setText(R.id.tv_comment, item.getContent());
+					helper.setText(R.id.tv_comment, item.getContent());
 				}
 				else{
 					TextView tv_name=helper.getView(R.id.tv_name);
@@ -205,9 +205,9 @@ public class MyCommentListActivity extends TitlebarActivity {
 				mrating.setRating(ParseUtilLj.parseFloat(item.getScore(), 0F));
 				TextView textView = helper.getView(R.id.tv_time);
 
-				if (!TextUtils.isEmpty(item.getAddtime())) {
-					long time = TimeUitlLj.stringToMilliseconds(2, item.getAddtime());
-					textView.setText(TimeUitlLj.getTimeString(time, 2));
+				if (!TextUtils.isEmpty(item.getAddtime())) {               //2015-11-03 15;15:38
+					long time = TimeUitlLj.stringToMilliseconds(2, item.getAddtime());  //144465
+					textView.setText(TimeUitlLj.getTimeString(time, 2).split(" ")[0]);
 				} else {
 					textView.setText("");
 				}

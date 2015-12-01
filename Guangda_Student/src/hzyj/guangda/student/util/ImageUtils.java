@@ -1,16 +1,19 @@
 package hzyj.guangda.student.util;
 
 import java.io.ByteArrayOutputStream;  
-import java.io.File;  
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;  
 import java.io.IOException;  
-import java.io.InputStream;  
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;  
 import java.net.URL;  
 import android.graphics.Bitmap;  
 import android.graphics.BitmapFactory;  
 import android.os.AsyncTask;  
-import android.os.Environment;  
+import android.os.Environment;
+import android.os.StatFs;
 import android.util.Log;  
 import android.widget.ImageView;  
   
@@ -290,5 +293,84 @@ public class ImageUtils {
     public interface OnImageLoad{
     	void showCancle(Boolean image);
     }
-  
+    
+    
+   
+  /**
+   * 图片放在sd卡上进行缓存
+   * 
+   * 
+   */
+    private void saveBmpToSd(Bitmap bm, String url) {
+    	double FREE_SD_SPACE_NEEDED_TO_CACHE=100;
+    	
+        if (bm == null) {  
+            Log.w(TAG, " trying to savenull bitmap");  
+            return;  
+        }  
+         //判断sdcard上的空间  
+        if (FREE_SD_SPACE_NEEDED_TO_CACHE/1024 >freeSpaceOnSd()) {  
+            Log.w(TAG, "Low free space onsd, do not cache");  
+            return;  
+        }  
+        String filename =convertUrlToFileName(url);  
+        String dir = getDirectory();  
+        File file = new File(dir +"/" + filename);  
+        try {  
+            file.createNewFile();  
+            OutputStream outStream = new FileOutputStream(file);  
+           bm.compress(Bitmap.CompressFormat.JPEG, 100, outStream);  
+            outStream.flush();  
+            outStream.close();  
+            Log.i(TAG, "Image saved tosd");  
+        } catch (FileNotFoundException e) {  
+            Log.w(TAG,"FileNotFoundException");  
+        } catch (IOException e) {  
+            Log.w(TAG,"IOException");  
+        }  
+    } 
+    
+    
+    
+    /** 
+     * 计算sdcard上的剩余空间 
+     * @return 
+     */  
+    private int freeSpaceOnSd() {  
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());  
+        double sdFreeMB = ((double)stat.getAvailableBlocks() * (double) stat.getBlockSize());  // MB;  
+        return (int) sdFreeMB;  
+    } 
+    
+    /**
+     * 获取文件的名字
+     * substring（int start） 返回一个字符串
+     */
+    
+    private String convertUrlToFileName(String url){
+		return url.substring(url.lastIndexOf("/")+1);
+    	
+    };
+    
+    /** 获得缓存目录 **/
+    private String getDirectory() {
+        String dir = getSDPath() + "/" ;
+        return dir;
+    }
+    
+    private String getSDPath() {
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState().equals(
+                android.os.Environment.MEDIA_MOUNTED);  //判断sd卡是否存在
+        if (sdCardExist) {
+            sdDir = Environment.getExternalStorageDirectory();  //获取根目录
+        }
+        if (sdDir != null) {
+            return sdDir.toString();
+        } else {
+            return "";
+        }
+    } 
+    
+    
 }  

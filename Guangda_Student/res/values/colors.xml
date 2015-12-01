@@ -33,7 +33,16 @@
    	<color name="btn_sure">#50cb8c</color>
    	<color name="tv_black">#3c3c3c</color>
    	<color name="light_yellow">#FFE4B5</color>
-    <color name="text_driver_gray">#Bfbfbf</color>
+    <color name="text_driver_gray">#3d3d3d</color>
+    
+    <!-- 小巴服务选择城市 -->
+    
+    <color name="from_bg_gray">#f5f5f9</color>
+    <color name="tv_green">#50cb91</color>
+    <color name="tv_sign_gray">#999999</color>
+    <color name="tv_nomal_black">#3d3d3d</color>
+    <color name="vw_line_gray">#eaeaea</color>
+    <color name="bg_white">#ffffff</color>
    	
 
 </resources>

@@ -9,11 +9,13 @@ import hzyj.guangda.student.response.CommentListResponse.Comment;
 import hzyj.guangda.student.response.GetCoachDetailResponse;
 import hzyj.guangda.student.util.MySubResponseHandler;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.Header;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -90,6 +92,9 @@ public class CoachDetailActivity extends BaseFragmentActivity {
 	private int pageNum=0;
 	private String telPhone,telMessage;
 	private String mGenger;
+	private TextView tv_scroll;
+	private LinearLayout ll_about_self,ll_driver_address;
+	private DecimalFormat df = new DecimalFormat("#.0");;
 
 	@Override
 	public void getIntentData() {
@@ -124,12 +129,17 @@ public class CoachDetailActivity extends BaseFragmentActivity {
 		tvNoPinLun = (TextView)findViewById(R.id.tv_no_pinlun);
 		mRatingBar = (RatingBar) findViewById(R.id.rb_star);
 		mLinearListView = (LinearListView) findViewById(R.id.lv_comment);
+		tv_scroll=(TextView) findViewById(R.id.tv_scroll1);
 		pullToRefreshSL=(PullToRefreshScrollView)findViewById(R.id.pull_re_scroll);
+		ll_about_self=(LinearLayout) findViewById(R.id.ll_about_self);
+		ll_driver_address=(LinearLayout) findViewById(R.id.ll_driver_address);
 		pullToRefreshSL.setMode(Mode.BOTH);
 	}
 
 	private void initCoachInfo(CoachInfoVo coachInfoVo) {
 		// 头像图标
+		
+	    
 		Glide.with(CoachDetailActivity.this).load(coachInfoVo.getAvatarurl()).asBitmap().placeholder(R.drawable.login_head_img).override(150, 150).centerCrop().into(new BitmapImageViewTarget(imgHeader) {
 			@Override
 			protected void setResource(Bitmap resource) {
@@ -156,7 +166,19 @@ public class CoachDetailActivity extends BaseFragmentActivity {
 			break;
 		}
 		mRatingBar.setRating(ParseUtilLj.parseFloat(coachInfoVo.getScore(), 0F));
+		if(Float.parseFloat(coachInfoVo.getScore())>5){
+			tv_scroll.setText("5.0");
+		}else{
+			tv_scroll.setText(coachInfoVo.getScore());
+		}
+		
 		setText(tvAge, coachInfoVo.getAge());
+		if(TextUtils.isEmpty(coachInfoVo.getAddress())){
+			ll_driver_address.setVisibility(View.VISIBLE);
+			setText(tvAddress, coachInfoVo.getAddress());
+		}else{
+			ll_driver_address.setVisibility(View.GONE);
+		}
 		setText(tvAddress, coachInfoVo.getAddress());
 		setText(tvOrderTime, coachInfoVo.getSumnum()+"");
 //		setText(mIdentityTv, coachInfoVo.getId_cardnum());
@@ -184,7 +206,7 @@ public class CoachDetailActivity extends BaseFragmentActivity {
 			llFreeCoach.setVisibility(View.GONE);
 		}
 		
-		if(coachInfoVo.getSignstate() == 1)
+		if(coachInfoVo.getSignstate() == 1&&MapHomeActivity.condition11!="19")
 		{
 			imgStarCoach.setVisibility(View.VISIBLE);
 		}else{
@@ -192,6 +214,12 @@ public class CoachDetailActivity extends BaseFragmentActivity {
 		}
 //		setText(mCoachLevelTv, coachInfoVo.getLevel());
 //		setText(mCoachStarTv, coachInfoVo.getScore());
+		if(!TextUtils.isEmpty(coachInfoVo.getSelfeval())){
+			ll_about_self.setVisibility(View.VISIBLE);
+			setText(tvAboutSelf, coachInfoVo.getSelfeval());
+		}else{
+			ll_about_self.setVisibility(View.GONE);
+		}
 		setText(tvAboutSelf, coachInfoVo.getSelfeval());
 
 //		setText(mPhoneTv, "电话");
@@ -417,29 +445,31 @@ public class CoachDetailActivity extends BaseFragmentActivity {
 			}
 			if (!TextUtils.isEmpty(comment.getScore()))
 			{
+				double a=Double.valueOf(comment.getScore());
+				double b=a*1.0;
 			rb_starb.setRating(ParseUtilLj.parseFloat(comment.getScore(), 0F));
-			tv_Scroll.setText(comment.getScore());
+			tv_Scroll.setText(df.format(Double.valueOf(comment.getScore())*1.0));
 			}else{
 				rb_starb.setRating(ParseUtilLj.parseFloat("0", 0F));
 				tv_Scroll.setText("0");
 			}
 			// 单个学员 的所有评论
 			student_comment.setTag(position);
-			student_comment.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-				    int a=(Integer) arg0.getTag();
-					Intent intent = new Intent(mBaseFragmentActivity, MyCommentListActivity.class);
-					intent.putExtra("mCoachid", mCoachId);
-					intent.putExtra("flag","student_comment");
-					intent.putExtra("studentId",mCommentlist.get(a).getFrom_user());
-					intent.putExtra("student_name",mCommentlist.get(a).getNickname() );
-					startActivity(intent);
-					
-				}
-			});
+//			student_comment.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View arg0) {
+//					// TODO Auto-generated method stub
+//				    int a=(Integer) arg0.getTag();
+//					Intent intent = new Intent(mBaseFragmentActivity, MyCommentListActivity.class);
+//					intent.putExtra("mCoachid", mCoachId);
+//					intent.putExtra("flag","student_comment");
+//					intent.putExtra("studentId",mCommentlist.get(a).getFrom_user());
+//					intent.putExtra("student_name",mCommentlist.get(a).getNickname() );
+//					startActivity(intent);
+//					
+//				}
+//			});
 			
 			
 			return convertView;

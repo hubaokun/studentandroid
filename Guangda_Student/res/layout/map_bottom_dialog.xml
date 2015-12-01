@@ -77,7 +77,9 @@
             <LinearLayout android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="5dp">
                 <RatingBar
                     android:id="@+id/rb_star"
                     style="@style/coach_ratingbar_star"
@@ -110,10 +112,7 @@
         </LinearLayout>
     </LinearLayout>
     
-    <View android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#d1d1d1"
-        android:layout_marginTop="12dp"/>
+<View style="@style/common_line" /> 
     
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -131,9 +130,7 @@
                 android:textSize="11dp"
                android:layout_marginBottom="10dp"/>
              
-                 <View android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#d1d1d1"/>
+                 <View style="@style/common_line" /> 
 
                  <LinearLayout
                      android:layout_width="match_parent"

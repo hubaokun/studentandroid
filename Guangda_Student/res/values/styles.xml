@@ -33,6 +33,8 @@
         <item name="android:progressDrawable">@drawable/layer_coach_listrating_bar_star</item>
         <item name="android:minHeight">12dp</item>
         <item name="android:maxHeight">12dp</item>
+        
+        
     </style>
 
     <style name="userinfo_ratingbar_star" parent="@android:style/Widget.RatingBar">
@@ -60,5 +62,11 @@
         <item name="android:backgroundDimAmount">0</item>
         <item name="android:windowAnimationStyle">@style/dialog_anim_bottom_to_center</item>
     </style>
+    
+          <style name="anim_in" parent="android:Animation">         
+           <item name="@android:windowEnterAnimation">@anim/in_translate_top</item>  //进入时的动画   
+      <!--   <item name="@android:windowExitAnimation">@anim/dialog_exit</item>    //退出时的动画    -->
+    </style> 
+    
 
 </resources>

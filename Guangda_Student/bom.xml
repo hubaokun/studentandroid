@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 北京兰贝科技有限公司版权所有 -->
+<project>
+	<dependencies>
+		<dependency>
+			<groupId>com.marsor.android.common</groupId>
+			<artifactId>MarsorUtils</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>MarsorRepository</id>
+			<name>Marsor Maven Mirror</name>
+			<url>http://maven.marsorstudio.cn:8088/</url>
+		</repository>
+	</repositories>
+	<package>
+		<!-- 不区分大小写，逗号隔开的metaName,代表不同SDK的渠道标识符 -->
+		<channels keyname="UMENG_CHANNEL">
+			<!-- channel的数量代表最终生成的apk文件的数量 -->
+			 <channel value="baidu" />
+            <channel value="wandoujia" />  
+            <channel value="91zhushou" />  
+            <channel value="googleplay" />  
+            <channel value="360zhushou" />
+            <channel value="huawei"/>
+            <channel value="ppzhushou"/>
+            <channel value="meizu"/>
+            <channel value="yinyongbao"/>
+            <channel value="jifengwang"/>
+            <channel value="oppoyinyong"/>
+            <channel value="lianxiang"/>
+            <channel value="jinlisoft"/>
+            <channel value="xiaomi"/>
+            <channel value="anzhi"/>
+            <channel value="yinyonghui"/>
+            <channel value="youyi"/>
+            <channel value="wanpushiji"/> 
+		</channels>
+		<keystore path="/Users/apple/Desktop/apk/XiaoBa_Student." passwd="xiaoba123456">
+			<alias name="xiaobastudent" passwd="xiaoba123456" />
+		</keystore>
+		<outpath value="/Users/apple/Desktop/apk/chanels/" />
+	</package>	
+</project>
+

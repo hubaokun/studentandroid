@@ -94,7 +94,7 @@
 
     <application
         android:name="hzyj.guangda.student.GuangdaApplication"
-        android:icon="@drawable/ic_launcher2"
+        android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
         android:process="hzyj.guangda.student"
         android:theme="@style/AppTheme" >
@@ -382,6 +382,21 @@
             android:screenOrientation="portrait" >
           
         </activity>
+        <activity android:name="hzyj.guangda.student.activity.renrenStore"
+             android:configChanges="keyboardHidden|navigation|orientation"
+             android:exported="true"
+             android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+          
+        </activity>
+        
+        <activity android:name="hzyj.guangda.student.activity.SetLocationActivity"
+             android:configChanges="keyboardHidden|navigation|orientation"
+             android:exported="true"
+             android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+          
+        </activity>
         
         <receiver
             android:name="net.sourceforge.simcpux.AppRegister">
@@ -392,23 +407,15 @@
         
         <!-- 友盟统计 -->
         <meta-data android:value="55bf1332e0f55a84ed001f92" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="Channel ID" android:name="UMENG_CHANNEL"/>
+        <meta-data android:value="wandoujia" android:name="UMENG_CHANNEL"/>
         
         <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
-        <meta-data
-            android:name="PUSH_APPID"
-            android:value="DsO5qgFSbrATz16Tv8Bpz4" />
-        <meta-data
-            android:name="PUSH_APPKEY"
-            android:value="FhgG3ERZzi6goLAGp911p4" />
-        <meta-data
-            android:name="PUSH_APPSECRET"
-            android:value="POgAnIkpKo5G1kAHGVi6Z7" />
-        <meta-data
-            android:name="PUSH_GROUPID"
-            android:value="" />
+        <meta-data            android:name="PUSH_APPID"            android:value="DsO5qgFSbrATz16Tv8Bpz4" />
+        <meta-data            android:name="PUSH_APPKEY"            android:value="FhgG3ERZzi6goLAGp911p4" />
+        <meta-data            android:name="PUSH_APPSECRET"            android:value="POgAnIkpKo5G1kAHGVi6Z7" />
+        <meta-data            android:name="PUSH_GROUPID"            android:value="" />
 
         <service
             android:name="com.igexin.sdk.PushService"
@@ -509,24 +516,16 @@
 
 
         <!-- 正式 -->
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="1X0QCPE4QUgcpNOdEQARIjCv" />
+        <meta-data            android:name="com.baidu.lbsapi.API_KEY"            android:value="1X0QCPE4QUgcpNOdEQARIjCv" />
 
         <!-- 是否获取基站位置信息 ,默认为true -->
-        <meta-data
-            android:name="BaiduMobAd_CELL_LOCATION"
-            android:value="true" />
+        <meta-data            android:name="BaiduMobAd_CELL_LOCATION"            android:value="true" />
 
         <!-- 是否获取GPS位置信息，默认为true -->
-        <meta-data
-            android:name="BaiduMobAd_GPS_LOCATION"
-            android:value="true" />
+        <meta-data            android:name="BaiduMobAd_GPS_LOCATION"            android:value="true" />
 
         <!-- 是否获取WIFI位置信息，默认为true -->
-        <meta-data
-            android:name="BaiduMobAd_WIFI_LOCATION"
-            android:value="true" />
+        <meta-data            android:name="BaiduMobAd_WIFI_LOCATION"            android:value="true" />
         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
         <!-- 支付宝 -->
 

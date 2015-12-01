@@ -5,16 +5,16 @@
     <item
         android:id="@+android:id/background"
         android:layout_height="wrap_content"
-        android:drawable="@drawable/coach_list_rating_start_normal"/>
+        android:drawable="@drawable/coach_list_rating_start_normal1"/>
     <!-- 没选中状态 -->
     <item
         android:id="@+android:id/secondaryProgress"
         android:layout_height="wrap_content"
-        android:drawable="@drawable/coach_list_rating_start_normal"/>
+        android:drawable="@drawable/coach_list_rating_start_normal1"/>
     <!-- 选中状态 -->
     <item
         android:id="@+android:id/progress"
         android:layout_height="wrap_content"
-        android:drawable="@drawable/coach_list_rating_start_select"/>
+        android:drawable="@drawable/coach_list_rating_start_select1"/>
 
 </layer-list>

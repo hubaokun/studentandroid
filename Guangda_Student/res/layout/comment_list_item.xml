@@ -49,7 +49,7 @@
             android:paddingLeft="2dp"
             android:paddingRight="7dp"
             android:singleLine="true"
-            android:text="猥琐的"
+            android:text=""
             android:visibility="invisible"
             android:textColor="#7ecfe0"
             android:textSize="12dp" />
