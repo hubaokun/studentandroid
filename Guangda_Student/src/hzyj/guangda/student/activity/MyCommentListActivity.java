@@ -12,6 +12,8 @@ import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
+import java.text.DecimalFormat;
+
 import org.apache.http.Header;
 
 import android.content.Context;
@@ -43,6 +45,7 @@ public class MyCommentListActivity extends TitlebarActivity {
 	private int mPage;
 	private String mCoachid;
 	private String flag,studentId,student_name;
+	private DecimalFormat df = new DecimalFormat("#.0");
 	
 	@Override
 	public void getIntentData() {
@@ -202,7 +205,9 @@ public class MyCommentListActivity extends TitlebarActivity {
 				// 时间
 				
 				RatingBar mrating=helper.getView(R.id.rb_star);
+				TextView tv_scroll=helper.getView(R.id.tv_scroll);
 				mrating.setRating(ParseUtilLj.parseFloat(item.getScore(), 0F));
+				tv_scroll.setText(df.format(Double.valueOf(item.getScore())*1.0));
 				TextView textView = helper.getView(R.id.tv_time);
 
 				if (!TextUtils.isEmpty(item.getAddtime())) {               //2015-11-03 15;15:38

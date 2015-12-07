@@ -69,8 +69,6 @@ public class renrenStore extends BaseFragmentActivity{
 	@Override
 	public void addListeners() {
 		// TODO Auto-generated method stub
-		
-		
 		iv_back.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -99,7 +97,8 @@ public class renrenStore extends BaseFragmentActivity{
 		      @Override
 		      public boolean shouldOverrideUrlLoading(WebView view, String url) {
 		        // TODO Auto-generated method stub
-		    	  //view.loadUrl(url);
+		    	  view.loadUrl(url);
+		    	 // showToast(url);
 		    	 
 		    	  if(!renrenStore.this.STORE_Url.equals(url)){
 		    		  iv_close.setVisibility(View.VISIBLE);

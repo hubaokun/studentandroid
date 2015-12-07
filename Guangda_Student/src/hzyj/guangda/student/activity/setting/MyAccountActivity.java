@@ -68,7 +68,7 @@ public class MyAccountActivity extends TitlebarActivity {
 		mWithdrawalsTv.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getAliaccount())) {
+				if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getAlipay_account())) {
 					showToast("您还没有设置账户，请先设置！");
 					startMyActivity(BandAliAcountActivity.class);
 				} else {

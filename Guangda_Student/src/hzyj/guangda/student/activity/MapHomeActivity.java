@@ -100,6 +100,7 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.bumptech.glide.load.resource.transcode.BitmapBytesTranscoder;
@@ -184,17 +185,18 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	
 	public SeekBar mseekbar;
 	Drawable drawable1,drawable2,drawable3,drawable4;
-	TextView tv_question,tv_driver,tv_accompany_driver,tv_servier;
+	TextView tv_question,tv_driver,tv_accompany_driver,tv_servier,tv_servier_small,tv_question_small,tv_driver_small,tv_accompany_driver_small;
 	LinearLayout ll_type;
 	TextView tv_c1,tv_c2;
 	FrameLayout framelayout;
 	public RelativeLayout rlBottom;
 	public static int bottomTab=2;
 	public static boolean IsenterService;  //  是否进入服务
-	public static boolean IsexistService;   //是否服务标签  推出应用
+	//public static boolean IsexistService;   //是否服务标签  推出应用
 	 DriverQuestionFragment questionfragment = new DriverQuestionFragment();
 	 ActivityServiceFragment mainfragment = new ActivityServiceFragment();
 	 public Button vw_masking;
+	 private UiSettings mUiSettings;
 	 
 
 	@Override
@@ -234,10 +236,16 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		
 		
     	tv_question=(TextView) findViewById(R.id.tv_question);
-    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
     	tv_driver=(TextView)findViewById(R.id.tv_driver);
+    	tv_driver.setVisibility(View.VISIBLE);
     	tv_accompany_driver=(TextView) findViewById(R.id.tv_accompany_driver);
     	tv_servier=(TextView) findViewById(R.id.tv_servier);
+    	
+    	tv_question_small=(TextView) findViewById(R.id.tv_question_small);
+    	tv_driver_small=(TextView)findViewById(R.id.tv_driver_small);
+    	tv_driver_small.setVisibility(View.INVISIBLE);
+    	tv_accompany_driver_small=(TextView) findViewById(R.id.tv_accompany_driver_small);
+    	tv_servier_small=(TextView) findViewById(R.id.tv_servier_small);
     	
     	ll_type=(LinearLayout) findViewById(R.id.ll_type);
     	tv_c1=(TextView) findViewById(R.id.tv_c1);
@@ -255,23 +263,13 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		 
 		 
 		 if(bottomTab==2){
-			 mseekbar.setProgress(40);
+			 mseekbar.setProgress(42);
 			 mseekbar.setThumb(drawable2);
 			 mMapView.setVisibility(View.VISIBLE);
 			 IsenterService=false;
 				
-				tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
+			 tabDriver();
 				
-//				tv_question.setTextColor(R.color.text_driver_gray);
-//		    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-//		    	
-//		    	
-//		    	tv_accompany_driver.setTextColor(R.color.text_driver_gray);
-//		    	tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-//		    	
-//		    	tv_servier.setTextColor(R.color.text_driver_gray);
-//		    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-		    	
 		    	ll_type.setVisibility(View.VISIBLE);
 		    	framelayout.setVisibility(View.GONE);
 		    	tv_c1.setSelected(true);
@@ -279,20 +277,14 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		    	tv_c2.setSelected(false); 
 		 }
 		 else if (bottomTab==1) {
-			 mseekbar.setProgress(0);
+			 mseekbar.setProgress(3);
 			 mseekbar.setThumb(drawable1);
 				bottomTab=1;
 				IsenterService=false;
 				
 				mMapView.setVisibility(View.GONE);
 				
-		    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
-		    	tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-		    	tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-
-		    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-		    	
-		    	
+		    	tabquestions();
 		    	ll_type.setVisibility(View.GONE);
 		    	
 		    	sendDriverQuestion();
@@ -304,14 +296,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			
 			mMapView.setVisibility(View.VISIBLE);
 			tv_accompany_driver.setTextColor(R.color.tv_black);
-			tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
 			
-			tv_driver.setTextColor(R.color.text_driver_gray);
-			tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			tv_question.setTextColor(R.color.text_driver_gray);
-	    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-	    	tv_servier.setTextColor(R.color.text_driver_gray);
-	    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+			tabCompanyDriver();
 	    	ll_type.setVisibility(View.GONE);
 
 	      
@@ -326,22 +312,13 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			driverschoolid = null;
 	    	getData();
 		}else if(bottomTab==4){
-			mseekbar.setProgress(120);
+			mseekbar.setProgress(117);
 			mseekbar.setThumb(drawable4);
 			
 			
 			mMapView.setVisibility(View.GONE);
 			
-			tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
-			
-			
-			tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			
-			tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			
-			
-	    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-	    	
+			tabServise();
 	    	ll_type.setVisibility(View.GONE);
 	    	sendService(mseekbar);
 		}
@@ -510,6 +487,10 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		
 		// 开启定位图层
 		mBaiduMap = mMapView.getMap();
+		mUiSettings=mBaiduMap.getUiSettings();
+		mUiSettings.setCompassEnabled(false);
+		mUiSettings.setRotateGesturesEnabled(false);
+		mUiSettings.setOverlookingGesturesEnabled(false);
 		// 跟随模式
 		mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(LocationMode.FOLLOWING, true, null));
 		mBaiduMap.setOnMapClickListener(new OnMapClickListener() {
@@ -597,6 +578,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 		mMapView.removeViewAt(2);
 		mMapView.removeViewAt(1);
 		mMapView.showScaleControl(false);
+		//mMapView.recomputeViewAttributes(z);
+		
 		mBaiduMap.setMyLocationEnabled(true);
 		LatLng center = null;
 		if (GuangdaApplication.mUserInfo.getLatitude() != null && GuangdaApplication.mUserInfo.getLongitude() != null) {
@@ -960,14 +943,14 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			firstIn();
 	    //}
 		
-		 if(IsexistService){
-			 android.support.v4.app.FragmentManager fm=getSupportFragmentManager();
-		        FragmentTransaction ft=fm.beginTransaction();
-		         fm.popBackStackImmediate("mainfragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-		         framelayout.setVisibility(View.GONE);
-		 }
-		 
-		 IsexistService=false;
+//		 if(IsexistService){
+//			 android.support.v4.app.FragmentManager fm=getSupportFragmentManager();
+//		        FragmentTransaction ft=fm.beginTransaction();
+//		         fm.popBackStackImmediate("mainfragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//		         framelayout.setVisibility(View.GONE);
+//		 }
+//		 
+//		 IsexistService=false;
 	}
 
 	@Override
@@ -1420,9 +1403,12 @@ public class MapHomeActivity extends BaseFragmentActivity {
 	public void onBackPressed() {
 		if (System.currentTimeMillis() - mExitTime > 2000) {
 			mExitTime = System.currentTimeMillis();
-			Toast.makeText(this, R.string.warn_exit_msg, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.warn_exit_msg,Toast.LENGTH_LONG).show();
 		} else {
+			
 			mBaseApplication.finish();
+			
+			
 		}
 	}
 
@@ -1472,35 +1458,27 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			public void onStopTrackingTouch(SeekBar arg0) {
 				// TODO Auto-generated method stub
 				if(0<=arg0.getProgress()&&arg0.getProgress()<=20){
-					arg0.setProgress(0);
+					arg0.setProgress(3);
 					arg0.setThumb(drawable1);
 					bottomTab=1;
 					IsenterService=false;
 					
 					mMapView.setVisibility(View.GONE);
 					
-			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
-			    	tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			    	tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			    	
-			    	
+					 tabquestions();
 			    	ll_type.setVisibility(View.GONE);
 			    	
 			    	sendDriverQuestion();
 				}
 				if(20<arg0.getProgress()&&arg0.getProgress()<=60){
-					arg0.setProgress(40);
+					arg0.setProgress(42);
 					arg0.setThumb(drawable2);
 					bottomTab=2;
 					IsenterService=false;
 					mMapView.setVisibility(View.VISIBLE);
 					
-					tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
-			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			    	tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			    	
-			    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
+					
+					 tabDriver();
 			    	
 			    	ll_type.setVisibility(View.VISIBLE);
 			    	framelayout.setVisibility(View.GONE);
@@ -1517,15 +1495,8 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					IsenterService=false;
 					mMapView.setVisibility(View.VISIBLE);
 					
-					tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
-					tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-				
-			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-
-			    	tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			    	ll_type.setVisibility(View.GONE);
-
-			      
+					ll_type.setVisibility(View.GONE);
+					tabCompanyDriver();
 			        framelayout.setVisibility(View.GONE);
 			    	
 			    	condition11="19";
@@ -1538,23 +1509,13 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			    	getData();
 				}
 				if(100<arg0.getProgress()&&arg0.getProgress()<=120){
-					arg0.setProgress(120);
+					arg0.setProgress(117);
 					arg0.setThumb(drawable4);
 					
 					
 					mMapView.setVisibility(View.GONE);
 				
-					tv_servier.setTextSize(TypedValue.COMPLEX_UNIT_DIP,14);
-					
-					
-					tv_accompany_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-					
-				
-					tv_driver.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-					
-					
-			    	tv_question.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12);
-			    	
+					tabServise();
 			    	ll_type.setVisibility(View.GONE);
 			    	sendService(arg0);
 				}
@@ -1608,25 +1569,23 @@ public class MapHomeActivity extends BaseFragmentActivity {
     }
 	
 	public void sendService(SeekBar arg0){
-//		if (TextUtils.isEmpty(GuangdaApplication.mUserInfo.getStudentid())) {
-//			IsenterService=true;
-//		startMyActivity(LoginActivity.class);
-//		
-//	} else {
-		 bottomTab=4;
-    	 framelayout.setClickable(true);
-    	 
-    	  android.support.v4.app.FragmentManager fm=getSupportFragmentManager();
-          FragmentTransaction ft=fm.beginTransaction();
-         //ActivityServiceFragment mainfragment = new ActivityServiceFragment();
-          fm.popBackStackImmediate("questionfragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-          ft.replace(R.id.id_fraglayout,mainfragment);         
-          ft.addToBackStack("mainfragment");
-          ft.commit();
-          framelayout.setVisibility(View.VISIBLE);
+		
+         if(bottomTab!=4){
+        	 bottomTab=4;
+        	 framelayout.setClickable(true);
+        	 
+        	  android.support.v4.app.FragmentManager fm=getSupportFragmentManager();
+              FragmentTransaction ft=fm.beginTransaction();
+             //ActivityServiceFragment mainfragment = new ActivityServiceFragment();
+              fm.popBackStackImmediate("questionfragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+              ft.replace(R.id.id_fraglayout,mainfragment);         
+              ft.addToBackStack("mainfragment");
+              ft.commit();
+              framelayout.setVisibility(View.VISIBLE); 
+         }
+		
 		}
-	//}
-	
+
 	public void sendDriverQuestion(){
 		
    	    framelayout.setClickable(true);
@@ -1651,4 +1610,54 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			doRequest(2, false);
 		}
 	}
+	
+	//滑动滑竿字的变化
+	
+	private void tabquestions(){
+		tv_question.setVisibility(View.VISIBLE);
+		tv_driver.setVisibility(View.INVISIBLE);
+		tv_accompany_driver.setVisibility(View.INVISIBLE);
+		tv_servier.setVisibility(View.INVISIBLE);
+		
+		TopText();
+		tv_question_small.setVisibility(View.INVISIBLE);
+		
+	}
+	
+	private void tabDriver(){
+		tv_question.setVisibility(View.INVISIBLE);
+		tv_driver.setVisibility(View.VISIBLE);
+		tv_accompany_driver.setVisibility(View.INVISIBLE);
+		tv_servier.setVisibility(View.INVISIBLE);
+		
+		TopText();
+		tv_driver_small.setVisibility(View.INVISIBLE);
+	}
+	
+	private void tabCompanyDriver(){
+		tv_question.setVisibility(View.INVISIBLE);
+		tv_driver.setVisibility(View.INVISIBLE);
+		tv_accompany_driver.setVisibility(View.VISIBLE);
+		tv_servier.setVisibility(View.INVISIBLE);
+		
+		TopText();
+		tv_accompany_driver_small.setVisibility(View.INVISIBLE);
+	}
+	private void tabServise(){
+		tv_question.setVisibility(View.INVISIBLE);
+		tv_driver.setVisibility(View.INVISIBLE);
+		tv_accompany_driver.setVisibility(View.INVISIBLE);
+		tv_servier.setVisibility(View.VISIBLE);
+		
+		TopText();
+		tv_servier_small.setVisibility(View.INVISIBLE);
+	}
+	
+   private void TopText(){
+	   tv_question_small.setVisibility(View.VISIBLE);
+		tv_driver_small.setVisibility(View.VISIBLE);
+		tv_accompany_driver_small.setVisibility(View.VISIBLE);
+		tv_servier_small.setVisibility(View.VISIBLE);
+   }
+			
 }

@@ -56,6 +56,7 @@ public class ActivityServiceFragment extends Fragment{
 	 private String provinceid="0";
 	 private ImageView iv_menu;
 	 public static String nowSelectCity;
+	 public static String gpsCityId;
 	 public LoadingDialog mLoadingDialog;
 	 
 	@Override
@@ -305,6 +306,8 @@ public class ActivityServiceFragment extends Fragment{
 						tv_location.setText(baseReponse.getCityname());
 						//nowSelectCity=baseReponse.getCityname();
 						nowSelectCity=baseReponse.getCityname();
+					}if(!TextUtils.isEmpty(baseReponse.getCityid())){
+						
 					}
 				}else{
 					Toast.makeText(mcontext, baseReponse.getMessage(),Toast.LENGTH_LONG);

@@ -8,12 +8,14 @@ import org.apache.http.Header;
 
 import com.common.library.llj.utils.AsyncHttpClientUtil;
 import com.common.library.llj.views.CommonTitlebar;
+import com.daoshun.lib.listview.PullToRefreshScrollView;
 import com.loopj.android.http.RequestParams;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import db.DBManager;
@@ -34,6 +37,7 @@ import hzyj.guangda.student.common.Setting;
 import hzyj.guangda.student.entity.City;
 import hzyj.guangda.student.entity.Province;
 import hzyj.guangda.student.fragment.ActivityServiceFragment;
+import hzyj.guangda.student.response.GetXiaoBaService;
 import hzyj.guangda.student.response.getHotCityResponse;
 import hzyj.guangda.student.response.getHotCityResponse.HotCity;
 import hzyj.guangda.student.util.MySubResponseHandler;
@@ -44,7 +48,7 @@ public class SetLocationActivity extends TitlebarActivity{
 	
 	private TextView tv_selected_city,tv_gps_location,tv_back;
 	private GridView gv_hot_city;
-	private ListView  list_province;
+	private hzyj.guangda.student.util.NoScrollListView  list_province;
 	private ArrayList<HotCity> hotCity=new ArrayList<HotCity>();
 	private ArrayList<Province> provincelist=new ArrayList<Province>();
 	 private ArrayList<City> citylist;
@@ -53,6 +57,9 @@ public class SetLocationActivity extends TitlebarActivity{
 	 private DataAdapter hotadapter;
 	 private ListDataAdapter listadapter;
 	 private RelativeLayout sunshade;
+	 private ScrollView sv_top;
+	 private String gpsCityId;
+	 private String gpsCityName;
 
 	@Override
 	public int getLayoutId() {
@@ -66,9 +73,10 @@ public class SetLocationActivity extends TitlebarActivity{
 		tv_selected_city=(TextView) findViewById(R.id.tv_selected_city);
 		tv_gps_location=(TextView) findViewById(R.id.tv_gps_location);
 		gv_hot_city=(GridView) findViewById(R.id.gv_hot_city);
-		list_province=(ListView) findViewById(R.id.list_province);
+		list_province=(hzyj.guangda.student.util.NoScrollListView) findViewById(R.id.list_province);
 		sunshade=(RelativeLayout) findViewById(R.id.rl_sunshade);
-		//tv_back=(TextView) findViewById(R.id.tv_back);
+		sv_top=(ScrollView) findViewById(R.id.sc_top);
+		sv_top.smoothScrollTo(0, 0);
 	}
 	
 	@Override
@@ -81,23 +89,56 @@ public class SetLocationActivity extends TitlebarActivity{
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				tv_selected_city.setText(tv_gps_location.getText());
+				ActivityServiceFragment.nowSelectCity=gpsCityName;
+				ActivityServiceFragment.selectcityid=gpsCityId;
+				finish();
 			}
 		});
 		
 		
 		
-		mCommonTitlebar.setRightTextOnClickListener(new View.OnClickListener() {
+//		mCommonTitlebar.setRightTextOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				if(citylistdialog!=null){
+//					if(citylistdialog.isShowing()){
+//						citylistdialog.dismiss();
+//					}
+//					
+//				}else{
+//					finish();
+//				}
+//				
+//				
+//			}
+//		});
+		
+		mCommonTitlebar.setLeftTextOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+					finish();
+				
+			}
+		});
+		
+		
+		
+		tv_selected_city.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				finish();
-				
 			}
 		});
 		
 	
-		citylistdialog.setOnDismissListener(new OnDismissListener() {
+		citylistdialog.setOnDismissListener(new OnDismissListener(){
 			
 			@Override
 			public void onDismiss(boolean arg0) {
@@ -106,13 +147,47 @@ public class SetLocationActivity extends TitlebarActivity{
 			    setCenterText("选择城市");
 			    sunshade.setVisibility(View.GONE);
 				}
-				
 			}
 		});
-		
+			
+	}
 	
+	private void getLocationCityUrl(){
+		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.LOCATION_URL, GetXiaoBaService.class, new MySubResponseHandler<GetXiaoBaService>() {
+			@Override
+			public void onStart() {
+				mLoadingDialog.show();
+			}
 
-		
+			@Override
+			public RequestParams setParams(RequestParams requestParams) {
+				requestParams.add("action", "getAddressUrl");
+				requestParams.add("pointcenter",GuangdaApplication.mUserInfo.getLongitude() + "," + GuangdaApplication.mUserInfo.getLatitude());
+				//showToast(GuangdaApplication.mUserInfo.getStudentid().toString());
+				return requestParams;
+			}
+
+			@Override
+			public void onFinish() {
+				mLoadingDialog.dismiss();
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, GetXiaoBaService baseReponse) {
+				if (mLoadingDialog.isShowing())
+				{
+					mLoadingDialog.dismiss();
+				}
+				if (baseReponse.getCode()==1)
+				{
+					if(!TextUtils.isEmpty(baseReponse.getCityid())){
+						gpsCityId=baseReponse.getCityid();
+						gpsCityName=baseReponse.getCityname();
+					}
+				
+				}
+			}
+		});
 	}
 	
 	
@@ -138,7 +213,7 @@ public class SetLocationActivity extends TitlebarActivity{
 	public void requestOnCreate() {
 		// TODO Auto-generated method stub
 		
-		
+		getLocationCityUrl();
 		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.LOCATION_URL, getHotCityResponse.class, new MySubResponseHandler<getHotCityResponse>() {
 			@Override
 			public void onStart() {
@@ -236,6 +311,7 @@ public class SetLocationActivity extends TitlebarActivity{
 					tv_selected_city.setText(hotCity.get(position).getCityname());
 					ActivityServiceFragment.nowSelectCity=hotCity.get(position).getCityname();
 					ActivityServiceFragment.selectcityid=String.valueOf(hotCity.get(position).getCityid());
+					finish();
 					
 				}
 			});
@@ -308,13 +384,13 @@ public class SetLocationActivity extends TitlebarActivity{
 				@Override
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
-			
 					    citylist.clear();
 					    citylist = (ArrayList<City>) mgr.queryCity(provincelist.get(position).provinceId); 
 						if(citylist.size()==0||citylist.size()==1&&citylist.get(0).cityname.equals(provincelist.get(position).provinceName)){
 							 tv_selected_city.setText(provincelist.get(position).provinceName);
 							 ActivityServiceFragment.nowSelectCity=provincelist.get(position).provinceName;
 							 ActivityServiceFragment.selectcityid=provincelist.get(position).provinceId;
+							 finish();
 						}else{
 							 getcity(provincelist.get(position).provinceId);
 							 citylistdialog=new CityListDialog(mBaseFragmentActivity, citylist,tv_selected_city);

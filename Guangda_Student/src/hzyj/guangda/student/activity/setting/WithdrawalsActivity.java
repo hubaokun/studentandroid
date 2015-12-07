@@ -66,7 +66,7 @@ public class WithdrawalsActivity extends TitlebarActivity {
 					showToast("请输入正确的金额");
 					return;
 				}
-				if(ParseUtilLj.parseInt(mMoneyEt.getText().toString().trim())<=10){
+				if(ParseUtilLj.parseInt(mMoneyEt.getText().toString().trim())<10){
 					showToast("提现金额大于10元");
 					return;
 				}

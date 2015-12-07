@@ -40,6 +40,7 @@ public class UserInfo {
 	private String latitude;// 纬度
 	private String locationname;
 	private String baiduid;
+	private String alipay_account;
 	
 	private int isfreecourse;  // 1 可以预约免费预约  0 不可以预约
 
@@ -78,6 +79,7 @@ public class UserInfo {
 		latitude = mSharedPreferences.getString("latitude", null);
 		baiduid=mSharedPreferences.getString("locationid", null);
 		isfreecourse=mSharedPreferences.getInt("isfreecourse",0);
+		alipay_account=mSharedPreferences.getString("alipay_account", null);
 		
 	}
 
@@ -110,6 +112,7 @@ public class UserInfo {
 		mEditor.putString("areaid",userInfoVo.getAreaid());
 		mEditor.putString("locationid",userInfoVo.getBaiduid());
 		mEditor.putInt("isfreecourse",userInfoVo.getIsfreecourse());
+		mEditor.putString("alipay_account", userInfoVo.getAlipay_account());
 		mEditor.commit();
 
 		studentid = userInfoVo.getStudentid();
@@ -141,6 +144,7 @@ public class UserInfo {
 		provinceid = userInfoVo.getProvinceid();
 		areaid = userInfoVo.getAreaid();
 		isfreecourse=userInfoVo.getIsfreecourse();
+		alipay_account=userInfoVo.getAlipay_account();
 	}
 
 	public void clearUserInfo() {
@@ -171,6 +175,7 @@ public class UserInfo {
 		aliaccount = null;
 		token = null;
 		isfreecourse=0;
+		alipay_account=null;
 
 	}
 
@@ -509,4 +514,16 @@ public class UserInfo {
 	{
 		return mSharedPreferences.getBoolean("isfirst", true);
 	}
+
+	public String getAlipay_account() {
+		return alipay_account;
+	}
+
+	public void setAlipay_account(String alipay_account) {
+		mEditor.putString("alipay_account", alipay_account);
+		mEditor.commit();
+		this.alipay_account = alipay_account;
+	}
+	
+	
 }

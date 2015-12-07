@@ -304,7 +304,6 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 				requestParams.add("date", TimeUitlLj.millisecondsToString(9, send_Remind_time));
 				return requestParams;
 			}
-
 			@Override
 			public void onFinish() {
 				

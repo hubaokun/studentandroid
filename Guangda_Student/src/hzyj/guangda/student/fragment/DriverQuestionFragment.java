@@ -24,7 +24,7 @@ public class DriverQuestionFragment extends Fragment{
 	private Context mcontext;
 	private ImageView iv_menu;
 	private WebView wv_question;
-	private String url="http://120.25.236.228/dadmin/examination/index.jsp"; 
+	private String url="http://xiaobaxueche.com:8080/dadmin2.0.0/examination/index.jsp"; 
 	//private String url="http://shop13287486.wxrrd.com";
 	private MapHomeActivity homeActivity;
 	private LinearLayout ll_title_bar;
@@ -79,7 +79,7 @@ public class DriverQuestionFragment extends Fragment{
 		      public boolean shouldOverrideUrlLoading(WebView view, String url) {
 		        // TODO Auto-generated method stub
 		    	  view.loadUrl(url);
-		        Toast.makeText(mcontext, url, 0).show();
+		        //Toast.makeText(mcontext, url, 0).show();
 		       //System.out.println(url);
 		       if (!DriverQuestionFragment.this.url.equals(url))
 		       {
@@ -97,7 +97,7 @@ public class DriverQuestionFragment extends Fragment{
 				// TODO Auto-generated method stub
 				super.onPageFinished(view, url);
 				
-				wv_question.setVisibility(View.VISIBLE);
+				//wv_question.setVisibility(View.VISIBLE);
 			}
 
 			@Override
@@ -112,8 +112,6 @@ public class DriverQuestionFragment extends Fragment{
 				
 				super.onReceivedError(view, errorCode, description, failingUrl);
 				webviewError.setVisibility(View.VISIBLE);
-				wv_question.setVisibility(View.GONE);
-				
 			}
 		      
 		      

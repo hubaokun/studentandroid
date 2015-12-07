@@ -40,7 +40,7 @@ public class AsyncHttpClientUtil {
 	 * @param myResponseHandler
 	 */
 	public <T extends BaseReponse> void get(final Context context, String url, final Class<T> reponseClass, final MyResponseHandler<T> myResponseHandler) {
-		mAsyncHttpClient.setTimeout(200000);
+		mAsyncHttpClient.setTimeout(30000);
 		mAsyncHttpClient.get(context, url, myResponseHandler.setParams(myResponseHandler.getParams()), new TextHttpResponseHandler() {
 			@Override
 			public void onStart() {

@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.common.library.llj.adapterhelp.BaseAdapterHelper;
 import com.common.library.llj.adapterhelp.QuickAdapter;
@@ -39,6 +40,7 @@ public class SystemMessageActivity extends TitlebarActivity {
 	private ListView mListView;
 	private int mPage;
 	private MessageListAdapter mMessageListAdapter;
+	private RelativeLayout rl_bg_system_message;
 
 	@Override
 	public int getLayoutId() {
@@ -50,6 +52,8 @@ public class SystemMessageActivity extends TitlebarActivity {
 		mPtrFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.ptr_frame);
 		mPtrFrameLayout.setDurationToCloseHeader(800);
 		mListView = (ListView) findViewById(R.id.lv_msg);
+		rl_bg_system_message=(RelativeLayout) findViewById(R.id.rl_bg_system_message);
+		
 
 	}
 
@@ -120,13 +124,16 @@ public class SystemMessageActivity extends TitlebarActivity {
 	}
 
 	private void initAllData(GetNoticesResponse baseReponse) {
+	
 		if (mPage == 0) {
 			mMessageListAdapter.clear();
 		}
 		if (baseReponse.getHasmore() == 0) {
+			rl_bg_system_message.setVisibility(View.VISIBLE);
 			mMessageListAdapter.showIndeterminateProgress(false);
 		} else if (baseReponse.getHasmore() == 1 && baseReponse.getDatalist() != null) {
 			mMessageListAdapter.showIndeterminateProgress(true);
+			rl_bg_system_message.setVisibility(View.GONE);
 			mPage++;
 		}
 		mMessageListAdapter.addAll(baseReponse.getDatalist());
@@ -210,7 +217,8 @@ public class SystemMessageActivity extends TitlebarActivity {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, GetNoticesResponse baseReponse) {
 				showToast("删除成功！");
-				mPtrFrameLayout.autoRefresh(true);
+				onResume();
+				
 			}
 		});
 	}

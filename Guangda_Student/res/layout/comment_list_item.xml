@@ -61,7 +61,19 @@
                     android:layout_marginLeft="5dp"
                     android:isIndicator="true"
                     android:numStars="5"
-                    android:stepSize="0.5" />  
+                    android:stepSize="0.5" /> 
+                    
+                  <TextView
+                android:id="@+id/tv_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="4dp"
+                android:textColor="#999999"
+                android:text=""
+                android:textSize="10dp" />
+                     
     </LinearLayout>
 
     <LinearLayout 

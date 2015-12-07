@@ -30,6 +30,7 @@ public class UserInfoVo {
 	private String locationname;
 	private String baiduid;
 	private int isfreecourse; // 1 可以参加活动 0 你参加活动
+	private String alipay_account;
 	
 	
 	
@@ -265,5 +266,15 @@ public class UserInfoVo {
 	public void setBaiduid(String baiduid) {
 		this.baiduid = baiduid;
 	}
+
+	public String getAlipay_account() {
+		return alipay_account;
+	}
+
+	public void setAlipay_account(String alipay_account) {
+		this.alipay_account = alipay_account;
+	}
+	
+	
 
 }

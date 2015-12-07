@@ -1,8 +1,7 @@
  <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hzyj.guangda.student"
-    android:versionCode="9"
-    android:versionName="1.9.8" >
-
+    android:versionCode="10"
+    android:versionName="2.0.0" >
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="21" />
@@ -602,6 +601,14 @@
     	<meta-data android:name="EASEMOB_APPKEY"  android:value="xiaobaxueche#xiaobaxueche" />
         <!-- 声明sdk所需的service -->
         <service android:name="com.easemob.chat.EMChatService" />
+        
+       <!-- 云测-->
+       
+        <!-- 设置AppKey -->
+        <meta-data android:name="TESTIN_APPKEY" android:value="5927fb116204719a05926e4a76ff19e3"/>
+        <!-- 设置渠道信息 -->
+        <meta-data android:name="TESTIN_CHANNEL" android:value="Channel_ID"/>
+        
     </application>
 
 </manifest>

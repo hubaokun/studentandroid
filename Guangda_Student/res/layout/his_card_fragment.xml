@@ -3,6 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+     <RelativeLayout
+        android:id="@+id/rl_xioabaquan_text" 
+        android:layout_height="match_parent"
+         android:gravity="center"
+          android:visibility="gone"
+        android:layout_width="match_parent">
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="暂无小巴券"
+            android:textSize="17dp"
+           />
+        
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/lv_card"

@@ -94,7 +94,7 @@ public class CoachDetailActivity extends BaseFragmentActivity {
 	private String mGenger;
 	private TextView tv_scroll;
 	private LinearLayout ll_about_self,ll_driver_address;
-	private DecimalFormat df = new DecimalFormat("#.0");;
+	private DecimalFormat df = new DecimalFormat("#.0");
 
 	@Override
 	public void getIntentData() {
@@ -173,13 +173,13 @@ public class CoachDetailActivity extends BaseFragmentActivity {
 		}
 		
 		setText(tvAge, coachInfoVo.getAge());
-		if(TextUtils.isEmpty(coachInfoVo.getAddress())){
+		if(!TextUtils.isEmpty(coachInfoVo.getDetail())){
 			ll_driver_address.setVisibility(View.VISIBLE);
-			setText(tvAddress, coachInfoVo.getAddress());
+			setText(tvAddress, coachInfoVo.getDetail());
 		}else{
 			ll_driver_address.setVisibility(View.GONE);
 		}
-		setText(tvAddress, coachInfoVo.getAddress());
+		
 		setText(tvOrderTime, coachInfoVo.getSumnum()+"");
 //		setText(mIdentityTv, coachInfoVo.getId_cardnum());
 //		setText(mCoachIdTv, coachInfoVo.getCoach_cardnum());
@@ -333,7 +333,6 @@ public class CoachDetailActivity extends BaseFragmentActivity {
 			public RequestParams setParams(RequestParams requestParams) {
 				requestParams.add("action", "GetCoachDetail");
 				requestParams.add("coachid", mCoachId);
-				
 				return requestParams;
 			}
 

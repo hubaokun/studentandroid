@@ -9,7 +9,7 @@ public class CoachInfoVo {
 	private String realname;
 	private String avatar;
 	private String avatarurl;
-	private String detail;
+	private String detail; 
 	private String score;// 教练综合评分
 	private int gender;// 1男 2 女 0保密
 	private String phone;

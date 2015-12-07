@@ -23,6 +23,8 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <!-- 默认是有阴影背景的,加以下属性可以改变阴影度阴影 -->
     </style>
+    
+    
     <!-- 可以自己调整阴影度 -->
     <style name="no_dim_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
@@ -31,6 +33,16 @@
         <!-- 默认是有阴影背景的,加以下属性可以改变阴影度阴影 -->
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:backgroundDimAmount">0</item>
+        <item name="android:windowAnimationStyle">@style/dialog_anim_bottom_to_center</item>
+    </style>
+    
+    <style name="half_dim_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 默认是有阴影背景的,加以下属性可以改变阴影度阴影 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:backgroundDimAmount">5</item>
         <item name="android:windowAnimationStyle">@style/dialog_anim_bottom_to_center</item>
     </style>
     <!-- 普通的横线 -->
@@ -105,5 +117,7 @@
     <style name="activity_slide" parent="android:Theme.Translucent.NoTitleBar">
         <item name="android:windowAnimationStyle">@style/activity_anim_slide_</item>
     </style>
+
+    
 
 </resources>

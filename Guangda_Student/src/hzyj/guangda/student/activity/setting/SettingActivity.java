@@ -60,7 +60,7 @@ public class SettingActivity extends TitlebarActivity {
 				GuangdaApplication.mUserInfo.clearUserInfo();
 				EventBus.getDefault().post(new Update("UserInfo"));
 				MapHomeActivity.bottomTab=2;
-				MapHomeActivity.IsexistService=true;
+				//MapHomeActivity.IsexistService=true;
 			    MapHomeActivity.IsenterService=false;
 				startMyActivity(LoginActivity.class);
 				

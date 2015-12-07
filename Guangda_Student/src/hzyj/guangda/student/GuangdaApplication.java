@@ -59,6 +59,7 @@ import com.loopj.android.http.RequestParams;
 import com.pgyersdk.crash.PgyCrashManager;
 import com.pgyersdk.feedback.PgyFeedbackShakeManager;
 import com.pgyersdk.update.PgyUpdateManager;
+import com.testin.agent.TestinAgent;
 
 import de.greenrobot.event.EventBus;
 
@@ -115,6 +116,14 @@ public class GuangdaApplication extends BaseApplication {
 		 */
 		EMChat.getInstance().setDebugMode(true);//在做打包混淆时，要关闭debug模式，如果未被关闭，则会出现程序无法运行问题
 		hxSDKHelper.onInit(getApplicationContext());
+		
+		TestinAgent.init(this);
+		//TestinAgent.uploadException(getApplicationContext(), String message, Throwable throwable);
+		
+		TestinAgent.setUserInfo("862851265@qq.com");
+		TestinAgent.leaveBreadcrumb("User tapped a button");
+		TestinAgent.setLocalDebug(true);//设置为true，则在log中打印崩溃堆栈
+		
 	}
 
 	/**

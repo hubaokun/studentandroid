@@ -231,8 +231,10 @@ public class CoachFilterActivity2 extends TitlebarActivity {
 				mFromCenterDateTv.setText(TimeUitlLj.dateToString(9, new Date()));
 
 				mCoachListEvent.setCondition1(null);
+				mCoachNameEt.setText("");
 				mCoachListEvent.setCondition3(null);
 				mCoachListEvent.setCondition6("0");
+				tv_coach_home.setText("");
 			}
 		});
 		mFilterTv.setOnClickListener(new OnClickListener() {

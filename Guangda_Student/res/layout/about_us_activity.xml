@@ -17,8 +17,8 @@
 
 
         <ImageView
-            android:layout_width="97dp"
-            android:layout_height="97dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/ic_launcher2" />
 
         <TextView

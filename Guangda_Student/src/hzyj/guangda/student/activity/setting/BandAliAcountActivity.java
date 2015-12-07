@@ -69,7 +69,7 @@ public class BandAliAcountActivity extends TitlebarActivity {
 						@Override
 						public void onSuccess(int statusCode, Header[] headers, BindAliAccountResponse baseReponse) {
 							if (baseReponse != null) {
-								GuangdaApplication.mUserInfo.setAliaccount(baseReponse.getAliacount());
+								GuangdaApplication.mUserInfo.setAlipay_account(baseReponse.getAliacount());
 							}
 							showToast("绑定成功");
 							finish();

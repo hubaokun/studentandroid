@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.library.llj.adapterhelp.BaseAdapterHelper;
@@ -34,11 +35,13 @@ import com.loopj.android.http.RequestParams;
 public class CurrentCardFragment extends BaseFragment {
 	private ListView mListView;
 	private CradAdapter mCradAdapter;
+	private RelativeLayout rl_xioabaquan_text;
 
 	@Override
 	protected View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.current_card_fragment, container, false);
 		mListView = (ListView) view.findViewById(R.id.lv_card);
+		rl_xioabaquan_text=(RelativeLayout) view.findViewById(R.id.rl_xioabaquan_text);
 
 		return view;
 	}
@@ -84,9 +87,16 @@ public class CurrentCardFragment extends BaseFragment {
 	}
 
 	private void initAllData(GetCouponListResponse baseReponse) {
+		if(baseReponse.getCouponlist().size()!=0){
+			rl_xioabaquan_text.setVisibility(View.GONE);
+		}else{
+			rl_xioabaquan_text.setVisibility(View.VISIBLE);
+		}
 		if (baseReponse.getCouponlist() != null) {
 			mCradAdapter.addAll(baseReponse.getCouponlist());
 		}
+		
+		
 	}
 
 	private class CradAdapter extends QuickAdapter<Coupon> {
@@ -103,6 +113,8 @@ public class CurrentCardFragment extends BaseFragment {
 				TextView sub_title = helper.getView(R.id.tv_sub_title);
 				TextView from = helper.getView(R.id.tv_from);
 				TextView end_time = helper.getView(R.id.tv_limit);
+				
+				
 				// 标题
 				if (item.getCoupontype() == 1) {
 					money.setText("小巴券-学时券");
@@ -128,6 +140,7 @@ public class CurrentCardFragment extends BaseFragment {
 					end_time.setText("有效期：" + TimeUitlLj.millisecondsToString(8, TimeUitlLj.stringToMilliseconds(2, item.getEnd_time())));
 				}
 			}
+			
 		}
 	}
 }

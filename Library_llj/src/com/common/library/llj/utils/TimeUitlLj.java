@@ -101,33 +101,41 @@ public class TimeUitlLj {
 		Date beforeDate = new Date(beforeTime);
 		if (afterDate.getYear() == beforeDate.getYear()) {
 			int month = afterDate.getMonth() - beforeDate.getMonth();
-			if (month > 3 || month < 0) {
-				// 三个月后就显示年月日，时分秒
+			long day=(afterDate.getTime() - beforeTime)/ (1000 * 60 * 60 * 24);
+			if(day>7){
 				return millisecondsToString(format, milliseconds);
-			} else {
-				int day = afterDate.getDate() - beforeDate.getDate();
-				if (month == 3) {
-					if (day >= 0) {
-						return "三个月前";
-					} else {
-						return "二个月前";
-					}
-				} else if (month == 2) {
-					if (day >= 0) {
-						return "二个月前";
-					} else {
-						return "一个月前";
-					}
-				} else if (month == 1) {
-					if (day >= 0) {
-						return "一个月前";
-					} else {
-						return getDateString(afterDate.getTime() - beforeTime);
-					}
-				} else if (month == 0) {
-					return getDateString(afterDate.getTime() - beforeTime);
-				}
+			}else{
+				return getDateString(afterDate.getTime() - beforeTime);
 			}
+			
+			
+//			if (month > 3 || month < 0) {
+//				// 三个月后就显示年月日，时分秒
+//				return millisecondsToString(format, milliseconds);
+//			} else {
+//				int day = afterDate.getDate() - beforeDate.getDate();
+//				if (month == 3) {
+//					if (day >= 0) {
+//						return "三个月前";
+//					} else {
+//						return "二个月前";
+//					}
+//				} else if (month == 2) {
+//					if (day >= 0) {
+//						return "二个月前";
+//					} else {
+//						return "一个月前";
+//					}
+//				} else if (month == 1) {
+//					if (day >= 0) {
+//						return "一个月前";
+//					} else {
+//						return getDateString(afterDate.getTime() - beforeTime);
+//					}
+//				} else if (month == 0) {
+//					return getDateString(afterDate.getTime() - beforeTime);
+//				}
+//			}
 		}
 		return millisecondsToString(format, milliseconds);
 	}

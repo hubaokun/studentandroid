@@ -31,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.library.llj.adapterhelp.BaseAdapterHelper;
@@ -53,6 +54,7 @@ public class MyComplaitActivity extends TitlebarActivity {
 	private ListView mListView;
 	private int mPage;
 	private ComplaintAdapter mComplaintAdapter;
+	private RelativeLayout rl_complait_text;
 
 	// private RelativeLayout mNoDataRl;
 
@@ -66,6 +68,7 @@ public class MyComplaitActivity extends TitlebarActivity {
 		mPtrFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.ptr_frame);
 		mPtrFrameLayout.setDurationToCloseHeader(800);
 		mListView = (ListView) findViewById(R.id.lv_complaint);
+		rl_complait_text=(RelativeLayout) findViewById(R.id.rl_complait_text);
 
 		// mNoDataRl = (RelativeLayout) findViewById(R.id.rl_no_date);
 	}
@@ -138,6 +141,7 @@ public class MyComplaitActivity extends TitlebarActivity {
 	private void initAllData(ComplaintResponse baseReponse) {
 		if (baseReponse.getComplaintlist() != null && baseReponse.getComplaintlist().size() != 0) {
 			// mNoDataRl.setVisibility(View.INVISIBLE);
+			rl_complait_text.setVisibility(View.GONE);
 			mListView.setVisibility(View.VISIBLE);
 			if (mPage == 0) {
 				mComplaintAdapter.clear();
@@ -151,6 +155,7 @@ public class MyComplaitActivity extends TitlebarActivity {
 			mComplaintAdapter.addAll(baseReponse.getComplaintlist());
 		} else {
 			// mNoDataRl.setVisibility(View.VISIBLE);
+			rl_complait_text.setVisibility(View.VISIBLE);
 			mListView.setVisibility(View.INVISIBLE);
 		}
 	}
