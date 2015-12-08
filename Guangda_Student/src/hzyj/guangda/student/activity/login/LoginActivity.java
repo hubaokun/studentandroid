@@ -243,6 +243,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, LoginResponse baseReponse) {
 					showToast("登录成功");
+					
 					if (baseReponse.getUserInfo() != null) {
 						GuangdaApplication.mUserInfo.saveUserInfo(baseReponse.getUserInfo());
 						EventBus.getDefault().post(new Update("UserInfo"));
@@ -293,9 +294,9 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 				@Override
 				public void onNotSuccess(Context context, int statusCode, Header[] headers, LoginResponse baseReponse) {
 					super.onNotSuccess(context, statusCode, headers, baseReponse);
-					if (baseReponse.getCode() == 2) {
+					//if (baseReponse.getCode() == 2||baseReponse.getCode() == 3) {
 						showToast(baseReponse.getMessage());
-					}
+					//}
 				}
 
 				@Override
