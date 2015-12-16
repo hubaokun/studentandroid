@@ -124,7 +124,7 @@ public class RechargeActivity extends TitlebarActivity {
 				}
 				Intent intent=new Intent(RechargeActivity.this,ActivityRechargePay.class);
 				Bundle bundle=new Bundle();
-				bundle.putString("money",mMoneyEt.getText().toString().trim());
+				bundle.putString("money",Integer.valueOf(mMoneyEt.getText().toString().trim())+"");
 				intent.putExtras(bundle);
 				intent.putExtra("wPage","2");
 				startActivity(intent);

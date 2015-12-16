@@ -409,7 +409,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 					requestParams.add("phone", GuangdaApplication.mUserInfo.getPhone());
 					requestParams.add("password", GuangdaApplication.mUserInfo.getPassword());
 					requestParams.add("version",((GuangdaApplication)mBaseApplication).getVersion());
-					requestParams.add("devicetype","1");
+					requestParams.add("devicetype","2");  //android:2 
 					return requestParams;
 				}
 
@@ -609,13 +609,25 @@ public class MapHomeActivity extends BaseFragmentActivity {
 			public void onReceiveLocation(BDLocation arg0) {
 				if (arg0 == null || mMapView == null)
 					return;
+				
+				
 				// 此处设置开发者获取到的方向信息，顺时针0-360
-				MyLocationData locData = new MyLocationData.Builder().accuracy(arg0.getRadius()).direction(100).latitude(arg0.getLatitude()).longitude(arg0.getLongitude()).build();
+				MyLocationData locData = new MyLocationData.Builder().accuracy(arg0.getRadius()).direction(arg0.getDirection()).latitude(arg0.getLatitude()).longitude(arg0.getLongitude()).build();
 				mBaiduMap.setMyLocationData(locData);
-				// 保存经纬度
+				 //保存经纬度
 				GuangdaApplication.mUserInfo.setLatitude(String.valueOf(arg0.getLatitude()));
 				GuangdaApplication.mUserInfo.setLongitude(String.valueOf(arg0.getLongitude()));
 				LatLng ll = new LatLng(arg0.getLatitude(), arg0.getLongitude());
+				
+				
+				//云测
+//				MyLocationData locData = new MyLocationData.Builder().accuracy(arg0.getRadius()).direction(100).latitude((float) 30.296125).longitude((float) 120.014933).build();
+//				mBaiduMap.setMyLocationData(locData);
+//				GuangdaApplication.mUserInfo.setLatitude("30.296125");
+//				GuangdaApplication.mUserInfo.setLongitude("120.014933");
+//				LatLng ll = new LatLng(30.296125,120.014933);
+				
+				
 				MapStatus mMapStatus = new MapStatus.Builder().target(ll).build();
 				MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(mMapStatus);
 				mBaiduMap.setMapStatus(u);
@@ -702,7 +714,7 @@ public class MapHomeActivity extends BaseFragmentActivity {
 //						showAdvDialog.dismiss();
 //					} else {
 						
-						startMyActivity(renrenStore.class);
+
 						showAdvDialog.dismiss();
 					//}
 					return;

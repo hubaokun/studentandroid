@@ -469,6 +469,8 @@ public class SubjectReserveActivity extends BaseFragmentActivity {
 			mNightGv = (UnscrollableGridView) view.findViewById(R.id.gv_night);
 			return view;
 		}
+		
+		
 
 		@Override
 		protected void addListeners(View view, Bundle savedInstanceState) {

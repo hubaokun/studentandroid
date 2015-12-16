@@ -56,9 +56,9 @@ import com.easemob.helpdeskdemo.DemoHXSDKHelper;
 import com.google.gson.Gson;
 import com.igexin.sdk.PushManager;
 import com.loopj.android.http.RequestParams;
-import com.pgyersdk.crash.PgyCrashManager;
-import com.pgyersdk.feedback.PgyFeedbackShakeManager;
-import com.pgyersdk.update.PgyUpdateManager;
+//import com.pgyersdk.crash.PgyCrashManager;
+//import com.pgyersdk.feedback.PgyFeedbackShakeManager;
+//import com.pgyersdk.update.PgyUpdateManager;
 import com.testin.agent.TestinAgent;
 
 import de.greenrobot.event.EventBus;
@@ -98,7 +98,7 @@ public class GuangdaApplication extends BaseApplication {
 		//
 		SDKInitializer.initialize(this);
 		//
-		PgyCrashManager.register(this, Setting.PGY_APPID);
+		//PgyCrashManager.register(this, Setting.PGY_APPID);
 		//
 		mUserInfo = new UserInfo(this);
 		// 注册全局activity的监听
@@ -154,7 +154,7 @@ public class GuangdaApplication extends BaseApplication {
 				requestParams.add("action", "UpdatePushInfo");
 				requestParams.add("userid", mUserInfo.getStudentid());
 				requestParams.add("usertype", 2 + "");
-				requestParams.add("devicetype", 0 + "");
+				requestParams.add("devicetype", 2 + "");   //android 2 ios 1 
 				requestParams.add("jpushid", PushManager.getInstance().getClientid(GuangdaApplication.this));
 				return requestParams;
 			}
@@ -248,7 +248,7 @@ public class GuangdaApplication extends BaseApplication {
                         public RequestParams setParams(RequestParams requestParams) {
                             requestParams.add("action", "UpdateUserLocation");
                             requestParams.add("openid", getDeviceId(getApplicationContext()));
-                            requestParams.add("devicetype", "0");
+                            requestParams.add("devicetype", "2");
                             requestParams.add("usertype", "2");
                             requestParams.add("appversion",
                                     PackageMangerUtilLj.getAppVersionName(getApplicationContext()));
@@ -282,7 +282,7 @@ public class GuangdaApplication extends BaseApplication {
 	    {  
 	    	if (isCourent==false)
 	    	{
-	    		PgyUpdateManager.register(activity, Setting.PGY_APPID);
+	    		//PgyUpdateManager.register(activity, Setting.PGY_APPID);
 	    	}
 	    	isCourent = true;
 	    }  
@@ -324,7 +324,7 @@ public class GuangdaApplication extends BaseApplication {
 
 		@Override
 		public void onActivityStopped(Activity activity) {
-			PgyUpdateManager.unregister();
+//			PgyUpdateManager.unregister();
 		}
 
 		@Override

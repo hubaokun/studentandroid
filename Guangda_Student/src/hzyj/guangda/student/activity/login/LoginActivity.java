@@ -231,7 +231,7 @@ public class LoginActivity extends BaseFragmentActivity implements OnClickListen
 					requestParams.add("phone", mNameEt.getText().toString().trim());
 					requestParams.add("password", mWordEt.getText().toString().trim());
 					requestParams.add("version",((GuangdaApplication)mBaseApplication).getVersion());
-					requestParams.add("devicetype","1");
+					requestParams.add("devicetype","2");  // 2:android  1:ios 
 					return requestParams;
 				}
 

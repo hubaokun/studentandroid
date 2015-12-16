@@ -36,6 +36,7 @@ public class BandAliAcountActivity extends TitlebarActivity {
 	@Override
 	public void findViews(Bundle savedInstanceState) {
 		mAccountEt = (EditText) findViewById(R.id.et_account);
+		
 	}
 
 	@Override
@@ -93,7 +94,7 @@ public class BandAliAcountActivity extends TitlebarActivity {
 
 	@Override
 	public void initViews() {
-		mPreAccountStr = GuangdaApplication.mUserInfo.getAliaccount();
+		mPreAccountStr = GuangdaApplication.mUserInfo.getAlipay_account();
 		setText(mAccountEt, mPreAccountStr);
 		setCenterText("管理账户");
 		setRightText("提交", 10);
@@ -105,37 +106,37 @@ public class BandAliAcountActivity extends TitlebarActivity {
 
 	}
 
-	public void onClearAccount(View view) {
-		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SMY_URL, BindAliAccountResponse.class, new MySubResponseHandler<BindAliAccountResponse>() {
-			@Override
-			public void onStart() {
-				super.onStart();
-				mLoadingDialog.show();
-			}
-
-			@Override
-			public RequestParams setParams(RequestParams requestParams) {
-				requestParams.add("action", "DelAliAccount");
-				requestParams.add("userid", GuangdaApplication.mUserInfo.getStudentid());
-				requestParams.add("type", "2");
-				return requestParams;
-			}
-
-			@Override
-			public void onFinish() {
-				mLoadingDialog.dismiss();
-			}
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, BindAliAccountResponse baseReponse) {
-				if (baseReponse != null) {
-					GuangdaApplication.mUserInfo.setAliaccount(null);
-					mAccountEt.setText("");
-				}
-				showToast("删除成功");
-			}
-
-		});
-	}
+//	public void onClearAccount(View view) {
+//		AsyncHttpClientUtil.get().post(mBaseFragmentActivity, Setting.SMY_URL, BindAliAccountResponse.class, new MySubResponseHandler<BindAliAccountResponse>() {
+//			@Override
+//			public void onStart() {
+//				super.onStart();
+//				mLoadingDialog.show();
+//			}
+//
+//			@Override
+//			public RequestParams setParams(RequestParams requestParams) {
+//				requestParams.add("action", "DelAliAccount");
+//				requestParams.add("userid", GuangdaApplication.mUserInfo.getStudentid());
+//				requestParams.add("type", "2");
+//				return requestParams;
+//			}
+//
+//			@Override
+//			public void onFinish() {
+//				mLoadingDialog.dismiss();
+//			}
+//
+//			@Override
+//			public void onSuccess(int statusCode, Header[] headers, BindAliAccountResponse baseReponse) {
+//				if (baseReponse != null) {
+//					GuangdaApplication.mUserInfo.setAliaccount(null);
+//					mAccountEt.setText("");
+//				}
+//				showToast("删除成功");
+//			}
+//
+//		});
+//	}
 
 }

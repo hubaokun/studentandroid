@@ -128,12 +128,20 @@ public class SystemMessageActivity extends TitlebarActivity {
 		if (mPage == 0) {
 			mMessageListAdapter.clear();
 		}
-		if (baseReponse.getHasmore() == 0) {
+		
+		if (baseReponse.getDatalist()!=null||baseReponse.getDatalist().size()!=0)
+		{
+			rl_bg_system_message.setVisibility(View.GONE);
+			mMessageListAdapter.showIndeterminateProgress(true);
+		}else{
 			rl_bg_system_message.setVisibility(View.VISIBLE);
+			mMessageListAdapter.showIndeterminateProgress(false);
+		}
+		
+		if (baseReponse.getHasmore() == 0) {
 			mMessageListAdapter.showIndeterminateProgress(false);
 		} else if (baseReponse.getHasmore() == 1 && baseReponse.getDatalist() != null) {
 			mMessageListAdapter.showIndeterminateProgress(true);
-			rl_bg_system_message.setVisibility(View.GONE);
 			mPage++;
 		}
 		mMessageListAdapter.addAll(baseReponse.getDatalist());

@@ -204,7 +204,6 @@ public class ActivityRechargePay extends TitlebarActivity{
 								Wparams.setSignType(baseReponse.getSignType());
 								Wparams.setPaySign(baseReponse.getPaySign());
 								Wparams.setMch_id(baseReponse.getMch_id());
-								// mPparams.setTotal_fee(0.01 + "");
 								WxPayTask mWxPayTask = new WxPayTask(mBaseFragmentActivity,Wparams);
 								mWxPayTask.Execute();
 							}else{

@@ -24,7 +24,8 @@ public class DriverQuestionFragment extends Fragment{
 	private Context mcontext;
 	private ImageView iv_menu;
 	private WebView wv_question;
-	private String url="http://xiaobaxueche.com:8080/dadmin2.0.0/examination/index.jsp"; 
+    private String url="http://xiaobaxueche.com:8080/dadmin2.0.0/examination/index.jsp"; 
+	//private String url="http://120.25.236.228/dadmin2.0.0/examination/index.jsp"; 
 	//private String url="http://shop13287486.wxrrd.com";
 	private MapHomeActivity homeActivity;
 	private LinearLayout ll_title_bar;

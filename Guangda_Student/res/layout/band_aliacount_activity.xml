@@ -22,7 +22,7 @@
         android:textColor="#FF4817"
         android:textSize="13dp" />
 
-    <TextView
+<!--     <TextView
         android:id="@+id/tv_clear_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +37,6 @@
         android:paddingTop="10dp"
         android:text="清除账号"
         android:textColor="@color/white"
-        android:textSize="16dp" />
+        android:textSize="16dp" /> -->
 
 </LinearLayout>
